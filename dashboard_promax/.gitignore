@@ -1,0 +1,3 @@
+# Banco SQLite e mídia de demonstração são estado local, não código.
+data/
+__pycache__/
