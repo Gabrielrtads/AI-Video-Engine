@@ -1,0 +1,83 @@
+name: "🎬 Submit a Viral Video Reference"
+description: "Submit an inspiring video reference (Reels, TikTok, Dribbble, Apple Keynote) for technical deconstruction & learning"
+title: "[REF]: "
+labels: ["visual-reference", "learning-loop"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### 🚀 Community Self-Evolving Engine
+        Thank you for submitting a visual reference!
+        Every reference submitted goes through technical deconstruction (physics, camera drift, typography, sound) and adversarial cross-model review (`/cli-revisao-cruzada`). If approved with score $\ge 8.0/10$, it becomes a new preset and anti-slop rule in this repository.
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      description: Where is this reference hosted?
+      options:
+        - "Instagram Reels"
+        - "TikTok"
+        - "YouTube Shorts"
+        - "X / Twitter"
+        - "Dribbble"
+        - "Apple Product Showcase"
+        - "Other"
+    validations:
+      required: true
+
+  - type: input
+    id: url
+    attributes:
+      label: Video / Reference URL
+      description: The canonical URL to the reference video or post.
+      placeholder: "https://www.instagram.com/reel/..."
+    validations:
+      required: true
+
+  - type: input
+    id: author
+    attributes:
+      label: Creator / Brand Name
+      description: Who created this video? (Used for attribution)
+      placeholder: "@creator or Brand"
+    validations:
+      required: false
+
+  - type: input
+    id: timestamps
+    attributes:
+      label: Timestamp Range of Interest
+      description: What specific seconds showcase the technique you want deconstructed?
+      placeholder: "00:02 - 00:08 (The 3D card tilt & kinetic text)"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: technical_aspects
+    attributes:
+      label: Key Visual Elements
+      description: Check all technical aspects that stand out:
+      options:
+        - label: "Spring Physics / Organic Elasticity (Bounce, damp, overshoot)"
+        - label: "Camera Drift / Parallax (Subtle 3D camera motion that prevents dead frames)"
+        - label: "Glassmorphism & 3D Perspective (Translucent floating cards, metallic borders)"
+        - label: "Kinetic Typography (Sub-second word highlights, optical tracking)"
+        - label: "Whisper-Quiet Sound Design (Soft haptic clicks, organic air whooshes, volume < 0.45)"
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Detailed Breakdown / Why it Works
+      description: Explain why this reference feels expensive, viral, or anti-slop.
+      placeholder: "Notice how the card doesn't just fade in—it arrives with a slight rotational tilt, while the text tracks negatively..."
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Terms & Attribution
+      options:
+        - label: "I attest that this reference is submitted for fair use study, technical deconstruction, and educational open-source synthesis."
+          required: true

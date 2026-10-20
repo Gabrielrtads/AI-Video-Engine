@@ -1,6 +1,6 @@
 # AI-Video-Engine 🎬
 
-> **Headless Motion Studio & Anti-Slop Video Generation Engine for AI Agents.**  
+> **Headless Motion Studio & Self-Evolving Video Knowledge Engine for AI Agents.**  
 > Built for [Google Antigravity](https://github.com/google/antigravity), [Claude Code](https://github.com/anthropics/claude-code), [Cursor](https://www.cursor.com), and [Remotion](https://www.remotion.dev).
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -8,6 +8,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue)](https://www.typescriptlang.org)
 [![React](https://img.shields.io/badge/React-18-61dafb)](https://react.dev)
 [![AI Agent Skill](https://img.shields.io/badge/AI%20Agent-Skill%20Ready-green)](#agent-integration)
+[![Zero Media Bloat](https://img.shields.io/badge/Zero%20Media%20Bloat-Pure%20Knowledge%20%26%20Code-orange)](#zero-media-bloat-philosophy)
 
 ---
 
@@ -18,35 +19,61 @@ When developers ask LLMs to generate video with Remotion or code, models default
 - ❌ Centered, all-caps text (`UPPERCASE`) floating on blank screens.
 - ❌ Generic purple/cyan gradients with zero noise, depth, or tactile texture.
 - ❌ Stiff linear transitions (`opacity: 0 -> 1`) with zero physical inertia or spring physics.
-- ❌ Ear-splitting audio foley (impacts $> 0.5$ volume drowning the narrator).
+- ❌ Ear-splitting audio foley (impacts $> 0.45$ volume drowning the narrator).
 - ❌ Blind completion: agents declare "done" without inspecting frames for overlaps or dead time.
 
 **AI-Video-Engine replaces naive prompting with a deterministic Headless Code Studio enforced by linters and an automated visual audit loop.**
 
 ---
 
-## ✨ Key Capabilities
+## 💡 Zero Media Bloat Philosophy
+
+This repository contains **zero binary media bloat** (no gigabytes of MP3s, MP4s, or heavy video files).
+Instead, it stores **pure codified knowledge**:
+- **Mathematical Easing Curves (`measured_eases.ts`):** Calibrated Bézier and spring math.
+- **Physical Design System (`kit.tsx`, `AppleCameraRig.tsx`):** 3D perspective, parallax drift, negative kerning.
+- **Static Anti-Slop Linters (`lint-motion-slop.mjs`):** Automated AST and regex rule enforcement.
+- **Automated Frame Quality Audit (`auto_revisar_frames.mjs`):** Keyframe stills and contact sheets rated on a strict $\ge 8.0/10$ scale.
+- **Visual References Knowledge Corpus (`references/`):** Deconstructions and schemas learned from the community.
+
+You plug your own voiceover audio or generate it via Edge-TTS / Whisper on the fly.
+
+---
+
+## 🧠 Self-Evolving Engine (The Learning Loop)
+
+AI-Video-Engine compounds visual intelligence over time by ingesting new video references, stress-testing them through cross-model debate, and crystallizing them into the repository:
 
 ```mermaid
-flowchart LR
-    A[Voice / Script] --> B[Whisper Word Sync]
-    B --> C[Spring & 3D Motion]
-    C --> D{Anti-Slop Linter}
-    D -- Rejected --> C
-    D -- Approved --> E[Remotion Headless Render]
-    E --> F[Frame Review Loop]
-    F --> G[Contact Sheet & Scorecard >= 8/10]
-    G --> H[Final Delivery MP4]
+flowchart TD
+    A["Community / Contributor Link (Reels, TikTok, Dribbble)"] --> B["scripts/references/absorver_referencia.mjs"]
+    B --> C["Manifest Created in references/inbox/ + Scaffold in src/referencias/"]
+    C --> D["/cli-revisao-cruzada (Builder vs Red Team vs Auditor)"]
+    D --> E["scripts/auto_revisar_frames.mjs (Contact Sheet + Scorecard)"]
+    E --> F{"Scorecard >= 8.0 & Confidence >= 85%?"}
+    F -- NO --> G["Rejected to references/rejected/ (With rationale)"]
+    F -- YES --> H["scripts/references/promover_aprendizado.mjs"]
+    H --> I["Promoted to references/accepted/ + Permanent Linter & Easing Rules"]
 ```
 
+### 🤝 Submitting a Reference
+Anyone in the community can submit inspiring video techniques:
+1. Open a **[GitHub Issue: Submit a Viral Video Reference](https://github.com/Gabrielrtads/AI-Video-Engine/issues/new?template=visual-reference.yml)**.
+2. Provide the video URL, timestamp range, and key elements (spring physics, 3D tilt, typography, sound).
+3. The engine parses the issue, generates a Remotion prototype, runs the cross-model review, and submits a Pull Request when approved!
+
+---
+
+## ✨ Core Tools & Capabilities
+
 ### 1. 🛡️ Static Anti-Slop Linter (`lint-motion-slop.mjs`)
-Automated gatekeeper that rejects pull requests or renders if amateur patterns are found:
+Automated gatekeeper that rejects renders or PRs if amateur patterns are detected:
 - **Audio Ceiling:** Prohibits foley impacts with volume $> 0.45$.
 - **Anti-Deck Gate:** Blocks slide-deck layouts and banned marketing clichés.
 - **Physics Enforcement:** Verifies that all movements use physical `spring()` or measured Bézier curves (`EASE.*`).
 
 ### 2. 👁️ Automated Frame Review & Contact Sheet (`auto_revisar_frames.mjs`)
-Never deliver blind video. The engine renders keyframe stills, compiles a consolidated **Contact Sheet (`contact-sheet.jpg`)**, hunts for dead frames, and issues an objective scorecard:
+Renders keyframe stills, compiles a consolidated **Contact Sheet (`contact-sheet.jpg`)**, hunts for dead frames, and issues an objective scorecard:
 
 ```json
 {
@@ -54,10 +81,10 @@ Never deliver blind video. The engine renders keyframe stills, compiles a consol
   "totalFrames": 825,
   "fps": 30,
   "durationSeconds": "27.5",
-  "mediaGeral": 8.5,
+  "mediaGeral": 9.0,
   "status": "APROVADO (PADRÃO ESTÚDIO >= 8/10)",
   "frames": [
-    { "frame": 117, "time": "3.90s", "score": 8.5, "flags": ["Ritmo e densidade visual aprovados"] },
+    { "frame": 117, "time": "3.90s", "score": 9.0, "flags": ["Ritmo e densidade visual aprovados"] },
     { "frame": 351, "time": "11.70s", "score": 9.0, "flags": ["Ritmo e densidade visual aprovados"] }
   ]
 }
@@ -65,11 +92,6 @@ Never deliver blind video. The engine renders keyframe stills, compiles a consol
 
 ### 3. 🎙️ Millisecond Word-by-Word Alignment (`transcrever-palavras.mjs`)
 Leverages Whisper (`words.json`) to extract exact `start` and `end` timestamps for every spoken word, enabling tight kinetic typography and synced micro-interactions.
-
-### 4. 📐 Apple-Tier Design System (`kit.tsx` & `FlowMotionMaster.tsx`)
-- **Camera Drift:** Subtle organic camera pan that prevents frozen frames.
-- **Glassmorphism & Depth:** CSS 3D perspective layers, translucent backdrops, and metallic borders.
-- **Negative Kerning:** Clean, editorial typography with optical sizing.
 
 ---
 
@@ -87,16 +109,16 @@ pnpm install
 node scripts/lint-motion-slop.mjs src/FlowMotionMaster.tsx
 ```
 
-### 3. Render Headless Video
-```bash
-pnpm exec remotion render FlowMotionMaster out/video.mp4 --codec=h264 --crf=16
-```
-
-### 4. Run Automated Frame Review
+### 3. Run Automated Frame Review
 ```bash
 node scripts/auto_revisar_frames.mjs FlowMotionMaster --stills 6
 ```
-Inspect `out/contact-sheet.jpg` and `out/review_scorecard.json`.
+Inspect `out/contact-sheet.jpg` and `out/review_scorecard.json` (Score $\ge 8.0/10$).
+
+### 4. Ingest a New Visual Reference
+```bash
+node scripts/references/absorver_referencia.mjs --url "https://instagram.com/reel/..." --title "3D Perspective Card Tilt" --author "@creator"
+```
 
 ---
 
@@ -105,9 +127,7 @@ Inspect `out/contact-sheet.jpg` and `out/review_scorecard.json`.
 AI-Video-Engine includes a native `SKILL.md` compliant with [Google Antigravity](https://github.com/google/antigravity), [Claude Code](https://github.com/anthropics/claude-code), and [Codex](https://github.com/openai/codex).
 
 ### Installing as a Skill
-Drop this repository into your agent's skill directory:
 ```bash
-# Antigravity / Claude Code
 git clone https://github.com/Gabrielrtads/AI-Video-Engine.git .agents/skills/ai-video-engine
 ```
 
@@ -121,22 +141,34 @@ git clone https://github.com/Gabrielrtads/AI-Video-Engine.git .agents/skills/ai-
 
 ```
 AI-Video-Engine/
+├── .github/
+│   └── ISSUE_TEMPLATE/
+│       └── visual-reference.yml       # Community reference submission form
+├── schemas/
+│   └── reference-manifest.schema.json # JSON schema for references
+├── references/
+│   ├── inbox/                         # Pending submissions
+│   ├── accepted/                      # Approved reference manifests
+│   ├── rejected/                      # Rejected references with rationale
+│   └── evidence/                      # Keyframe stills & contact sheets
 ├── scripts/
-│   ├── lint-motion-slop.mjs       # Anti-Slop AST/regex linter
-│   ├── auto_revisar_frames.mjs    # Frame review & contact sheet builder
-│   ├── produzir_video_bancada.mjs # 1-Click production pipeline
-│   └── transcrever-palavras.mjs   # Whisper word-level transcription
+│   ├── references/
+│   │   ├── absorver_referencia.mjs    # Reference intake & scaffolding
+│   │   └── promover_aprendizado.mjs   # Promotion gate (Score >= 8.0, Conf >= 85%)
+│   ├── lint-motion-slop.mjs           # Anti-Slop AST/regex linter
+│   ├── auto_revisar_frames.mjs        # Frame review & contact sheet builder
+│   ├── produzir_video_bancada.mjs     # 1-Click production pipeline
+│   └── transcrever-palavras.mjs       # Whisper word-level transcription
 ├── src/
-│   ├── FlowMotionMaster.tsx       # Benchmark production composition
-│   ├── AppleCameraRig.tsx         # Camera drift & organic inertia
-│   ├── AppleKineticCards.tsx      # 3D perspective floating cards
-│   ├── KineticWordCaption.tsx     # Synced word highlighting
-│   ├── kit.tsx                    # Shared spring math & typography
-│   ├── styles_kit.tsx             # Shaders, sheens & glassmorphism
-│   ├── measured_eases.ts          # Calibrated easing functions
-│   └── index.tsx                  # Remotion root entry
-├── public/
-│   └── audio/                     # Foley tracks & sample luxury voice
+│   ├── FlowMotionMaster.tsx           # Benchmark production composition
+│   ├── AppleCameraRig.tsx             # Camera drift & organic inertia
+│   ├── AppleKineticCards.tsx          # 3D perspective floating cards
+│   ├── KineticWordCaption.tsx         # Synced word highlighting
+│   ├── kit.tsx                        # Shared spring math & typography
+│   ├── styles_kit.tsx                 # Shaders, sheens & glassmorphism
+│   ├── measured_eases.ts              # Calibrated easing functions
+│   ├── PBRStage3D.tsx                 # Three.js 3D stage
+│   └── index.tsx                      # Remotion root entry
 ├── package.json
 ├── remotion.config.ts
 ├── tsconfig.json

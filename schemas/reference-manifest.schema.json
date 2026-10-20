@@ -1,0 +1,76 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "VisualReferenceManifest",
+  "description": "Standard schema for ingested video references in the AI-Video-Engine learning loop",
+  "type": "object",
+  "required": ["id", "source", "aspects", "status", "submittedAt"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^ref-[0-9]{4}-[0-9]{3,}$"
+    },
+    "source": {
+      "type": "object",
+      "required": ["platform", "url"],
+      "properties": {
+        "platform": {
+          "type": "string",
+          "enum": ["instagram", "tiktok", "youtube_shorts", "twitter_x", "dribbble", "apple_showcase", "other"]
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "author": { "type": ["string", "null"] },
+        "submittedBy": { "type": ["string", "null"] },
+        "issueNumber": { "type": ["integer", "null"] }
+      }
+    },
+    "aspects": {
+      "type": "object",
+      "properties": {
+        "motionPhysics": { "type": "string" },
+        "cameraDrift": { "type": "boolean" },
+        "perspective3D": { "type": "boolean" },
+        "typographyTracking": { "type": "string" },
+        "foleyProfile": { "type": "string" }
+      }
+    },
+    "deconstruction": {
+      "type": "object",
+      "properties": {
+        "observations": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "proposedComponent": { "type": ["string", "null"] },
+        "proposedEasing": { "type": ["string", "null"] },
+        "proposedRule": { "type": ["string", "null"] }
+      }
+    },
+    "crossReview": {
+      "type": "object",
+      "properties": {
+        "cli": { "type": ["string", "null"] },
+        "builderVerdict": { "type": ["string", "null"] },
+        "redTeamCritique": { "type": ["string", "null"] },
+        "auditorVerdict": { "type": ["string", "null"] },
+        "confidenceScore": { "type": ["number", "null"] },
+        "visualScore": { "type": ["number", "null"] },
+        "approved": { "type": "boolean" }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": ["inbox", "analyzing", "accepted", "rejected"]
+    },
+    "submittedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "processedAt": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    }
+  }
+}

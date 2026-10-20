@@ -195,8 +195,10 @@ frameScores.forEach((f) => {
 console.log('\n💾 Scorecard salvo em: ' + SCORECARD_JSON);
 console.log('');
 
-if (parseFloat(mediaGeral) < 7.5) {
+if (parseFloat(mediaGeral) < 8.0) {
+	console.error('❌ REJEITADO: A média visual ficou abaixo de 8.0/10. Ajuste o contraste ou densidade de movimento.');
 	process.exit(1);
 } else {
+	console.log('🎉 APROVADO: Vídeo atende ao padrão de estúdio (Nota >= 8.0/10).');
 	process.exit(0);
 }

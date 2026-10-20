@@ -11,6 +11,25 @@ dist/
 *.webm
 *.mov
 
+# Binary Media Files (Zero media bloat - pure knowledge & code)
+*.mp3
+*.wav
+*.aac
+*.m4a
+*.flac
+*.ogg
+*.png
+*.jpg
+*.jpeg
+*.gif
+!references/evidence/*.png
+!public/input/.gitkeep
+!public/audio/.gitkeep
+!references/inbox/.gitkeep
+!references/accepted/.gitkeep
+!references/rejected/.gitkeep
+!references/evidence/.gitkeep
+
 # Remotion Cache & Bundle
 .remotion/
 build/
@@ -33,8 +52,3 @@ reframe_venv/
 Thumbs.db
 .worktrees/
 *.log
-
-# Audio files (except public/audio sample fixtures)
-*.wav
-*.aac
-!public/audio/*.mp3

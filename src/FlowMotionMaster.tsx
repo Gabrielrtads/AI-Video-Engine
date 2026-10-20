@@ -33,7 +33,17 @@ import {AnimosSheen, CinematicStage} from './styles_kit';
 // Sound Design: Foley Orgânico, Discreto, Whisper-Quiet (Zero ruídos agressivos)
 // ════════════════════════════════════════════════════════════════════════════
 
-export const FlowMotionMaster: React.FC = () => {
+export interface FlowMotionMasterProps {
+	audioNarracao?: string;
+	audioTrilha?: string;
+	enableSfx?: boolean;
+}
+
+export const FlowMotionMaster: React.FC<FlowMotionMasterProps> = ({
+	audioNarracao,
+	audioTrilha,
+	enableSfx = false,
+}) => {
 	const frame = useCurrentFrame();
 	const {fps, width: W, height: H} = useVideoConfig();
 	const t = frame / fps;
@@ -152,10 +162,10 @@ export const FlowMotionMaster: React.FC = () => {
 
 	return (
 		<AbsoluteFill style={{background: '#05070A', overflow: 'hidden'}}>
-			{/* Áudio Oficial da Thalita + Trilha de Luxo + AutoImpactTrack Suave */}
-			<Audio src={staticFile('audio/trilha_luxo.mp3')} volume={musicVolume} />
-			<Audio src={staticFile('audio/locucao_thalita_flow.mp3')} volume={1.0} />
-			<AutoImpactTrack triggers={soundTriggers} masterVolume={0.32} />
+			{/* Áudio Opcional (Plug & Play - Repositório 100% Livre de Binários de Mídia) */}
+			{audioTrilha ? <Audio src={staticFile(audioTrilha)} volume={musicVolume} /> : null}
+			{audioNarracao ? <Audio src={staticFile(audioNarracao)} volume={1.0} /> : null}
+			{enableSfx ? <AutoImpactTrack triggers={soundTriggers} masterVolume={0.32} /> : null}
 
 			{/* ══════════════════════════════════════════════════════════════════════
 			    O SETUP FÍSICO / ÂNCORA DE REALIDADE (THE REALITY RIG)

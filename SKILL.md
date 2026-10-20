@@ -1,6 +1,6 @@
 ---
 name: ai-video-engine
-description: Headless Motion Studio & Anti-Slop Video Generation Engine for AI Agents (Antigravity, Claude Code, Cursor, Codex). Combines Remotion, Spring Physics, Word-by-Word Whisper sync, Static Anti-Slop Linter, and Automated Frame Review (Contact Sheet + Scorecard >= 8/10).
+description: Headless Motion Studio & Self-Evolving Video Knowledge Engine for AI Agents (Antigravity, Claude Code, Cursor, Codex). Combines Remotion, Spring Physics, Word-by-Word Whisper sync, Static Anti-Slop Linter, Automated Frame Review (Contact Sheet + Scorecard >= 8/10), and a Reference Absorption Learning Loop.
 ---
 
 # 🎬 AI-Video-Engine: Headless Motion Studio for AI Agents
@@ -12,11 +12,11 @@ Transform voice narrations and briefings into agency-tier kinetic motion videos 
 When instructed to generate video code (e.g. Remotion), LLMs naturally default to amateur patterns:
 1. Centered uppercase text (`UPPERCASE`) with no spatial hierarchy.
 2. Generic linear easing (`opacity: 0 -> 1`) with zero physical inertia.
-3. Harsh audio foley (sound effects > 0.5 volume drowning the speaker).
+3. Harsh audio foley (sound effects > 0.45 volume drowning the speaker).
 4. Generic purple/blue background gradients with zero noise or texture.
 5. Blind declarations of "done" without visual inspection.
 
-**AI-Video-Engine kills this through deterministic code constraints and automated visual feedback loops.**
+**AI-Video-Engine kills this through deterministic code constraints, automated visual feedback loops, and continuous reference learning.**
 
 ---
 
@@ -24,20 +24,30 @@ When instructed to generate video code (e.g. Remotion), LLMs naturally default t
 
 ```
 AI-Video-Engine/
+├── .github/
+│   └── ISSUE_TEMPLATE/
+│       └── visual-reference.yml       # Community reference submission form
+├── schemas/
+│   └── reference-manifest.schema.json # JSON schema for references
+├── references/
+│   ├── inbox/                         # Pending submissions
+│   ├── accepted/                      # Approved reference manifests
+│   └── evidence/                      # Keyframe stills & contact sheets
 ├── scripts/
-│   ├── lint-motion-slop.mjs       # Static AST / regex linter blocking slop patterns
-│   ├── auto_revisar_frames.mjs    # Keyframe still extraction + Contact Sheet + Scorecard (>= 8/10)
-│   ├── produzir_video_bancada.mjs # 1-Click production orchestrator
-│   └── transcrever-palavras.mjs   # Millisecond word-level timestamps via Whisper
+│   ├── references/
+│   │   ├── absorver_referencia.mjs    # Reference intake & scaffolding
+│   │   └── promover_aprendizado.mjs   # Promotion gate (Score >= 8.0, Conf >= 85%)
+│   ├── lint-motion-slop.mjs           # Static AST / regex linter blocking slop patterns
+│   ├── auto_revisar_frames.mjs        # Keyframe still extraction + Contact Sheet + Scorecard (>= 8/10)
+│   ├── produzir_video_bancada.mjs     # 1-Click production orchestrator
+│   └── transcrever-palavras.mjs       # Millisecond word-level timestamps via Whisper
 ├── src/
-│   ├── FlowMotionMaster.tsx       # Benchmark production composition (Apple-tier motion)
-│   ├── AppleCameraRig.tsx         # Organic camera drift & inertia
-│   ├── AppleKineticCards.tsx      # 3D perspective floating glass cards
-│   ├── KineticWordCaption.tsx     # Word-by-word highlighted captions
-│   ├── kit.tsx                    # Shared spring math, measured eases & typography
-│   └── index.tsx                  # Remotion root entry
-└── public/
-    └── audio/                     # Sound design foley & speech tracks
+│   ├── FlowMotionMaster.tsx           # Benchmark production composition (Apple-tier motion)
+│   ├── AppleCameraRig.tsx             # Organic camera drift & inertia
+│   ├── AppleKineticCards.tsx          # 3D perspective floating glass cards
+│   ├── KineticWordCaption.tsx         # Word-by-word highlighted captions
+│   ├── kit.tsx                        # Shared spring math, measured eases & typography
+│   └── index.tsx                      # Remotion root entry
 ```
 
 ---
@@ -54,18 +64,18 @@ pnpm install
 node scripts/lint-motion-slop.mjs src/FlowMotionMaster.tsx
 ```
 
-### 3. Render Video
-```bash
-pnpm exec remotion render Video out/video.mp4 --codec=h264 --crf=16
-```
-
-### 4. Run Automated Frame Review
+### 3. Run Automated Frame Review
 ```bash
 node scripts/auto_revisar_frames.mjs FlowMotionMaster --stills 6
 ```
 Generates:
 - `out/contact-sheet.jpg`: Visual grid of keyframe stills.
 - `out/review_scorecard.json`: Automated evaluation of contrast, density, and dead frames with target score $\ge 8.0/10$.
+
+### 4. Absorb a New Reference (Learning Loop)
+```bash
+node scripts/references/absorver_referencia.mjs --url "https://instagram.com/reel/..." --title "3D Card Tilt" --author "@creator"
+```
 
 ---
 
