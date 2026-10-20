@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+package-lock.json
+pnpm-lock.yaml
+
+# Build & Render Outputs
+out/
+dist/
+*.mp4
+*.webm
+*.mov
+
+# Remotion Cache & Bundle
+.remotion/
+build/
+
+# Python & Venvs
+__pycache__/
+*.pyc
+venv/
+.venv/
+reframe_venv/
+
+# Environment & Secrets
+.env
+.env.local
+*.pem
+*.key
+
+# OS & Worktrees
+.DS_Store
+Thumbs.db
+.worktrees/
+*.log
+
+# Audio files (except public/audio sample fixtures)
+*.wav
+*.aac
+!public/audio/*.mp3

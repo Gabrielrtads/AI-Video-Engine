@@ -1,0 +1,46 @@
+{
+  "name": "ai-video-engine",
+  "version": "1.0.0",
+  "description": "Headless Motion Studio & Anti-Slop Video Generation Engine for AI Agents (Remotion + React + Whisper)",
+  "main": "src/index.tsx",
+  "keywords": [
+    "antigravity",
+    "remotion",
+    "claude-code",
+    "ai-video",
+    "motion-design",
+    "whisper",
+    "vibe-coding",
+    "agent-skills"
+  ],
+  "author": "Gabriel Toledo <gabriel@gabrieltoledo.me>",
+  "license": "MIT",
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "remotion render Video out/video.mp4 --codec=h264 --crf=16",
+    "lint:slop": "node scripts/lint-motion-slop.mjs",
+    "review:frames": "node scripts/auto_revisar_frames.mjs",
+    "bancada": "node scripts/produzir_video_bancada.mjs",
+    "palavras": "node scripts/transcrever-palavras.mjs public/narracao.mp3 src/data/words.json pt",
+    "check": "tsc -p ."
+  },
+  "dependencies": {
+    "@react-three/fiber": "8.17.10",
+    "@remotion/bundler": "4.0.300",
+    "@remotion/captions": "4.0.300",
+    "@remotion/cli": "4.0.300",
+    "@remotion/google-fonts": "4.0.300",
+    "@remotion/install-whisper-cpp": "4.0.300",
+    "@remotion/renderer": "4.0.300",
+    "@remotion/three": "4.0.300",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "remotion": "4.0.300",
+    "three": "0.169.0"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.12",
+    "@types/three": "0.169.0",
+    "typescript": "5.6.3"
+  }
+}
