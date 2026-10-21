@@ -44,7 +44,7 @@ projects/vibe-design-studio/
 - Regras de colaboração multiagente em `AGENTS.md`.
 
 ## 6. Filosofia Arquitetural: Piso, Não Teto (Floor, Not a Ceiling)
-O Vibe Design Studio foi concebido para elevar a linha de base de agentes econômicos sem jamais limitar a excelência estética de modelos criativos de topo (como Claude 3.7 Sonnet):
+O Vibe Design Studio foi concebido para elevar a linha de base de agentes econômicos sem jamais limitar a excelência estética de modelos criativos de topo (como Claude Opus 5.5 MAX / Sonnet):
 - **O Piso (Chão Inegociável):** Fornece infraestrutura técnica pronta para que nenhum modelo precise reinventar a roda ou cometer erros amadores:
   - Áudio EBU R128 (-14 LUFS / -1 dBTP) e Auto-Ducking dinâmico.
   - Alinhamento de milissegundos via Whisper (`words.json`).
@@ -57,7 +57,7 @@ O Vibe Design Studio foi concebido para elevar a linha de base de agentes econô
 ## 7. Alimentação Headless via API (OpenRouter, LLMs Externos)
 O estúdio pode ser alimentado e disparado 100% via API sem interface humana:
 1. **Via OpenRouter / APIs de LLMs:**
-   - Um script externo, worker ou webhook pode enviar um briefing para qualquer modelo no OpenRouter (ex.: `anthropic/claude-3.7-sonnet`, `google/gemini-2.5-flash`, `openai/gpt-4o`).
+   - Um script externo, worker ou webhook pode enviar um briefing para qualquer modelo no OpenRouter (ex.: `anthropic/claude-opus-5.5`, `anthropic/claude-3.7-sonnet`, `google/gemini-2.5-flash`, `openai/gpt-4o`).
    - O LLM retorna um JSON estruturado contendo:
      - Roteiro narrado.
      - Parâmetros visuais / `inputProps` (títulos, métricas, paleta, cards).

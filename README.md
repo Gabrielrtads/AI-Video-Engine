@@ -29,7 +29,7 @@ When creators ask LLMs to generate videos or carousels, models default to amateu
 
 ## 🪜 Architectural Philosophy: Floor, Not a Ceiling
 
-A common pitfall when building guardrails for AI is creating a **straitjacket**: rigid constraints that stop weaker/cheaper models from making mistakes, but simultaneously drag top-tier creative models (like Claude 3.7 Sonnet) down to mediocre, cookie-cutter templates.
+A common pitfall when building guardrails for AI is creating a **straitjacket**: rigid constraints that stop weaker/cheaper models from making mistakes, but simultaneously drag top-tier creative models (like Claude Opus 5.5 MAX / Sonnet) down to mediocre, cookie-cutter templates.
 
 **Vibe Design Studio operates under the "Floor, Not a Ceiling" doctrine:**
 
@@ -50,7 +50,7 @@ A common pitfall when building guardrails for AI is creating a **straitjacket**:
 
 1. **For Economical / High-Speed Models (Gemini Flash, Haiku):**
    - The studio acts as an unbreakable safety net. Pre-tested templates (`FlowMotionMaster`, `CarrosselEditorial`), automated Whisper ingestion, and strict safe zones prevent the model from outputting unpolished content.
-2. **For Top-Tier Creative Models (Claude Sonnet / Opus):**
+2. **For Top-Tier Creative Models (Claude Opus 5.5 MAX / Sonnet):**
    - The studio acts as a **supercharged launchpad**. The agent does not waste time fighting Chromium memory leaks or calculating loudness decibels.
    - Using the **`[2] Criar do Zero`** route or **`[4] Ingest Reference`**, creative agents have carte blanche to invent entirely new motion choreographies, custom 3D card physics, and agency-level typography.
 
@@ -130,7 +130,7 @@ const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
     "Content-Type": "application/json"
   },
   body: JSON.stringify({
-    model: "anthropic/claude-3.7-sonnet", // Or google/gemini-2.5-flash for 10x cost reduction
+    model: "anthropic/claude-opus-5.5", // Or google/gemini-2.5-flash for 10x cost reduction
     messages: [
       { role: "system", content: "Retorne um JSON com: { narracao: string, titulo: string, tags: string[] }" },
       { role: "user", content: "Crie um vídeo sobre como o design com código supera ferramentas manuais." }

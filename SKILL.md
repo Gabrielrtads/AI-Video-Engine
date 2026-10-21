@@ -24,7 +24,7 @@ When instructed to generate video code (e.g. Remotion), LLMs naturally default t
 
 Vibe Design Studio is designed as a **guaranteed floor**, never an artistic ceiling:
 - **For Economical Models (Gemini Flash, Haiku):** Guarantees pre-validated templates, safe zones (4:5 and 9:16), two-pass loudness mastering (-14 LUFS), and anti-slop checks so the output never looks amateur.
-- **For Creative Powerhouses (Claude 3.7 Sonnet / Opus):** Acts as an unconstrained launchpad. Creative models are encouraged to bypass basic templates using route **`[2] Criar do Zero`**, orchestrating bespoke 3D perspectives, `@react-three/fiber` scenes, GLSL shaders, and nuanced motion typography.
+- **For Creative Powerhouses (Claude Opus 5.5 MAX / Sonnet):** Acts as an unconstrained launchpad. Creative models are encouraged to bypass basic templates using route **`[2] Criar do Zero`**, orchestrating bespoke 3D perspectives, `@react-three/fiber` scenes, GLSL shaders, and nuanced motion typography.
 
 ---
 
@@ -98,5 +98,5 @@ The studio is 100% headless and can be driven by any external API (OpenRouter, O
 ## 🤖 Swarm / Multi-Agent Role Division
 
 - **Gemini / Infrastructure Agents:** TTS generation (`scripts/narrar.mjs`), Whisper millisecond alignment (`words.json`), Chromium headless rendering, and audio mastering (-14 LUFS EBU R128).
-- **Claude / Creative Agents (Diretor de Arte):** Choreography of `spring()` curves, CSS 3D perspectives, typographic kerning, Three.js shaders, and visual storytelling under **"Criar do Zero"** without template constraints.
+- **Claude / Creative Agents (Diretor de Arte - Opus 5.5 MAX):** Choreography of `spring()` curves, CSS 3D perspectives, typographic kerning, Three.js shaders, and visual storytelling under **"Criar do Zero"** without template constraints.
 - **Codex / Robustness Agents:** Pure mathematical logic (`auto_ducking_math.ts`), Bézier curves, boundary input sanitization, and adversarial stress test suites.
