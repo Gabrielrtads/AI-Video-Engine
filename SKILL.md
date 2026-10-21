@@ -1,9 +1,9 @@
 ---
-name: ai-video-engine
+name: vibe-design-studio
 description: Headless Motion Studio & Self-Evolving Video Knowledge Engine for AI Agents (Antigravity, Claude Code, Cursor, Codex). Combines Remotion, Spring Physics, Word-by-Word Whisper sync, Static Anti-Slop Linter, Automated Frame Review (Contact Sheet + Scorecard >= 8/10), and a Reference Absorption Learning Loop.
 ---
 
-# 🎬 AI-Video-Engine: Headless Motion Studio for AI Agents
+# 🎨🎬 Vibe Design Studio: Headless Motion & Creative Studio for AI Agents
 
 Transform voice narrations and briefings into agency-tier kinetic motion videos without "AI Slop".
 
@@ -16,14 +16,14 @@ When instructed to generate video code (e.g. Remotion), LLMs naturally default t
 4. Generic purple/blue background gradients with zero noise or texture.
 5. Blind declarations of "done" without visual inspection.
 
-**AI-Video-Engine kills this through deterministic code constraints, automated visual feedback loops, and continuous reference learning.**
+**Vibe Design Studio kills this through deterministic code constraints, automated visual feedback loops, and continuous reference learning.**
 
 ---
 
 ## 🏗️ Architecture
 
 ```
-AI-Video-Engine/
+Vibe Design Studio/
 ├── .github/
 │   └── ISSUE_TEMPLATE/
 │       └── visual-reference.yml       # Community reference submission form

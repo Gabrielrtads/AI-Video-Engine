@@ -1,12 +1,14 @@
 {
-  "name": "ai-video-engine",
+  "name": "vibe-design-studio",
   "version": "1.0.0",
-  "description": "Headless Motion Studio & Anti-Slop Video Generation Engine for AI Agents (Remotion + React + Whisper)",
+  "description": "Headless Creative & Motion Design Studio for AI Agents (Remotion + React + Whisper)",
   "main": "src/index.tsx",
   "keywords": [
     "antigravity",
     "remotion",
     "claude-code",
+    "vibe-design-studio",
+    "design-studio",
     "ai-video",
     "motion-design",
     "whisper",
@@ -18,6 +20,9 @@
   "scripts": {
     "studio": "remotion studio",
     "render": "remotion render Video out/video.mp4 --codec=h264 --crf=16",
+    "render:mastered": "remotion render Video out/video.mp4 --codec=h264 --crf=16 && node scripts/masterizar_audio.mjs out/video.mp4 out/video_mastered.mp4",
+    "masterizar": "node scripts/masterizar_audio.mjs",
+    "narrar": "node scripts/narrar.mjs",
     "lint:slop": "node scripts/lint-motion-slop.mjs",
     "review:frames": "node scripts/auto_revisar_frames.mjs",
     "bancada": "node scripts/produzir_video_bancada.mjs",

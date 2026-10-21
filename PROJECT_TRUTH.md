@@ -1,7 +1,7 @@
-# PROJECT_TRUTH.md — AI-Video-Engine
+# PROJECT_TRUTH.md — Vibe Design Studio
 
 ## 1. Visão Geral do Produto
-O **AI-Video-Engine** é o motor estúdio para criação automatizada e assistida por IA de:
+O **Vibe Design Studio** (`vibe-design-studio`) é o estúdio criativo headless para criação automatizada e assistida por IA de:
 - **Carrosséis Editoriais (4:5 / 1080×1350)**
 - **Vídeos e Motion Design Vertical (9:16 / 1080×1920)**
 
@@ -23,7 +23,7 @@ O motor opera via comandos conversacionais e CLI leve, integrando física elást
 
 ## 4. Estrutura de Diretórios
 ```
-projects/AI-Video-Engine/
+projects/vibe-design-studio/
 ├── scripts/
 │   ├── studio_engine.mjs         # CLI Canônica e orquestrador UX
 │   └── references/

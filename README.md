@@ -1,4 +1,4 @@
-# AI-Video-Engine 🎬
+# Vibe Design Studio 🎨🎬
 
 > **Headless Motion Studio & Self-Evolving Video Knowledge Engine for AI Agents.**  
 > Built for [Google Antigravity](https://github.com/google/antigravity), [Claude Code](https://github.com/anthropics/claude-code), [Cursor](https://www.cursor.com), and [Remotion](https://www.remotion.dev).
@@ -22,7 +22,7 @@ When developers ask LLMs to generate video with Remotion or code, models default
 - ❌ Ear-splitting audio foley (impacts $> 0.45$ volume drowning the narrator).
 - ❌ Blind completion: agents declare "done" without inspecting frames for overlaps or dead time.
 
-**AI-Video-Engine replaces naive prompting with a deterministic Headless Code Studio enforced by linters and an automated visual audit loop.**
+**Vibe Design Studio replaces naive prompting with a deterministic Headless Code Studio enforced by linters and an automated visual audit loop.**
 
 ---
 
@@ -42,7 +42,7 @@ You plug your own voiceover audio or generate it via Edge-TTS / Whisper on the f
 
 ## 🧠 Self-Evolving Engine (The Learning Loop)
 
-AI-Video-Engine compounds visual intelligence over time by ingesting new video references, stress-testing them through cross-model debate, and crystallizing them into the repository:
+Vibe Design Studio compounds visual intelligence over time by ingesting new video references, stress-testing them through cross-model debate, and crystallizing them into the repository:
 
 ```mermaid
 flowchart TD
@@ -58,7 +58,7 @@ flowchart TD
 
 ### 🤝 Submitting a Reference
 Anyone in the community can submit inspiring video techniques:
-1. Open a **[GitHub Issue: Submit a Viral Video Reference](https://github.com/Gabrielrtads/AI-Video-Engine/issues/new?template=visual-reference.yml)**.
+1. Open a **[GitHub Issue: Submit a Viral Video Reference](https://github.com/Gabrielrtads/Vibe Design Studio/issues/new?template=visual-reference.yml)**.
 2. Provide the video URL, timestamp range, and key elements (spring physics, 3D tilt, typography, sound).
 3. The engine parses the issue, generates a Remotion prototype, runs the cross-model review, and submits a Pull Request when approved!
 
@@ -99,8 +99,8 @@ Leverages Whisper (`words.json`) to extract exact `start` and `end` timestamps f
 
 ### 1. Clone & Install
 ```bash
-git clone https://github.com/Gabrielrtads/AI-Video-Engine.git
-cd AI-Video-Engine
+git clone https://github.com/Gabrielrtads/Vibe Design Studio.git
+cd Vibe Design Studio
 pnpm install
 ```
 
@@ -124,11 +124,11 @@ node scripts/references/absorver_referencia.mjs --url "https://instagram.com/ree
 
 ## 🤖 Agent Integration
 
-AI-Video-Engine includes a native `SKILL.md` compliant with [Google Antigravity](https://github.com/google/antigravity), [Claude Code](https://github.com/anthropics/claude-code), and [Codex](https://github.com/openai/codex).
+Vibe Design Studio includes a native `SKILL.md` compliant with [Google Antigravity](https://github.com/google/antigravity), [Claude Code](https://github.com/anthropics/claude-code), and [Codex](https://github.com/openai/codex).
 
 ### Installing as a Skill
 ```bash
-git clone https://github.com/Gabrielrtads/AI-Video-Engine.git .agents/skills/ai-video-engine
+git clone https://github.com/Gabrielrtads/Vibe Design Studio.git .agents/skills/vibe-design-studio
 ```
 
 ### Recommended Multi-Agent Role Division
@@ -140,7 +140,7 @@ git clone https://github.com/Gabrielrtads/AI-Video-Engine.git .agents/skills/ai-
 ## 📁 Repository Structure
 
 ```
-AI-Video-Engine/
+Vibe Design Studio/
 ├── .github/
 │   └── ISSUE_TEMPLATE/
 │       └── visual-reference.yml       # Community reference submission form

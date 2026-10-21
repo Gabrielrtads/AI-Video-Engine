@@ -1,4 +1,4 @@
-# AGENTS.md — AI-Video-Engine (Studio Engine)
+# AGENTS.md — vibe-design-studio (Studio Engine)
 
 Fatos e regras **deste projeto**. As regras gerais (mesas, autorização,
 qualidade) estão em `../../AGENTS.md` e não se repetem aqui. Para editar, siga a
@@ -6,8 +6,8 @@ skill `vibe-dev`.
 
 ## Identificação & Estado do Swarm
 
-- **Projeto:** AI-Video-Engine (Studio Engine de Vídeo e Carrosséis)
-- **Repositório:** `projects/AI-Video-Engine`
+- **Projeto:** vibe-design-studio (Studio Engine de Vídeo e Carrosséis)
+- **Repositório:** `projects/vibe-design-studio`
 - **Executor Ativo Atual:** `gemini-local` (via Antigravity Teamwork Swarm)
 - **Tarefa Registrada:** `TASK-STUDIO-ENGINE-UX-20261020` em `docs/0_swarm_infra/TASK_REGISTRY.md`
 - **Branch oficial:** `main`
