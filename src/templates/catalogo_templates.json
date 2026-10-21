@@ -1,0 +1,35 @@
+[
+  {
+    "id": "CarrosselEditorial",
+    "nome": "Capa Cinética Editorial (Instagram 4:5)",
+    "proporcao": "4:5",
+    "dimensoes": { "largura": 1080, "altura": 1350 },
+    "duracaoFrames": 240,
+    "fps": 30,
+    "estilo": "Editorial / High Retention / Motion Acid",
+    "caracteristicas": [
+      "Tipografia Bebas Neue ultra-condensada",
+      "Texto de destaque com gradiente iridescente em SVG nativo",
+      "Palco com esteira contínua em loop horizontal a 0 graus",
+      "Sublinhado com física elástica spring()",
+      "Pílula de progresso e badge numérica 01 / 02 03 04"
+    ],
+    "arquivo": "src/CarrosselEditorial.tsx"
+  },
+  {
+    "id": "FlowMotionMaster",
+    "nome": "Apple Kinetic Motion Master (Reels 9:16)",
+    "proporcao": "9:16",
+    "dimensoes": { "largura": 1080, "altura": 1920 },
+    "duracaoFrames": 825,
+    "fps": 30,
+    "estilo": "Showcase Tech / Apple / Fintech",
+    "caracteristicas": [
+      "Cartões translúcidos 3D em perspectiva CSS flutuante",
+      "Câmera orgânica com inércia e drift contínuo",
+      "Legendas cinéticas palavra por palavra sincronizadas com Whisper",
+      "Palco PBR com sombras suaves e profundidade"
+    ],
+    "arquivo": "src/FlowMotionMaster.tsx"
+  }
+]

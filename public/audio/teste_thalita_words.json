@@ -1,0 +1,98 @@
+{
+	"systeminfo": "AVX = 1 | AVX2 = 1 | AVX512 = 0 | FMA = 1 | NEON = 0 | ARM_FMA = 0 | METAL = 0 | F16C = 1 | FP16_VA = 0 | WASM_SIMD = 0 | BLAS = 0 | SSE3 = 1 | SSSE3 = 0 | VSX = 0 | CUDA = 0 | COREML = 0 | OPENVINO = 0 | ",
+	"model": {
+		"type": "small",
+		"multilingual": true,
+		"vocab": 51865,
+		"audio": {
+			"ctx": 1500,
+			"state": 768,
+			"head": 12,
+			"layer": 12
+		},
+		"text": {
+			"ctx": 448,
+			"state": 768,
+			"head": 12,
+			"layer": 12
+		},
+		"mels": 80,
+		"ftype": 1
+	},
+	"params": {
+		"model": "C:\\Program Files\\Whisper_AI\\ggml-small.bin",
+		"language": "pt",
+		"translate": false
+	},
+	"result": {
+		"language": "pt"
+	},
+	"transcription": [
+		{
+			"timestamps": {
+				"from": "00:00:00,000",
+				"to": "00:00:03,760"
+			},
+			"offsets": {
+				"from": 0,
+				"to": 3760
+			},
+			"text": " A sua imagem chega antes de qualquer palavra que você diga."
+		},
+		{
+			"timestamps": {
+				"from": "00:00:03,760",
+				"to": "00:00:08,440"
+			},
+			"offsets": {
+				"from": 3760,
+				"to": 8440
+			},
+			"text": " Homem que se respeita não espera o cabelo passar do ponto, nem a barba perder a linha,"
+		},
+		{
+			"timestamps": {
+				"from": "00:00:08,440",
+				"to": "00:00:10,680"
+			},
+			"offsets": {
+				"from": 8440,
+				"to": 10680
+			},
+			"text": " para só então lembrar de cuidar de si."
+		},
+		{
+			"timestamps": {
+				"from": "00:00:10,680",
+				"to": "00:00:14,140"
+			},
+			"offsets": {
+				"from": 10680,
+				"to": 14140
+			},
+			"text": " Estar alinhado não é vaidade, é padrão."
+		},
+		{
+			"timestamps": {
+				"from": "00:00:14,140",
+				"to": "00:00:21,500"
+			},
+			"offsets": {
+				"from": 14140,
+				"to": 21500
+			},
+			"text": " No Clube da Barberia Flow, você tem degradê ilimitado de segunda sábado para estar sempre pronto para o seu melhor momento."
+		},
+		{
+			"timestamps": {
+				"from": "00:00:21,500",
+				"to": "00:00:24,640"
+			},
+			"offsets": {
+				"from": 21500,
+				"to": 24640
+			},
+			"text": " Eleva o seu nível. Assine o Flow Club."
+		}
+	]
+}

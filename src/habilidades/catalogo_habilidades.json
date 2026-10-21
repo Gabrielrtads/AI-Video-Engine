@@ -1,0 +1,44 @@
+[
+  {
+    "id": "amostragem_paleta_kmeans",
+    "nome": "Amostragem Cromática Científica (K-Means)",
+    "descricao": "Extrai paleta exata e zonas editoriais diretamente de frames ou imagens usando FFmpeg e NumPy nativo sem achismo.",
+    "script": "scripts/references/amostrar_paleta.py",
+    "saida": "JSON com códigos HEX dominantes e zonas de card/texto"
+  },
+  {
+    "id": "svg_iridescent_gradient",
+    "nome": "Texto com Gradiente Iridescente em SVG Nativo",
+    "descricao": "Aplica gradiente multicolorido animado diretamente nas curvas vetoriais dos glifos, imune a falhas de background-clip do Chromium.",
+    "tecnica": "SVG <text fill='url(#gradId)'> com IDs dinâmicos via useId()"
+  },
+  {
+    "id": "kinetic_word_caption",
+    "nome": "Legendas Cinéticas Palavra por Palavra",
+    "descricao": "Sincronização milissegundo de áudio via Whisper (words.json) com destaque de cor e escala na palavra falada.",
+    "arquivo": "src/KineticWordCaption.tsx"
+  },
+  {
+    "id": "typewriter_subtitles",
+    "nome": "Efeito Digitação (Typewriter) na Transição",
+    "descricao": "Animação de letras reveladas progressivamente durante a transição da fala com cursor piscante opcional."
+  },
+  {
+    "id": "spring_physics_curves",
+    "nome": "Física de Molas e Inércia Elástica",
+    "descricao": "Curvas matemáticas Remotion spring() com massa, amortecimento e rigidez calibrados para sensação tátil e orgânica.",
+    "arquivo": "src/kit.tsx"
+  },
+  {
+    "id": "apple_camera_rig",
+    "nome": "Câmera Cinemática 3D com Drift Orgânico",
+    "descricao": "Movimento de câmera contínuo com interpolação suave em perspectiva CSS, evitando quadros estáticos e mortos.",
+    "arquivo": "src/AppleCameraRig.tsx"
+  },
+  {
+    "id": "sound_impact_engine",
+    "nome": "Sound Design e Foley de Baixa Intrusão",
+    "descricao": "Efeitos sonoros sincronizados com batidas e transições, mantidos abaixo de 0.45 para não sobrepor a voz humana.",
+    "arquivo": "src/sound_impact_engine.tsx"
+  }
+]

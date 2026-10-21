@@ -22,7 +22,8 @@
     "review:frames": "node scripts/auto_revisar_frames.mjs",
     "bancada": "node scripts/produzir_video_bancada.mjs",
     "palavras": "node scripts/transcrever-palavras.mjs public/narracao.mp3 src/data/words.json pt",
-    "check": "tsc -p ."
+    "check": "tsc -p .",
+    "test:unit": "node --test tests/unit/**/*.test.mjs"
   },
   "dependencies": {
     "@react-three/fiber": "8.17.10",
