@@ -1,0 +1,43 @@
+name: "🎨 Template Proposal"
+description: "Propose or submit a new Remotion template (Carousel 4:5, Reel 9:16, etc.)"
+title: "[Template]: "
+labels: ["template", "community-contribution"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for proposing a new template for Vibe Design Studio! Please provide the details below.
+  - type: input
+    id: template-name
+    attributes:
+      label: Template Name
+      description: Name of your proposed template (e.g. SaaSChangelogReel, PodcastHighlight, TwitterThreadCarousel).
+      placeholder: "e.g. MinimalistFintechReel"
+    validations:
+      required: true
+  - type: dropdown
+    id: aspect-ratio
+    attributes:
+      label: Aspect Ratio
+      description: What is the primary canvas aspect ratio?
+      options:
+        - "9:16 Vertical Video (1080x1920)"
+        - "4:5 Editorial Carousel (1080x1350)"
+        - "1:1 Square (1080x1080)"
+        - "16:9 Landscape (1920x1080)"
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Concept & Visual Elements
+      description: Describe the motion physics, typography, and intended use case.
+      placeholder: "Describe spring animations, camera perspective, card layout, sound effects..."
+    validations:
+      required: true
+  - type: textarea
+    id: reference-links
+    attributes:
+      label: Reference Link(s)
+      description: Link to any live inspiration on Instagram, TikTok, Twitter, or Dribbble.
+      placeholder: "https://instagram.com/reel/..."

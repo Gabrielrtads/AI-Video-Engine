@@ -1,177 +1,201 @@
 # Vibe Design Studio 🎨🎬
 
-> **Headless Motion Studio & Self-Evolving Video Knowledge Engine for AI Agents.**  
-> Built for [Google Antigravity](https://github.com/google/antigravity), [Claude Code](https://github.com/anthropics/claude-code), [Cursor](https://www.cursor.com), and [Remotion](https://www.remotion.dev).
+> **The Headless Creative & Motion Design Studio for AI Agents.**  
+> Deterministic Code, Anti-Slop Linters, Physical Easing Curves & Dynamic Sound Design for [Claude Code](https://github.com/anthropics/claude-code), [OpenAI Codex](https://github.com/openai/codex), [Google Antigravity](https://github.com/google/antigravity), and [Remotion](https://www.remotion.dev).
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Remotion](https://img.shields.io/badge/Remotion-v4.0-blueviolet)](https://www.remotion.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue)](https://www.typescriptlang.org)
 [![React](https://img.shields.io/badge/React-18-61dafb)](https://react.dev)
-[![AI Agent Skill](https://img.shields.io/badge/AI%20Agent-Skill%20Ready-green)](#agent-integration)
-[![Zero Media Bloat](https://img.shields.io/badge/Zero%20Media%20Bloat-Pure%20Knowledge%20%26%20Code-orange)](#zero-media-bloat-philosophy)
+[![EBU R128 Mastered](https://img.shields.io/badge/Audio-EBU%20R128%20--14%20LUFS-red)](#-sound-design--audio-mastering-suite)
+[![AI Agent Ready](https://img.shields.io/badge/AI%20Agent-Skill%20Ready-green)](#-agent-integration)
+[![Zero Media Bloat](https://img.shields.io/badge/Zero%20Media%20Bloat-Pure%20Knowledge%20%26%20Code-orange)](#-zero-media-bloat-philosophy)
 
 ---
 
-## 🛑 The Problem: "AI Slop" in Video
+## 🛑 The Problem: "AI Slop" in Video & Social Media
 
-When developers ask LLMs to generate video with Remotion or code, models default to amateur, low-effort patterns:
+When creators ask LLMs to generate videos or carousels, models default to amateur, low-effort patterns:
 
-- ❌ Centered, all-caps text (`UPPERCASE`) floating on blank screens.
+- ❌ Centered uppercase text floating on blank, flat backgrounds.
 - ❌ Generic purple/cyan gradients with zero noise, depth, or tactile texture.
-- ❌ Stiff linear transitions (`opacity: 0 -> 1`) with zero physical inertia or spring physics.
-- ❌ Ear-splitting audio foley (impacts $> 0.45$ volume drowning the narrator).
-- ❌ Blind completion: agents declare "done" without inspecting frames for overlaps or dead time.
+- ❌ Stiff linear animations (`opacity: 0 -> 1`) with zero physical inertia or spring physics.
+- ❌ Ear-splitting audio foley (sound impacts $> 0.45$ volume drowning the narrator).
+- ❌ Stock footage collage that looks like an obvious bot farm.
 
-**Vibe Design Studio replaces naive prompting with a deterministic Headless Code Studio enforced by linters and an automated visual audit loop.**
-
----
-
-## 💡 Zero Media Bloat Philosophy
-
-This repository contains **zero binary media bloat** (no gigabytes of MP3s, MP4s, or heavy video files).
-Instead, it stores **pure codified knowledge**:
-- **Mathematical Easing Curves (`measured_eases.ts`):** Calibrated Bézier and spring math.
-- **Physical Design System (`kit.tsx`, `AppleCameraRig.tsx`):** 3D perspective, parallax drift, negative kerning.
-- **Static Anti-Slop Linters (`lint-motion-slop.mjs`):** Automated AST and regex rule enforcement.
-- **Automated Frame Quality Audit (`auto_revisar_frames.mjs`):** Keyframe stills and contact sheets rated on a strict $\ge 8.0/10$ scale.
-- **Visual References Knowledge Corpus (`references/`):** Deconstructions and schemas learned from the community.
-
-You plug your own voiceover audio or generate it via Edge-TTS / Whisper on the fly.
+**Vibe Design Studio replaces naive prompting with a deterministic Headless Code Studio enforced by linters, mathematical physics, and an automated visual audit loop.**
 
 ---
 
-## 🧠 Self-Evolving Engine (The Learning Loop)
+## 📊 Market Comparison: Why Vibe Design Studio is Different
 
-Vibe Design Studio compounds visual intelligence over time by ingesting new video references, stress-testing them through cross-model debate, and crystallizing them into the repository:
+| Feature | MoneyPrinter / ShortGPT | Default Remotion | Closed SaaS (Typeframes / Captions) | **Vibe Design Studio** |
+|:---|:---|:---|:---|:---|
+| **Aesthetic Quality** | 🔴 Low (cropped stock videos) | 🟡 Neutral (depends on prompt) | 🟢 Good (pre-made templates) | **💎 High-End (Apple-Style, Glassmorphism, 3D Tilt)** |
+| **Dual Format** | ❌ 9:16 Video only | 🟡 Manual code | ❌ Separate products | **✅ 4:5 Carousels + 9:16 Reels in One Engine** |
+| **Reference Ingestion** | ❌ None | ❌ None | ❌ None | **✅ K-Means Palette & Safe Zone Extraction from Link/Print** |
+| **Physical Sound Design** | 🔴 Generic background loop | 🟡 Manual audio tags | 🟡 Preset sound effects | **✅ SFX tied to Spring Overshoot Peaks + Auto-Ducking** |
+| **Audio Loudness** | 🔴 Inconsistent / Clipped | 🟡 Raw audio | 🟡 Basic compression | **✅ Native EBU R128 (-14 LUFS / -1 dBTP for Reels/TikTok)** |
+| **Agent Autonomy** | 🔴 Monolithic Python script | 🟡 Bare framework | 🔴 Closed UI (No CLI/Agents) | **🤖 Native Swarm (Claude, Codex, Gemini via CLI & Mesas)** |
+| **Open Source & Extensible** | 🟢 Open source | 🟢 Open source | 🔴 Closed (US$ 30-100/mo) | **🚀 100% Free & Open Source (MIT)** |
 
-```mermaid
-flowchart TD
-    A["Community / Contributor Link (Reels, TikTok, Dribbble)"] --> B["scripts/references/absorver_referencia.mjs"]
-    B --> C["Manifest Created in references/inbox/ + Scaffold in src/referencias/"]
-    C --> D["/cli-revisao-cruzada (Builder vs Red Team vs Auditor)"]
-    D --> E["scripts/auto_revisar_frames.mjs (Contact Sheet + Scorecard)"]
-    E --> F{"Scorecard >= 8.0 & Confidence >= 85%?"}
-    F -- NO --> G["Rejected to references/rejected/ (With rationale)"]
-    F -- YES --> H["scripts/references/promover_aprendizado.mjs"]
-    H --> I["Promoted to references/accepted/ + Permanent Linter & Easing Rules"]
+---
+
+## 💡 Dual-Engine Capabilities
+
+### 1. 📱 Vertical Motion Videos (9:16 — 1080×1920)
+* **Kinetic Typography:** Word-by-word synced highlighting via Whisper (`src/KineticWordCaption.tsx`).
+* **3D Camera Rig & Inertia:** Floating isometric cards with simulated lighting (`src/AppleCameraRig.tsx`, `src/AppleKineticCards.tsx`).
+* **Physics-Driven Easing:** Calibrated Bézier curves (`snapSettle`, `crashIn`, `popOver`, `bounceHard`, `whip`, `softLand`).
+
+### 2. 📰 Editorial Carousels (4:5 — 1080×1350)
+* **Multi-Slide Layout:** Instagram & LinkedIn editorial design (`src/CarrosselEditorial.tsx`).
+* **Continuous Marquee Loop:** 0° horizontal conveyor belts for tags and credentials.
+* **Native Iridescent SVG:** True gradient typography immune to Chromium multi-thread clipping bugs.
+* **Safe Zone Guardrails:** Strict 48px lateral and 80px vertical margins to guarantee zero UI overlap on mobile.
+
+---
+
+## 🔊 Sound Design & Audio Mastering Suite
+
+Great video is 50% audio. Vibe Design Studio treats sound as a first-class citizen:
+
+1. **Physical Impact SFX Engine (`src/sound_impact_engine.tsx`):**
+   Calculates the exact frame where a spring animation reaches its velocity peak or overshoot (`t ~ 0.15` to `0.27`) and triggers warm sub-impacts, haptic clicks, digital transitions, or whooshes.
+2. **Dynamic Auto-Ducking (`src/AutoDuckingAudio.tsx`):**
+   Automatically ducks background music down to **10%** during speech and gently ramps it back up to **35%** during pauses, eliminating distracting music clashing.
+3. **EBU R128 Mastering (`scripts/masterizar_audio.mjs`):**
+   Applies professional two-pass loudness normalization (`-14 LUFS`, `LRA: 7`, `True-Peak: -1.0 dBTP`) via FFmpeg so your video sounds punchy and broadcast-ready on mobile speakers without distortion.
+4. **1-Click Multi-TTS (`scripts/narrar.mjs`):**
+   Zero-cost neural text-to-speech with studio-grade Brazilian Portuguese voices (`antonio`, `francisca`, `thalita`) plus automated Whisper word alignment.
+
+---
+
+## 🛠️ Interactive Studio CLI (`studio_engine.mjs`)
+
+Operate the studio interactively or pipe commands from your AI agent:
+
+```bash
+node scripts/studio_engine.mjs
 ```
 
-### 🤝 Submitting a Reference
-Anyone in the community can submit inspiring video techniques:
-1. Open a **[GitHub Issue: Submit a Viral Video Reference](https://github.com/Gabrielrtads/Vibe Design Studio/issues/new?template=visual-reference.yml)**.
-2. Provide the video URL, timestamp range, and key elements (spring physics, 3D tilt, typography, sound).
-3. The engine parses the issue, generates a Remotion prototype, runs the cross-model review, and submits a Pull Request when approved!
-
----
-
-## ✨ Core Tools & Capabilities
-
-### 1. 🛡️ Static Anti-Slop Linter (`lint-motion-slop.mjs`)
-Automated gatekeeper that rejects renders or PRs if amateur patterns are detected:
-- **Audio Ceiling:** Prohibits foley impacts with volume $> 0.45$.
-- **Anti-Deck Gate:** Blocks slide-deck layouts and banned marketing clichés.
-- **Physics Enforcement:** Verifies that all movements use physical `spring()` or measured Bézier curves (`EASE.*`).
-
-### 2. 👁️ Automated Frame Review & Contact Sheet (`auto_revisar_frames.mjs`)
-Renders keyframe stills, compiles a consolidated **Contact Sheet (`contact-sheet.jpg`)**, hunts for dead frames, and issues an objective scorecard:
-
-```json
-{
-  "compositionId": "FlowMotionMaster",
-  "totalFrames": 825,
-  "fps": 30,
-  "durationSeconds": "27.5",
-  "mediaGeral": 9.0,
-  "status": "APROVADO (PADRÃO ESTÚDIO >= 8/10)",
-  "frames": [
-    { "frame": 117, "time": "3.90s", "score": 9.0, "flags": ["Ritmo e densidade visual aprovados"] },
-    { "frame": 351, "time": "11.70s", "score": 9.0, "flags": ["Ritmo e densidade visual aprovados"] }
-  ]
-}
 ```
+======================================================
+           🎨 VIBE DESIGN STUDIO ENGINE 🎬            
+  Headless Motion & Creative Studio for AI Agents     
+======================================================
 
-### 3. 🎙️ Millisecond Word-by-Word Alignment (`transcrever-palavras.mjs`)
-Leverages Whisper (`words.json`) to extract exact `start` and `end` timestamps for every spoken word, enabling tight kinetic typography and synced micro-interactions.
+[1] Usar Template Pronto   -> CarrosselEditorial (4:5) ou FlowMotionMaster (9:16)
+[2] Criar do Zero          -> Tela Limpa com Safe Zones (sem reciclagem de código)
+[3] Ver Habilidades        -> Cromia K-Means, Tipografia Cinética, Cinemática 3D
+[4] Ingerir Referência     -> Extrair paleta e geometria a partir de Link/Print
+```
 
 ---
 
 ## 🚀 Quickstart
 
 ### 1. Clone & Install
+
 ```bash
-git clone https://github.com/Gabrielrtads/Vibe Design Studio.git
-cd Vibe Design Studio
+git clone https://github.com/Gabrielrtads/vibe-design-studio.git
+cd vibe-design-studio
 pnpm install
 ```
 
-### 2. Audit Code Against Slop
+### 2. Generate Narration with 1-Click (Free Neural Voice)
+
 ```bash
-node scripts/lint-motion-slop.mjs src/FlowMotionMaster.tsx
+node scripts/narrar.mjs "O futuro do design não é estático. É código vivo e movimento físico." --voz antonio --transcrever
 ```
 
-### 3. Run Automated Frame Review
-```bash
-node scripts/auto_revisar_frames.mjs FlowMotionMaster --stills 6
-```
-Inspect `out/contact-sheet.jpg` and `out/review_scorecard.json` (Score $\ge 8.0/10$).
+### 3. Render with Mastered Audio (-14 LUFS)
 
-### 4. Ingest a New Visual Reference
 ```bash
-node scripts/references/absorver_referencia.mjs --url "https://instagram.com/reel/..." --title "3D Perspective Card Tilt" --author "@creator"
+npm run render:mastered
 ```
+
+### 4. Run Full Test Suite
+
+```bash
+npm run test:unit
+```
+
+---
+
+## 🤝 How the Community Can Help
+
+We believe the future of content creation is **open, deterministic code**, not closed SaaS walled gardens. We need your help to make this the gold-standard headless studio for every AI agent on the planet!
+
+Here is how you can contribute:
+
+1. **Submit Viral References:** Found an incredible video on Reels, TikTok, or Dribbble?  
+   👉 Open a **[Visual Reference Issue](https://github.com/Gabrielrtads/vibe-design-studio/issues/new?template=visual-reference.yml)** with the URL and keyframes.
+2. **Contribute New Templates:**  
+   👉 Propose or build a new Remotion composition (e.g., Podcast Clip, SaaS Changelog, Twitter/X thread animated, Pricing Table 3D) via a **[Template Proposal](https://github.com/Gabrielrtads/vibe-design-studio/issues/new?template=template-proposal.yml)**.
+3. **Sound Design & Foley Packs:**  
+   Help expand our royalty-free core SFX suite (`public/audio/`) with high-fidelity UI sounds and whooshes.
+4. **Agent Testing:**  
+   Stress-test the studio using Claude Code, Cursor, Codex, or Gemini CLI and report edge cases in our **[Bug Report Form](https://github.com/Gabrielrtads/vibe-design-studio/issues/new?template=bug_report.yml)**.
+
+See our [CONTRIBUTING.md](CONTRIBUTING.md) for full developer guidelines.
 
 ---
 
 ## 🤖 Agent Integration
 
-Vibe Design Studio includes a native `SKILL.md` compliant with [Google Antigravity](https://github.com/google/antigravity), [Claude Code](https://github.com/anthropics/claude-code), and [Codex](https://github.com/openai/codex).
+Vibe Design Studio includes a native `SKILL.md` compliant with [Claude Code](https://github.com/anthropics/claude-code), [OpenAI Codex](https://github.com/openai/codex), and [Google Antigravity](https://github.com/google/antigravity).
 
-### Installing as a Skill
+### Install as an Agent Skill:
+
 ```bash
-git clone https://github.com/Gabrielrtads/Vibe Design Studio.git .agents/skills/vibe-design-studio
+git clone https://github.com/Gabrielrtads/vibe-design-studio.git .agents/skills/vibe-design-studio
 ```
-
-### Recommended Multi-Agent Role Division
-- **Infrastructure Agents (Gemini / Terminal):** Manage TTS audio generation, Whisper alignment, headless Chromium rendering, and asset delivery.
-- **Creative / Motion Agents (Claude):** Choreograph `spring()` curves, CSS 3D transforms, optical typography, and micro-interactions.
 
 ---
 
 ## 📁 Repository Structure
 
 ```
-Vibe Design Studio/
+vibe-design-studio/
 ├── .github/
-│   └── ISSUE_TEMPLATE/
-│       └── visual-reference.yml       # Community reference submission form
-├── schemas/
-│   └── reference-manifest.schema.json # JSON schema for references
-├── references/
-│   ├── inbox/                         # Pending submissions
-│   ├── accepted/                      # Approved reference manifests
-│   ├── rejected/                      # Rejected references with rationale
-│   └── evidence/                      # Keyframe stills & contact sheets
+│   ├── ISSUE_TEMPLATE/
+│   │   ├── visual-reference.yml       # Community reference submission form
+│   │   ├── template-proposal.yml      # New React template proposal
+│   │   └── bug_report.yml             # Bug report form
+│   └── PULL_REQUEST_TEMPLATE.md       # Quality checklist for PRs
+├── public/
+│   └── audio/                         # Hot Core SFX suite & narration
 ├── scripts/
-│   ├── references/
-│   │   ├── absorver_referencia.mjs    # Reference intake & scaffolding
-│   │   └── promover_aprendizado.mjs   # Promotion gate (Score >= 8.0, Conf >= 85%)
-│   ├── lint-motion-slop.mjs           # Anti-Slop AST/regex linter
-│   ├── auto_revisar_frames.mjs        # Frame review & contact sheet builder
-│   ├── produzir_video_bancada.mjs     # 1-Click production pipeline
-│   └── transcrever-palavras.mjs       # Whisper word-level transcription
+│   ├── studio_engine.mjs              # Canonical CLI & Onboarding flow
+│   ├── narrar.mjs                     # 1-Click Neural TTS (Edge-TTS pt-BR)
+│   ├── masterizar_audio.mjs           # EBU R128 (-14 LUFS) post-processor
+│   ├── transcrever-palavras.mjs       # Whisper millisecond word alignment
+│   ├── lint-motion-slop.mjs           # Static Anti-Slop AST/regex linter
+│   ├── auto_revisar_frames.mjs        # Automated frame review (score >= 8/10)
+│   └── references/
+│       └── amostrar_paleta.py         # K-Means palette extractor (-vframes 1)
 ├── src/
-│   ├── FlowMotionMaster.tsx           # Benchmark production composition
-│   ├── AppleCameraRig.tsx             # Camera drift & organic inertia
-│   ├── AppleKineticCards.tsx          # 3D perspective floating cards
+│   ├── FlowMotionMaster.tsx           # Vertical 9:16 kinetic benchmark video
+│   ├── CarrosselEditorial.tsx         # Editorial 4:5 carousel composition
+│   ├── AutoDuckingAudio.tsx           # Dynamic volume sidechain ducking
+│   ├── auto_ducking_math.ts           # Zero-dependency volume calculation math
+│   ├── sound_impact_engine.tsx        # Physical impact timing engine
+│   ├── AppleCameraRig.tsx             # 3D perspective camera drift
+│   ├── AppleKineticCards.tsx          # Floating isometric cards
 │   ├── KineticWordCaption.tsx         # Synced word highlighting
-│   ├── kit.tsx                        # Shared spring math & typography
+│   ├── kit.tsx                        # Safe zones, spring physics & typography
 │   ├── styles_kit.tsx                 # Shaders, sheens & glassmorphism
-│   ├── measured_eases.ts              # Calibrated easing functions
-│   ├── PBRStage3D.tsx                 # Three.js 3D stage
+│   ├── measured_eases.ts              # Calibrated easing curves
 │   └── index.tsx                      # Remotion root entry
+├── tests/
+│   ├── unit/                          # Zero-dependency node:test suite (89 PASS)
+│   ├── e2e/                           # 4-Tier requirement-driven E2E tests (60 PASS)
+│   └── python/                        # Palette extraction unit tests (12 PASS)
+├── CONTRIBUTING.md                    # Community guidelines
 ├── package.json
-├── remotion.config.ts
-├── tsconfig.json
+├── PROJECT_TRUTH.md
+├── AGENTS.md
 ├── SKILL.md
 └── LICENSE
 ```
