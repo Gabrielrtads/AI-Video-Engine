@@ -66,6 +66,8 @@ A common pitfall when building guardrails for AI is creating a **straitjacket**:
 * **Elevating Economical Models (Gemini Flash, Haiku, GPT-4o-mini):** The true superpower of Vibe Design Studio is **financial efficiency at scale**. Frontier models are expensive. When you pair rich, intentional prompting with Vibe Design Studio's deterministic floor, **fast, cost-effective models (such as Gemini Flash)** achieve delivery quality comparable to elite creative models. The studio absorbs the technical heavy-lifting (loudness mastering, word-level Whisper sync, spring kinematics), freeing budget-friendly models to focus purely on executing the briefing.
 * **Process Over Magic:** It is not a rigid dogma or an imposed rule, but a proven operational insight: **investing two minutes into a crisp, thoughtful prompt unlocks 10x higher aesthetic output while cutting token costs by up to 80% in production scale.**
 
+👉 **Need inspiration?** Read the full [Creative Prompting & High-End Motion Guide](docs/CREATIVE_PROMPT_GUIDE.md) for 3-second hook frameworks, Apple-style design rules, and copy-paste prompt templates for AI agents.
+
 ---
 
 ## 📊 Market Comparison: Why Vibe Design Studio is Different

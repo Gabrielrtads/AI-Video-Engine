@@ -67,6 +67,7 @@ O Vibe Design Studio não opera como uma "caixa preta mágica" que transforma br
   - Como o estúdio já resolve deterministamente a engenharia pesada (cálculo de LUFS, alinhamento Whisper milissegundo a milissegundo, físicas elásticas, safe zones de UI), um modelo econômico munido de um bom prompt entrega resultados de padrão agência a uma fração mínima do custo.
 - **Princípio Operacional, Não Regra Imposta:**
   - Não se trata de uma imposição dogmática, mas de um princípio de processo testado e validado: investir clareza no prompt poupa iterações, economiza tokens e viabiliza produção audiovisual em escala real.
+- **Guia Criativo Comunitário:** O repositório disponibiliza o [CREATIVE_PROMPT_GUIDE.md](docs/CREATIVE_PROMPT_GUIDE.md) com a anatomia do gancho dos 3 segundos, heurísticas de design Apple e templates de prompts prontos para copiar e colar.
 
 ## 7. Alimentação Headless via API (OpenRouter, LLMs Externos)
 O estúdio pode ser alimentado e disparado 100% via API sem interface humana:
