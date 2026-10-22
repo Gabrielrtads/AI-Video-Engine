@@ -13,6 +13,11 @@ import { loadFont as loadAnton } from '@remotion/google-fonts/Anton';
 import { loadFont as loadInstrumentSerif } from '@remotion/google-fonts/InstrumentSerif';
 import { loadFont as loadPlusJakartaSans } from '@remotion/google-fonts/PlusJakartaSans';
 import RAW_WORDS from './data/words.json';
+import { CarrosselEditorial as Slide01Capa } from './CarrosselEditorial';
+import { Slide02Diagnostico } from './Slide02Diagnostico';
+import { Slide03Solucao } from './Slide03Solucao';
+import { Slide04Engenharia } from './Slide04Engenharia';
+import { Slide05Final } from './Slide05Final';
 
 // Pré-carregamento determinístico de Google Fonts via Remotion
 const { fontFamily: fontAnton } = loadAnton();
@@ -79,6 +84,57 @@ interface NarrativeBeat {
 	};
 }
 
+const CarouselCardWrapper: React.FC<{
+	children: React.ReactNode;
+	width?: number;
+	height?: number;
+	borderRadius?: number;
+	shadow?: string;
+	border?: string;
+	style?: React.CSSProperties;
+}> = ({
+	children,
+	width = 580,
+	height = 725,
+	borderRadius = 26,
+	shadow,
+	border = '1px solid rgba(0, 0, 0, 0.08)',
+	style = {},
+}) => {
+	const scale = width / 1080;
+	return (
+		<div
+			style={{
+				width,
+				height,
+				borderRadius,
+				overflow: 'hidden',
+				boxShadow: shadow || '0 30px 80px -15px rgba(0, 0, 0, 0.25), 0 10px 30px -5px rgba(0, 0, 0, 0.12)',
+				border,
+				background: '#FCFCFD',
+				position: 'relative',
+				flexShrink: 0,
+				...style,
+			}}
+		>
+			<div
+				style={{
+					position: 'absolute',
+					top: 0,
+					left: 0,
+					width: 1080,
+					height: 1350,
+					transform: `scale(${scale})`,
+					transformOrigin: 'top left',
+					pointerEvents: 'none',
+				}}
+			>
+				{children}
+			</div>
+		</div>
+	);
+};
+
 export interface FlowMotionMasterProps {
 	audioNarracao?: string;
 	enableSfx?: boolean;
@@ -108,28 +164,22 @@ export const FlowMotionMaster: React.FC<FlowMotionMasterProps> = ({
 	const bgColor = interpolateColors(
 		frame,
 		[
-			0, 80, 92,          // Beat 1: Black -> Red (0 - 3.05s)
-			160, 174,           // Beat 2: Red -> Crisp Off-White (3.05 - 5.8s)
-			250, 265,           // Beat 3: Off-White -> Dark Obsidian (5.8 - 8.85s)
-			345, 360,           // Beat 4: Obsidian -> Deep Forest Emerald (8.85 - 12.0s)
-			495, 510,           // Beat 5: Deep Forest -> Ferrari Red (12.0 - 17.0s)
-			650, 666,           // Beat 6: Red -> High-contrast White (17.0 - 22.2s)
-			750, 768, 918       // Beat 7 & 8: White -> Deep Obsidian / Black (22.2 - 30.6s)
+			0, 160, 174,        // Beat 1 & 2: Crisp Off-White (0 - 5.8s)
+			180, 260, 345, 359, // Beat 3 & 4: Deep Obsidian (5.8 - 12.0s)
+			365, 500, 650, 665, // Beat 5 & 6: Crisp Off-White (12.0 - 22.2s)
+			670, 750, 918       // Beat 7 & 8: VIBRANT FERRARI RED #FF0022 (22.2 - 30.6s)
 		],
 		[
-			'#08090C', '#08090C', '#FF0022',
-			'#FF0022', '#F5F6F8',
-			'#F5F6F8', '#0A0B0E',
-			'#0A0B0E', '#060B08',
-			'#060B08', '#FF0022',
-			'#FF0022', '#F8F9FA',
-			'#F8F9FA', '#08090C', '#08090C'
+			'#F5F6F8', '#F5F6F8', '#0A0B0E',
+			'#0A0B0E', '#0A0B0E', '#0A0B0E', '#F5F6F8',
+			'#F5F6F8', '#F5F6F8', '#F5F6F8', '#FF0022',
+			'#FF0022', '#FF0022', '#FF0022'
 		]
 	);
 
 	// Detecção de contraste de fundo
-	const isLightBg = (frame >= 165 && frame < 260) || (frame >= 655 && frame < 760);
-	const isRedBg = (frame >= 88 && frame < 170) || (frame >= 505 && frame < 660);
+	const isLightBg = frame < 174 || (frame >= 360 && frame < 666);
+	const isRedBg = frame >= 666;
 	const textPrimaryColor = isLightBg ? '#111111' : PURE_WHITE;
 
 	// Câmera 3D contínua com respiração orgânica
@@ -559,7 +609,7 @@ export const FlowMotionMaster: React.FC<FlowMotionMasterProps> = ({
 	};
 
 	// ────────────────────────────────────────────────────────────────────────────
-	// RENDERIZAÇÃO DOS 5 CARDS 4:5 EM REACT/CSS PURO (VETORIAL, ULTRA-SHARP)
+	// RENDERIZAÇÃO DOS 5 SLIDES REAIS EM 3D PERSPECTIVA (VETORIAL, ULTRA-SHARP)
 	// ────────────────────────────────────────────────────────────────────────────
 	const renderDynamicSlideCards = () => {
 		const floatY = Math.sin(t * 1.5) * 5;
@@ -571,8 +621,8 @@ export const FlowMotionMaster: React.FC<FlowMotionMasterProps> = ({
 			: '1px solid rgba(255, 255, 255, 0.14)';
 
 		const luxuryCardShadow = isLightBg
-			? '0 30px 70px -15px rgba(0, 0, 0, 0.18), 0 10px 25px -5px rgba(0, 0, 0, 0.10)'
-			: '0 35px 85px -15px rgba(0, 0, 0, 0.75), 0 10px 35px -5px rgba(0, 0, 0, 0.5)';
+			? '0 30px 75px -15px rgba(0, 0, 0, 0.22), 0 10px 25px -5px rgba(0, 0, 0, 0.12)'
+			: '0 35px 85px -15px rgba(0, 0, 0, 0.85), 0 10px 35px -5px rgba(0, 0, 0, 0.5)';
 
 		return (
 			<div
@@ -581,7 +631,7 @@ export const FlowMotionMaster: React.FC<FlowMotionMasterProps> = ({
 					top: stageTop,
 					left: '50%',
 					width: 1000,
-					height: 680,
+					height: 740,
 					transform: `translateX(-50%) perspective(1200px) scale(${camZoom * stageScale}) rotateX(${camRotX + stageRotX}deg) rotateY(${camRotY + stageRotY}deg) rotateZ(${stageRotZ}deg)`,
 					transformStyle: 'preserve-3d',
 					zIndex: 10,
@@ -592,756 +642,268 @@ export const FlowMotionMaster: React.FC<FlowMotionMasterProps> = ({
 				}}
 			>
 				{/* ═══════════════════════════════════════════════════════════════
-				    CARD 1 (Frames 0 a 174 — Beats 1 & 2): AI SLOP ALERT & REJEIÇÃO
+				    SLIDE 1 (Frames 0 a 91 — Beat 1): CAPA / O FIM DAS FERRAMENTAS FECHADAS
 				    ═══════════════════════════════════════════════════════════════ */}
-				{frame < 174 && (() => {
-					const enterProgress = ci(frame, [0, 14], [0, 1]);
-					const exitProgress = ci(frame, [160, 174], [0, 1]);
+				{frame < 92 && (() => {
+					const enterProgress = ci(frame, [0, 16], [0, 1]);
+					const exitProgress = ci(frame, [82, 91], [0, 1]);
 					const opacity = enterProgress * (1 - exitProgress);
-					const enterY = (1 - enterProgress) * 50;
+					const enterY = (1 - enterProgress) * 45;
 
-					// Mola física para impacto do carimbo de rejeição no Frame 92
-					const stampSpring = spring({
+					return (
+						<div
+							style={{
+								position: 'absolute',
+								opacity,
+								transform: `translateY(${enterY + floatY}px) rotateY(${floatRotY}deg) rotateZ(${floatRotZ}deg)`,
+								transformStyle: 'preserve-3d',
+							}}
+						>
+							<CarouselCardWrapper
+								shadow={luxuryCardShadow}
+								border={luxuryCardBorder}
+							>
+								<Slide01Capa />
+							</CarouselCardWrapper>
+						</div>
+					);
+				})()}
+
+				{/* ═══════════════════════════════════════════════════════════════
+				    SLIDE 2 (Frames 92 a 174 — Beat 2): O DIAGNÓSTICO DO SLOP
+				    ═══════════════════════════════════════════════════════════════ */}
+				{frame >= 92 && frame < 174 && (() => {
+					const dropSpring = spring({
 						frame: Math.max(0, frame - 92),
 						fps,
-						config: { damping: 14, mass: 0.45, stiffness: 220 },
+						config: { damping: 15, mass: 0.5, stiffness: 180 },
 					});
-					const stampScale = frame < 92 ? 0 : ci(stampSpring, [0, 1], [2.2, 1.0]);
-					const stampOpacity = frame < 92 ? 0 : ci(stampSpring, [0, 0.3, 1], [0, 0.8, 1]);
+					const exitProgress = ci(frame, [164, 174], [0, 1]);
+					const opacity = (1 - exitProgress);
+					const dropY = ci(dropSpring, [0, 1], [-70, 0]);
 
 					return (
 						<div
 							style={{
 								position: 'absolute',
-								width: 520,
-								height: 650,
 								opacity,
-								transform: `translateY(${enterY + floatY}px) rotateY(${floatRotY}deg) rotateZ(${floatRotZ}deg)`,
+								transform: `translateY(${dropY + floatY}px) rotateY(${floatRotY}deg) rotateZ(${floatRotZ}deg)`,
 								transformStyle: 'preserve-3d',
 							}}
 						>
-							<div
-								style={{
-									width: '100%',
-									height: '100%',
-									borderRadius: 28,
-									overflow: 'hidden',
-									boxShadow: luxuryCardShadow,
-									border: luxuryCardBorder,
-									background: 'linear-gradient(145deg, #120e18 0%, #09080e 100%)',
-									padding: 36,
-									boxSizing: 'border-box',
-									display: 'flex',
-									flexDirection: 'column',
-									justifyContent: 'space-between',
-									position: 'relative',
-								}}
+							<CarouselCardWrapper
+								shadow={luxuryCardShadow}
+								border={luxuryCardBorder}
 							>
-								{/* Top Header Card */}
-								<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-									<div
-										style={{
-											display: 'inline-flex',
-											alignItems: 'center',
-											gap: 8,
-											background: 'rgba(239, 68, 68, 0.18)',
-											border: '1px solid rgba(239, 68, 68, 0.4)',
-											borderRadius: 999,
-											padding: '6px 14px',
-											fontFamily: fontMono,
-											fontSize: 13,
-											color: '#f87171',
-											fontWeight: 700,
-											letterSpacing: '0.08em',
-										}}
-									>
-										<span>⚠️</span> AI SLOP DETECTED
-									</div>
-									<span style={{ fontFamily: fontMono, fontSize: 13, color: 'rgba(255,255,255,0.4)' }}>
-										01 / 05
-									</span>
-								</div>
-
-								{/* Mock Prompt Box com Gradiente Roxo Slop */}
-								<div
-									style={{
-										background: 'rgba(255, 255, 255, 0.04)',
-										border: '1px dashed rgba(168, 85, 247, 0.5)',
-										borderRadius: 18,
-										padding: 20,
-										display: 'flex',
-										flexDirection: 'column',
-										gap: 10,
-									}}
-								>
-									<span style={{ fontFamily: fontMono, fontSize: 12, color: '#c084fc', textTransform: 'uppercase' }}>
-										Prompt Genérico:
-									</span>
-									<span style={{ fontFamily: fontPlusJakartaSans, fontSize: 16, color: '#e2e8f0', lineHeight: 1.4 }}>
-										"Crie um vídeo futurista com gradiente roxo, robôs neon e transições aleatórias..."
-									</span>
-								</div>
-
-								{/* Métricas de Fracasso */}
-								<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
-									<div
-										style={{
-											background: 'rgba(0,0,0,0.4)',
-											border: '1px solid rgba(255,255,255,0.06)',
-											borderRadius: 16,
-											padding: 16,
-										}}
-									>
-										<div style={{ fontFamily: fontMono, fontSize: 11, color: 'rgba(255,255,255,0.5)' }}>
-											RETENÇÃO MÉDIA
-										</div>
-										<div style={{ fontFamily: fontAnton, fontSize: 36, color: '#f87171', marginTop: 4 }}>
-											1.2s
-										</div>
-									</div>
-									<div
-										style={{
-											background: 'rgba(0,0,0,0.4)',
-											border: '1px solid rgba(255,255,255,0.06)',
-											borderRadius: 16,
-											padding: 16,
-										}}
-									>
-										<div style={{ fontFamily: fontMono, fontSize: 11, color: 'rgba(255,255,255,0.5)' }}>
-											ALMA / ORIGINALIDADE
-										</div>
-										<div style={{ fontFamily: fontAnton, fontSize: 36, color: '#f87171', marginTop: 4 }}>
-											0%
-										</div>
-									</div>
-								</div>
-
-								{/* Carimbo de Rejeição Brutalista com Animação de Slam */}
-								<div
-									style={{
-										border: '3px solid #ef4444',
-										borderRadius: 14,
-										padding: '12px 20px',
-										textAlign: 'center',
-										transform: `rotate(-4deg) scale(${stampScale})`,
-										opacity: stampOpacity,
-										background: 'rgba(239, 68, 68, 0.15)',
-										boxShadow: '0 0 30px rgba(239, 68, 68, 0.35)',
-									}}
-								>
-									<span
-										style={{
-											fontFamily: fontAnton,
-											fontSize: 32,
-											color: '#ef4444',
-											letterSpacing: '0.12em',
-										}}
-									>
-										REJEITADO POR SLOP
-									</span>
-								</div>
-							</div>
+								<Slide02Diagnostico />
+							</CarouselCardWrapper>
 						</div>
 					);
 				})()}
 
 				{/* ═══════════════════════════════════════════════════════════════
-				    CARD 2 (Frames 165 a 365 — Beats 3 & 4): VIBE DESIGN STUDIO TERMINAL
+				    SLIDE 3 (Frames 174 a 360 — Beats 3 & 4): O MOTOR HEADLESS & TERMINAL
 				    ═══════════════════════════════════════════════════════════════ */}
-				{frame >= 165 && frame < 365 && (() => {
-					const enterProgress = ci(frame, [165, 180], [0, 1]);
-					const exitProgress = ci(frame, [345, 360], [0, 1]);
-					const opacity = enterProgress * (1 - exitProgress);
-					const enterX = (1 - enterProgress) * 70;
-
-					return (
-						<div
-							style={{
-								position: 'absolute',
-								width: 520,
-								height: 650,
-								opacity,
-								transform: `translateX(${enterX}px) translateY(${floatY}px) rotateY(${floatRotY}deg) rotateZ(${floatRotZ}deg)`,
-								transformStyle: 'preserve-3d',
-							}}
-						>
-							<div
-								style={{
-									width: '100%',
-									height: '100%',
-									borderRadius: 28,
-									overflow: 'hidden',
-									boxShadow: luxuryCardShadow,
-									border: luxuryCardBorder,
-									background: '#0d1117',
-									display: 'flex',
-									flexDirection: 'column',
-									position: 'relative',
-								}}
-							>
-								{/* Top Bar macOS com Botões */}
-								<div
-									style={{
-										height: 48,
-										background: '#161b22',
-										borderBottom: '1px solid rgba(255,255,255,0.08)',
-										display: 'flex',
-										alignItems: 'center',
-										padding: '0 20px',
-										gap: 8,
-										justifyContent: 'space-between',
-									}}
-								>
-									<div style={{ display: 'flex', gap: 8 }}>
-										<div style={{ width: 12, height: 12, borderRadius: 6, background: '#ff5f56' }} />
-										<div style={{ width: 12, height: 12, borderRadius: 6, background: '#ffbd2e' }} />
-										<div style={{ width: 12, height: 12, borderRadius: 6, background: '#27c93f' }} />
-									</div>
-									<span style={{ fontFamily: fontMono, fontSize: 12, color: 'rgba(255,255,255,0.6)' }}>
-										vibe-design-studio — zsh
-									</span>
-									<span style={{ width: 28 }} />
-								</div>
-
-								{/* Terminal Body */}
-								<div
-									style={{
-										padding: 28,
-										flex: 1,
-										display: 'flex',
-										flexDirection: 'column',
-										justifyContent: 'space-between',
-										fontFamily: fontMono,
-									}}
-								>
-									<div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-										<div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-											<span style={{ color: '#38bdf8' }}>➜</span>
-											<span style={{ color: '#a78bfa' }}>workspace</span>
-											<span style={{ color: '#ffffff' }}>npx skills add vibe-design-studio</span>
-										</div>
-
-										<div style={{ color: '#34d399', fontSize: 13, lineHeight: 1.6 }}>
-											✔ [INSTALLED] Vibe Design Studio v1.0.0<br />
-											✔ [ENGINE] Remotion + React 18 Puro<br />
-											✔ [AUDIO] Whisper C++ Sub-15ms<br />
-											✔ [PHYSICS] Apple Spring Engine
-										</div>
-
-										<div
-											style={{
-												marginTop: 8,
-												padding: 14,
-												background: 'rgba(56, 189, 248, 0.08)',
-												border: '1px solid rgba(56, 189, 248, 0.25)',
-												borderRadius: 12,
-											}}
-										>
-											<div style={{ color: '#38bdf8', fontSize: 12, fontWeight: 700 }}>
-												ARQUITETURA HEADLESS PARA AGENTES:
-											</div>
-											<div style={{ color: '#e2e8f0', fontSize: 13, marginTop: 4 }}>
-												Claude Code, Codex e Antigravity criam e editam vídeos diretamente em código.
-											</div>
-										</div>
-									</div>
-
-									{/* Badge Inferior */}
-									<div
-										style={{
-											display: 'flex',
-											justifyContent: 'space-between',
-											alignItems: 'center',
-											borderTop: '1px solid rgba(255,255,255,0.08)',
-											paddingTop: 16,
-										}}
-									>
-										<span style={{ color: '#34d399', fontSize: 13, fontWeight: 700 }}>
-											● 100% CÓDIGO PURO
-										</span>
-										<span style={{ color: 'rgba(255,255,255,0.4)', fontSize: 12 }}>
-											Zero Web UIs lentas
-										</span>
-									</div>
-								</div>
-							</div>
-						</div>
-					);
-				})()}
-
-				{/* ═══════════════════════════════════════════════════════════════
-				    CARD 3 (Frames 355 a 515 — Beat 5): APPLE SPRING & WHISPER SYNC
-				    ═══════════════════════════════════════════════════════════════ */}
-				{frame >= 355 && frame < 515 && (() => {
-					const enterProgress = ci(frame, [355, 370], [0, 1]);
-					const exitProgress = ci(frame, [495, 510], [0, 1]);
-					const opacity = enterProgress * (1 - exitProgress);
-					const enterY = (1 - enterProgress) * -45;
-
-					const bars = [18, 38, 54, 78, 62, 88, 45, 92, 70, 48, 35, 68, 85, 42, 60];
-
-					return (
-						<div
-							style={{
-								position: 'absolute',
-								width: 520,
-								height: 650,
-								opacity,
-								transform: `translateY(${enterY + floatY}px) rotateY(${floatRotY}deg) rotateZ(${floatRotZ}deg)`,
-								transformStyle: 'preserve-3d',
-							}}
-						>
-							<div
-								style={{
-									width: '100%',
-									height: '100%',
-									borderRadius: 28,
-									overflow: 'hidden',
-									boxShadow: luxuryCardShadow,
-									border: luxuryCardBorder,
-									background: 'linear-gradient(155deg, #071710 0%, #040906 100%)',
-									padding: 34,
-									boxSizing: 'border-box',
-									display: 'flex',
-									flexDirection: 'column',
-									justifyContent: 'space-between',
-									position: 'relative',
-								}}
-							>
-								{/* Header */}
-								<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-									<div
-										style={{
-											display: 'inline-flex',
-											alignItems: 'center',
-											gap: 8,
-											background: 'rgba(16, 185, 129, 0.18)',
-											border: '1px solid rgba(16, 185, 129, 0.4)',
-											borderRadius: 999,
-											padding: '6px 14px',
-											fontFamily: fontMono,
-											fontSize: 13,
-											color: '#34d399',
-											fontWeight: 700,
-										}}
-									>
-										<span>🍏</span> APPLE SPRING ENGINE
-									</div>
-									<span style={{ fontFamily: fontMono, fontSize: 13, color: 'rgba(255,255,255,0.4)' }}>
-										03 / 05
-									</span>
-								</div>
-
-								{/* Visualizador de Curva de Mola Apple */}
-								<div
-									style={{
-										background: 'rgba(0,0,0,0.5)',
-										border: '1px solid rgba(16, 185, 129, 0.2)',
-										borderRadius: 20,
-										padding: 20,
-										display: 'flex',
-										flexDirection: 'column',
-										gap: 12,
-									}}
-								>
-									<div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: fontMono, fontSize: 12 }}>
-										<span style={{ color: '#34d399' }}>CURVA DE MOVIMENTO FÍSICO</span>
-										<span style={{ color: 'rgba(255,255,255,0.5)' }}>damping: 20 • stiffness: 90</span>
-									</div>
-
-									{/* Traçado SVG da mola crítica */}
-									<svg width="100%" height="80" viewBox="0 0 450 80" style={{ overflow: 'visible' }}>
-										<path
-											d="M 10 70 Q 80 5, 150 15 T 260 20 T 360 20 L 440 20"
-											fill="none"
-											stroke="#10b981"
-											strokeWidth="4"
-											strokeLinecap="round"
-										/>
-										<circle cx="260" cy="20" r="6" fill="#d4ff00" />
-									</svg>
-								</div>
-
-								{/* Waveform Whisper Sync */}
-								<div
-									style={{
-										background: 'rgba(0,0,0,0.5)',
-										border: '1px solid rgba(255,255,255,0.06)',
-										borderRadius: 20,
-										padding: 20,
-									}}
-								>
-									<div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: fontMono, fontSize: 12, marginBottom: 14 }}>
-										<span style={{ color: '#38bdf8' }}>WHISPER C++ SYNC</span>
-										<span style={{ color: '#34d399', fontWeight: 700 }}>00:14.280 ms [LOCKED]</span>
-									</div>
-
-									<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 50, gap: 4 }}>
-										{bars.map((h, i) => {
-											const waveH = Math.max(12, Math.min(48, h * (0.8 + Math.sin(t * 8 + i) * 0.3)));
-											return (
-												<div
-													key={i}
-													style={{
-														width: 14,
-														height: waveH,
-														background: i > 8 ? '#10b981' : '#38bdf8',
-														borderRadius: 6,
-														transition: 'height 0.08s ease',
-													}}
-												/>
-											);
-										})}
-									</div>
-								</div>
-
-								{/* Rodapé Card */}
-								<div style={{ fontFamily: fontMono, fontSize: 13, color: 'rgba(255,255,255,0.7)', textAlign: 'center' }}>
-									Zero delays manuais • Legendas cravadas na fala
-								</div>
-							</div>
-						</div>
-					);
-				})()}
-
-				{/* ═══════════════════════════════════════════════════════════════
-				    CARD 4 (Frames 505 a 665 — Beat 6): SOUND DESIGN & EBU R128
-				    ═══════════════════════════════════════════════════════════════ */}
-				{frame >= 505 && frame < 665 && (() => {
-					const enterProgress = ci(frame, [505, 520], [0, 1]);
-					const exitProgress = ci(frame, [650, 665], [0, 1]);
-					const opacity = enterProgress * (1 - exitProgress);
-					const enterScale = ci(enterProgress, [0, 1], [0.95, 1.03]);
-
-					return (
-						<div
-							style={{
-								position: 'absolute',
-								width: 520,
-								height: 650,
-								opacity,
-								transform: `translateY(${floatY}px) rotateY(${floatRotY}deg) rotateZ(${floatRotZ}deg) scale(${enterScale})`,
-								transformStyle: 'preserve-3d',
-							}}
-						>
-							<div
-								style={{
-									width: '100%',
-									height: '100%',
-									borderRadius: 28,
-									overflow: 'hidden',
-									boxShadow: luxuryCardShadow,
-									border: luxuryCardBorder,
-									background: 'linear-gradient(155deg, #18090a 0%, #0d0405 100%)',
-									padding: 34,
-									boxSizing: 'border-box',
-									display: 'flex',
-									flexDirection: 'column',
-									justifyContent: 'space-between',
-									position: 'relative',
-								}}
-							>
-								{/* Header */}
-								<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-									<div
-										style={{
-											display: 'inline-flex',
-											alignItems: 'center',
-											gap: 8,
-											background: 'rgba(255, 0, 34, 0.18)',
-											border: '1px solid rgba(255, 0, 34, 0.4)',
-											borderRadius: 999,
-											padding: '6px 14px',
-											fontFamily: fontMono,
-											fontSize: 13,
-											color: '#ff4d6d',
-											fontWeight: 700,
-										}}
-									>
-										<span>🎚️</span> MASTER AUDIO CONSOLE
-									</div>
-									<span style={{ fontFamily: fontMono, fontSize: 13, color: 'rgba(255,255,255,0.4)' }}>
-										04 / 05
-									</span>
-								</div>
-
-								{/* Medidores de Masterização EBU R128 */}
-								<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
-									<div
-										style={{
-											background: 'rgba(0,0,0,0.5)',
-											border: '1px solid rgba(255, 0, 34, 0.3)',
-											borderRadius: 18,
-											padding: 18,
-										}}
-									>
-										<div style={{ fontFamily: fontMono, fontSize: 11, color: 'rgba(255,255,255,0.5)' }}>
-											INTEGRATED LOUDNESS
-										</div>
-										<div style={{ fontFamily: fontAnton, fontSize: 40, color: '#ff0022', marginTop: 4 }}>
-											-14 LUFS
-										</div>
-										<div style={{ fontFamily: fontMono, fontSize: 12, color: '#34d399', marginTop: 4 }}>
-											● EBU R128 LOCKED
-										</div>
-									</div>
-
-									<div
-										style={{
-											background: 'rgba(0,0,0,0.5)',
-											border: '1px solid rgba(255,255,255,0.08)',
-											borderRadius: 18,
-											padding: 18,
-										}}
-									>
-										<div style={{ fontFamily: fontMono, fontSize: 11, color: 'rgba(255,255,255,0.5)' }}>
-											TRUE PEAK LIMIT
-										</div>
-										<div style={{ fontFamily: fontAnton, fontSize: 40, color: '#ffffff', marginTop: 4 }}>
-											-1.0 dB
-										</div>
-										<div style={{ fontFamily: fontMono, fontSize: 12, color: 'rgba(255,255,255,0.5)', marginTop: 4 }}>
-											Zero clipping
-										</div>
-									</div>
-								</div>
-
-								{/* Gatilhos SFX Automáticos */}
-								<div
-									style={{
-										background: 'rgba(0,0,0,0.4)',
-										border: '1px solid rgba(255,255,255,0.06)',
-										borderRadius: 18,
-										padding: 20,
-										display: 'flex',
-										flexDirection: 'column',
-										gap: 10,
-									}}
-								>
-									<span style={{ fontFamily: fontMono, fontSize: 12, color: 'rgba(255,255,255,0.6)' }}>
-										CAMADA DE SFX AUTOMATIZADA:
-									</span>
-									<div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-										{['WHOOSH_ZOOM', 'HAPTIC_CLICK', 'SUB_BASS_DROP', 'FUTURISTA_RISE'].map((sfx, idx) => (
-											<div
-												key={idx}
-												style={{
-													background: idx === 0 ? '#ff0022' : 'rgba(255,255,255,0.08)',
-													color: idx === 0 ? '#ffffff' : '#e2e8f0',
-													padding: '6px 12px',
-													borderRadius: 8,
-													fontFamily: fontMono,
-													fontSize: 12,
-													fontWeight: 700,
-												}}
-											>
-												{sfx}
-											</div>
-										))}
-									</div>
-								</div>
-
-								{/* Rodapé Card */}
-								<div style={{ fontFamily: fontMono, fontSize: 13, color: 'rgba(255,255,255,0.7)', textAlign: 'center' }}>
-									Áudio encorpado para Instagram, TikTok e YouTube
-								</div>
-							</div>
-						</div>
-					);
-				})()}
-
-				{/* ═══════════════════════════════════════════════════════════════
-				    CARD 5 (Frames 660 a 918 — Beats 7 & 8): HERO GITHUB & MULTIAGENT
-				    ═══════════════════════════════════════════════════════════════ */}
-				{frame >= 660 && (() => {
-					const enterProgress = ci(frame, [660, 680], [0, 1]);
-					const starPop = spring({
-						frame: Math.max(0, frame - 770),
+				{frame >= 174 && frame < 360 && (() => {
+					const enterSpring = spring({
+						frame: Math.max(0, frame - 174),
 						fps,
-						config: { damping: 14, mass: 0.5, stiffness: 120 },
+						config: { damping: 18, mass: 0.7, stiffness: 120 },
 					});
-
-					const starCount = Math.round(interpolate(starPop, [0, 1], [120, 1482]));
+					const exitProgress = ci(frame, [350, 360], [0, 1]);
+					const opacity = (1 - exitProgress);
+					const enterY = ci(enterSpring, [0, 1], [50, 0]);
 
 					return (
 						<div
 							style={{
 								position: 'absolute',
-								width: 540,
-								height: 680,
-								opacity: enterProgress,
-								transform: `translateY(${floatY}px) rotateY(${floatRotY}deg) scale(${1.02 + starPop * 0.04})`,
+								opacity,
+								transform: `translateY(${enterY + floatY}px) rotateY(${floatRotY}deg) rotateZ(${floatRotZ}deg)`,
 								transformStyle: 'preserve-3d',
 							}}
 						>
+							<CarouselCardWrapper
+								shadow={luxuryCardShadow}
+								border={luxuryCardBorder}
+							>
+								<Slide03Solucao />
+							</CarouselCardWrapper>
+						</div>
+					);
+				})()}
+
+				{/* ═══════════════════════════════════════════════════════════════
+				    SLIDE 4 (Frames 360 a 666 — Beats 5 & 6): A ENGENHARIA APPLE SPRING & EBU R128
+				    ═══════════════════════════════════════════════════════════════ */}
+				{frame >= 360 && frame < 666 && (() => {
+					const enterSpring = spring({
+						frame: Math.max(0, frame - 360),
+						fps,
+						config: { damping: 18, mass: 0.7, stiffness: 120 },
+					});
+					const exitProgress = ci(frame, [654, 666], [0, 1]);
+					const opacity = (1 - exitProgress);
+					const enterY = ci(enterSpring, [0, 1], [50, 0]);
+
+					return (
+						<div
+							style={{
+								position: 'absolute',
+								opacity,
+								transform: `translateY(${enterY + floatY}px) rotateY(${floatRotY}deg) rotateZ(${floatRotZ}deg)`,
+								transformStyle: 'preserve-3d',
+							}}
+						>
+							<CarouselCardWrapper
+								shadow={luxuryCardShadow}
+								border={luxuryCardBorder}
+							>
+								<Slide04Engenharia />
+							</CarouselCardWrapper>
+						</div>
+					);
+				})()}
+
+				{/* ═══════════════════════════════════════════════════════════════
+				    BEAT 7 & 8 (Frames 666 a 918): FAN-OUT 3D (LEQUE) + HERO CLÍMAX SLIDE 05
+				    ═══════════════════════════════════════════════════════════════ */}
+				{frame >= 666 && (() => {
+					const fanSpring = spring({
+						frame: Math.max(0, frame - 666),
+						fps,
+						config: { damping: 18, mass: 0.85, stiffness: 95 },
+					});
+
+					const heroSpring = spring({
+						frame: Math.max(0, frame - 768),
+						fps,
+						config: { damping: 16, mass: 0.75, stiffness: 110 },
+					});
+
+					// Posições em leque tridimensional (matching ref_vibe_dev_frame20.png)
+					const s1_x = -330 * fanSpring;
+					const s1_y = 36 * fanSpring;
+					const s1_z = -60 * fanSpring;
+					const s1_rotY = 24 * fanSpring;
+					const s1_rotZ = -12 * fanSpring;
+					const s1_scale = ci(fanSpring, [0, 1], [0.8, 0.86]);
+					const s1_opacity = fanSpring * (1 - heroSpring * 0.4);
+
+					const s2_x = -170 * fanSpring;
+					const s2_y = 16 * fanSpring;
+					const s2_z = -25 * fanSpring;
+					const s2_rotY = 13 * fanSpring;
+					const s2_rotZ = -6 * fanSpring;
+					const s2_scale = ci(fanSpring, [0, 1], [0.85, 0.93]);
+					const s2_opacity = fanSpring * (1 - heroSpring * 0.35);
+
+					const s3_x = interpolate(heroSpring, [0, 1], [0, -190]);
+					const s3_y = interpolate(heroSpring, [0, 1], [0, 20]);
+					const s3_z = interpolate(heroSpring, [0, 1], [0, -40]);
+					const s3_rotY = interpolate(heroSpring, [0, 1], [0, 16]);
+					const s3_rotZ = interpolate(heroSpring, [0, 1], [0, -8]);
+					const s3_scale = interpolate(heroSpring, [0, 1], [1.0, 0.88]);
+					const s3_opacity = fanSpring * (1 - heroSpring * 0.35);
+
+					const s4_x = 170 * fanSpring;
+					const s4_y = 16 * fanSpring;
+					const s4_z = -25 * fanSpring;
+					const s4_rotY = -13 * fanSpring;
+					const s4_rotZ = 6 * fanSpring;
+					const s4_scale = ci(fanSpring, [0, 1], [0.85, 0.93]);
+					const s4_opacity = fanSpring * (1 - heroSpring * 0.35);
+
+					// Slide 05: no Beat 7 está na ponta direita do leque; no Beat 8 voa para o centro em destaque total!
+					const s5_x = interpolate(heroSpring, [0, 1], [330 * fanSpring, 0]);
+					const s5_y = interpolate(heroSpring, [0, 1], [36 * fanSpring, 0]);
+					const s5_z = interpolate(heroSpring, [0, 1], [-60 * fanSpring, 90]);
+					const s5_rotY = interpolate(heroSpring, [0, 1], [-24 * fanSpring, 0]);
+					const s5_rotZ = interpolate(heroSpring, [0, 1], [12 * fanSpring, 0]);
+					const s5_scale = interpolate(heroSpring, [0, 1], [0.86, 1.05]);
+
+					const cardShadowFan = '0 30px 85px -15px rgba(0, 0, 0, 0.8), 0 10px 30px -5px rgba(0, 0, 0, 0.5)';
+					const cardShadowHero = heroSpring > 0.05
+						? '0 40px 100px -15px rgba(0, 0, 0, 0.9), 0 0 50px rgba(245, 158, 11, 0.35)'
+						: cardShadowFan;
+
+					return (
+						<>
+							{/* Slide 01 no Leque */}
 							<div
 								style={{
-									width: '100%',
-									height: '100%',
-									borderRadius: 32,
-									overflow: 'hidden',
-									boxShadow: '0 40px 100px -15px rgba(0, 0, 0, 0.9), 0 0 45px rgba(245, 158, 11, 0.25)',
-									border: '1.5px solid rgba(245, 158, 11, 0.45)',
-									background: 'linear-gradient(160deg, #111116 0%, #08080a 100%)',
-									padding: 38,
-									boxSizing: 'border-box',
-									display: 'flex',
-									flexDirection: 'column',
-									justifyContent: 'space-between',
-									position: 'relative',
+									position: 'absolute',
+									opacity: s1_opacity,
+									transform: `translate3d(${s1_x}px, ${s1_y + floatY}px, ${s1_z}px) rotateY(${s1_rotY + floatRotY}deg) rotateZ(${s1_rotZ}deg) scale(${s1_scale})`,
+									transformStyle: 'preserve-3d',
+									zIndex: 1,
 								}}
 							>
-								{/* Header Hero */}
-								<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-									<div
-										style={{
-											display: 'inline-flex',
-											alignItems: 'center',
-											gap: 8,
-											background: 'rgba(245, 158, 11, 0.18)',
-											border: '1px solid rgba(245, 158, 11, 0.4)',
-											borderRadius: 999,
-											padding: '8px 16px',
-											fontFamily: fontMono,
-											fontSize: 13,
-											color: '#fbbf24',
-											fontWeight: 700,
-										}}
-									>
-										<span>⭐</span> 100% OPEN SOURCE • MIT
-									</div>
-									<span style={{ fontFamily: fontMono, fontSize: 13, color: 'rgba(255,255,255,0.5)' }}>
-										CUSTO ZERO
-									</span>
-								</div>
-
-								{/* Repositório e Grande Contador de Estrelas */}
-								<div
-									style={{
-										background: 'rgba(255,255,255,0.03)',
-										border: '1px solid rgba(255,255,255,0.08)',
-										borderRadius: 22,
-										padding: 24,
-										display: 'flex',
-										flexDirection: 'column',
-										alignItems: 'center',
-										gap: 12,
-									}}
-								>
-									<span style={{ fontFamily: fontMono, fontSize: 13, color: 'rgba(255,255,255,0.6)' }}>
-										github.com/Gabrielrtads/vibe-design-studio
-									</span>
-
-									<div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-										<span style={{ fontSize: 48 }}>⭐</span>
-										<span
-											style={{
-												fontFamily: fontAnton,
-												fontSize: 64,
-												color: '#fbbf24',
-												letterSpacing: '0.04em',
-											}}
-										>
-											{starCount}
-										</span>
-									</div>
-
-									<span style={{ fontFamily: fontPlusJakartaSans, fontSize: 14, color: '#34d399', fontWeight: 600 }}>
-										Deixe sua estrela no repositório oficial!
-									</span>
-								</div>
-
-								{/* Suporte Multiagente */}
-								<div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-									<span style={{ fontFamily: fontMono, fontSize: 11, color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase' }}>
-										Orquestrado nos 3 Grandes Agentes:
-									</span>
-									<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8 }}>
-										<div
-											style={{
-												background: 'rgba(245, 158, 11, 0.12)',
-												border: '1px solid rgba(245, 158, 11, 0.3)',
-												borderRadius: 10,
-												padding: '8px 10px',
-												textAlign: 'center',
-												fontFamily: fontMono,
-												fontSize: 11,
-												color: '#fbbf24',
-												fontWeight: 700,
-											}}
-										>
-											Claude Code
-										</div>
-										<div
-											style={{
-												background: 'rgba(16, 185, 129, 0.12)',
-												border: '1px solid rgba(16, 185, 129, 0.3)',
-												borderRadius: 10,
-												padding: '8px 10px',
-												textAlign: 'center',
-												fontFamily: fontMono,
-												fontSize: 11,
-												color: '#34d399',
-												fontWeight: 700,
-											}}
-										>
-											OpenAI Codex
-										</div>
-										<div
-											style={{
-												background: 'rgba(56, 189, 248, 0.12)',
-												border: '1px solid rgba(56, 189, 248, 0.3)',
-												borderRadius: 10,
-												padding: '8px 10px',
-												textAlign: 'center',
-												fontFamily: fontMono,
-												fontSize: 11,
-												color: '#38bdf8',
-												fontWeight: 700,
-											}}
-										>
-											Antigravity
-										</div>
-									</div>
-								</div>
-
-								{/* Botão de Comando Copiável */}
-								<div
-									style={{
-										background: '#ffffff',
-										borderRadius: 16,
-										padding: '16px 20px',
-										display: 'flex',
-										justifyContent: 'space-between',
-										alignItems: 'center',
-									}}
-								>
-									<span
-										style={{
-											fontFamily: fontMono,
-											fontSize: 14,
-											color: '#0a0a0f',
-											fontWeight: 700,
-										}}
-									>
-										$ npx skills add Gabrielrtads/...
-									</span>
-									<div
-										style={{
-											background: '#0a0a0f',
-											color: '#ffffff',
-											borderRadius: 8,
-											padding: '6px 12px',
-											fontFamily: fontMono,
-											fontSize: 12,
-											fontWeight: 700,
-										}}
-									>
-										COPIAR
-									</div>
-								</div>
+								<CarouselCardWrapper shadow={cardShadowFan}>
+									<Slide01Capa />
+								</CarouselCardWrapper>
 							</div>
-						</div>
+
+							{/* Slide 02 no Leque */}
+							<div
+								style={{
+									position: 'absolute',
+									opacity: s2_opacity,
+									transform: `translate3d(${s2_x}px, ${s2_y + floatY}px, ${s2_z}px) rotateY(${s2_rotY + floatRotY}deg) rotateZ(${s2_rotZ}deg) scale(${s2_scale})`,
+									transformStyle: 'preserve-3d',
+									zIndex: 2,
+								}}
+							>
+								<CarouselCardWrapper shadow={cardShadowFan}>
+									<Slide02Diagnostico />
+								</CarouselCardWrapper>
+							</div>
+
+							{/* Slide 03 no Leque */}
+							<div
+								style={{
+									position: 'absolute',
+									opacity: s3_opacity,
+									transform: `translate3d(${s3_x}px, ${s3_y + floatY}px, ${s3_z}px) rotateY(${s3_rotY + floatRotY}deg) rotateZ(${s3_rotZ}deg) scale(${s3_scale})`,
+									transformStyle: 'preserve-3d',
+									zIndex: 3,
+								}}
+							>
+								<CarouselCardWrapper shadow={cardShadowFan}>
+									<Slide03Solucao />
+								</CarouselCardWrapper>
+							</div>
+
+							{/* Slide 04 no Leque */}
+							<div
+								style={{
+									position: 'absolute',
+									opacity: s4_opacity,
+									transform: `translate3d(${s4_x}px, ${s4_y + floatY}px, ${s4_z}px) rotateY(${s4_rotY + floatRotY}deg) rotateZ(${s4_rotZ}deg) scale(${s4_scale})`,
+									transformStyle: 'preserve-3d',
+									zIndex: 2,
+								}}
+							>
+								<CarouselCardWrapper shadow={cardShadowFan}>
+									<Slide04Engenharia />
+								</CarouselCardWrapper>
+							</div>
+
+							{/* Slide 05 no Leque & Hero Center */}
+							<div
+								style={{
+									position: 'absolute',
+									opacity: fanSpring,
+									transform: `translate3d(${s5_x}px, ${s5_y + floatY}px, ${s5_z}px) rotateY(${s5_rotY + floatRotY}deg) rotateZ(${s5_rotZ}deg) scale(${s5_scale})`,
+									transformStyle: 'preserve-3d',
+									zIndex: heroSpring > 0.1 ? 50 : 4,
+								}}
+							>
+								<CarouselCardWrapper shadow={cardShadowHero}>
+									<Slide05Final />
+								</CarouselCardWrapper>
+							</div>
+						</>
 					);
 				})()}
 			</div>
@@ -1464,6 +1026,55 @@ export const FlowMotionMaster: React.FC<FlowMotionMasterProps> = ({
 
 			{/* Legendas Cinéticas Sincronizadas */}
 			{renderKineticSubtitles()}
+
+			
+			{/* Bottom Watermark & Engagement Bar */}
+			<div
+				style={{
+					position: 'absolute',
+					bottom: 48,
+					left: 0,
+					right: 0,
+					padding: '0 48px',
+					display: 'flex',
+					justifyContent: 'space-between',
+					alignItems: 'center',
+					zIndex: 30,
+					pointerEvents: 'none',
+				}}
+			>
+				<span
+					style={{
+						fontFamily: fontPlusJakartaSans,
+						fontSize: 14,
+						fontWeight: 700,
+						color: isRedBg ? '#FFFFFF' : (isLightBg ? 'rgba(0, 0, 0, 0.45)' : 'rgba(255, 255, 255, 0.5)'),
+						letterSpacing: '0.08em',
+						textTransform: 'uppercase',
+					}}
+				>
+					@Gabrielrtads
+				</span>
+				<div
+					style={{
+						display: 'inline-flex',
+						alignItems: 'center',
+						gap: 6,
+						background: isRedBg ? '#0B0C0E' : (isLightBg ? FERRARI_RED : '#FFFFFF'),
+						color: isRedBg ? '#FFFFFF' : (isLightBg ? '#FFFFFF' : '#0B0C0E'),
+						borderRadius: 999,
+						padding: '8px 18px',
+						fontFamily: fontPlusJakartaSans,
+						fontSize: 13,
+						fontWeight: 800,
+						letterSpacing: '0.04em',
+						boxShadow: '0 8px 24px rgba(0, 0, 0, 0.2)',
+					}}
+				>
+					<span>Comente "VIBE"</span>
+					<span>📌</span>
+				</div>
+			</div>
 
 			{/* Camada de Áudio e SFX */}
 			{renderAudioTriggers()}
