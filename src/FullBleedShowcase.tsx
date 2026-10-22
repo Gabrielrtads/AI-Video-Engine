@@ -54,23 +54,29 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 	const FERRARI_RED = '#FF0022';
 	const MATRIX_GREEN = '#00FF66';
 	const ELECTRIC_CYAN = '#00F0FF';
-	const PURE_BLACK = '#050608';
+	const PURE_BLACK = '#060709';
 	const PURE_WHITE = '#FFFFFF';
 
-	// Palavras ativas do Whisper
+	// Palavra ativa do Whisper
 	const activeWord = useMemo(() => {
 		return RAW_WORDS.find((w) => t >= w.start && t <= w.end);
 	}, [t]);
 
 	// ────────────────────────────────────────────────────────────────────────────
-	// CENA 1 (FRAMES 0 - 89 / 0.0s - 2.97s): HOOK BRUTALISTA TELA CHEIA
+	// CENA 1 (FRAMES 0 - 90 / 0.0s - 3.0s): HOOK BRUTALISTA FLUIDO
 	// "Cansado de vídeos de inteligência artificial genéricos..."
 	// ────────────────────────────────────────────────────────────────────────────
 	const renderScene1Hook = () => {
-		if (frame >= 90) return null;
+		if (frame > 95) return null;
 
-		const glitch = Math.sin(frame * 1.5) > 0.85 ? 4 : 0;
-		const scaleIn = spring({ frame, fps, config: { damping: 18, mass: 0.8 } });
+		// Transição de saída contínua (cross-dissolve suave)
+		const sceneOpacity = ci(frame, [80, 92], [1, 0]);
+		const cameraDrift = ci(frame, [0, 90], [1.0, 1.035]);
+
+		// Staggered smooth fade-up para cada linha (padrão Apple)
+		const line1Spring = spring({ frame: frame, fps, config: { damping: 24, mass: 0.8, stiffness: 120 } });
+		const line2Spring = spring({ frame: Math.max(0, frame - 5), fps, config: { damping: 24, mass: 0.8, stiffness: 120 } });
+		const line3Spring = spring({ frame: Math.max(0, frame - 10), fps, config: { damping: 24, mass: 0.8, stiffness: 120 } });
 
 		return (
 			<AbsoluteFill
@@ -79,19 +85,22 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 					justifyContent: 'center',
 					alignItems: 'center',
 					padding: '0 64px',
+					opacity: sceneOpacity,
+					transform: `scale(${cameraDrift})`,
+					pointerEvents: 'none',
 				}}
 			>
-				{/* Scanlines analógicas de fundo */}
+				{/* Scanlines analógicas de fundo orgânicas e sutis */}
 				<div
 					style={{
 						position: 'absolute',
 						inset: 0,
-						background: 'repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 2px, transparent 2px, transparent 6px)',
-						pointerEvents: 'none',
+						background: 'repeating-linear-gradient(0deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 2px, transparent 2px, transparent 6px)',
+						opacity: 0.8,
 					}}
 				/>
 
-				{/* Top Tag */}
+				{/* Top Tag com fade suave */}
 				<div
 					style={{
 						position: 'absolute',
@@ -100,6 +109,8 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 						display: 'flex',
 						alignItems: 'center',
 						gap: 12,
+						opacity: ci(frame, [0, 15], [0, 1]),
+						transform: `translateY(${ci(frame, [0, 15], [10, 0])}px)`,
 					}}
 				>
 					<span
@@ -116,7 +127,7 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 						style={{
 							fontFamily: fontMono,
 							fontSize: 16,
-							color: 'rgba(255, 255, 255, 0.5)',
+							color: 'rgba(255, 255, 255, 0.45)',
 							letterSpacing: '0.15em',
 							textTransform: 'uppercase',
 						}}
@@ -125,55 +136,65 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 					</span>
 				</div>
 
-				{/* Tipografia Massiva Brutalista */}
+				{/* Tipografia Massiva em Staggered Fade-Up Contínuo */}
 				<div
 					style={{
 						width: '100%',
-						transform: `scale(${scaleIn}) translate(${glitch}px, 0px)`,
 						display: 'flex',
 						flexDirection: 'column',
-						gap: 8,
+						gap: 10,
 					}}
 				>
+					{/* Linha 1 */}
 					<div
 						style={{
 							fontFamily: fontAnton,
-							fontSize: 112,
+							fontSize: 114,
 							lineHeight: 0.92,
 							color: PURE_WHITE,
 							textTransform: 'uppercase',
 							letterSpacing: '-0.02em',
+							opacity: ci(line1Spring, [0, 1], [0, 1]),
+							transform: `translateY(${ci(line1Spring, [0, 1], [30, 0])}px)`,
 						}}
 					>
 						CANSADO DE
 					</div>
+
+					{/* Linha 2 */}
 					<div
 						style={{
 							fontFamily: fontAnton,
-							fontSize: 130,
+							fontSize: 132,
 							lineHeight: 0.9,
 							color: FERRARI_RED,
 							textTransform: 'uppercase',
 							letterSpacing: '-0.02em',
-							textShadow: `0 0 40px rgba(255, 0, 34, 0.4)`,
+							textShadow: `0 0 50px rgba(255, 0, 34, 0.35)`,
+							opacity: ci(line2Spring, [0, 1], [0, 1]),
+							transform: `translateY(${ci(line2Spring, [0, 1], [35, 0])}px)`,
 						}}
 					>
 						VÍDEOS DE IA
 					</div>
+
+					{/* Linha 3 */}
 					<div
 						style={{
 							fontFamily: fontInstrumentSerif,
-							fontSize: 88,
+							fontSize: 92,
 							lineHeight: 1.0,
 							color: 'rgba(255, 255, 255, 0.65)',
 							fontStyle: 'italic',
+							opacity: ci(line3Spring, [0, 1], [0, 1]),
+							transform: `translateY(${ci(line3Spring, [0, 1], [40, 0])}px)`,
 						}}
 					>
 						genéricos?
 					</div>
 				</div>
 
-				{/* Micro-ticker inferior de terminal */}
+				{/* Micro-ticker inferior */}
 				<div
 					style={{
 						position: 'absolute',
@@ -182,78 +203,92 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 						right: 64,
 						display: 'flex',
 						justifyContent: 'space-between',
-						borderTop: '1px solid rgba(255, 255, 255, 0.12)',
+						borderTop: '1px solid rgba(255, 255, 255, 0.1)',
 						paddingTop: 24,
 						fontFamily: fontMono,
 						fontSize: 15,
-						color: 'rgba(255, 255, 255, 0.4)',
+						color: 'rgba(255, 255, 255, 0.35)',
+						opacity: ci(frame, [15, 30], [0, 1]),
 					}}
 				>
 					<span>RETENÇÃO MÉDIA: 1.2s</span>
-					<span style={{ color: FERRARI_RED }}>LOCK-IN DE SAAS</span>
+					<span style={{ color: FERRARI_RED }}>ZERO IDENTIDADE</span>
 				</div>
 			</AbsoluteFill>
 		);
 	};
 
 	// ────────────────────────────────────────────────────────────────────────────
-	// CENA 2 (FRAMES 90 - 164 / 3.0s - 5.47s): IMPACTO "REJEITADO POR SLOP"
+	// CENA 2 (FRAMES 85 - 170 / 2.83s - 5.67s): REJEIÇÃO POR SLOP ELEGANTE
 	// "...com gradiente roxo e robôs sem alma?"
 	// ────────────────────────────────────────────────────────────────────────────
 	const renderScene2SlopRejection = () => {
-		if (frame < 90 || frame >= 165) return null;
+		if (frame < 82 || frame > 175) return null;
 
-		const f = frame - 90;
-		const stampSpring = spring({ frame: f, fps, config: { damping: 14, mass: 0.6 } });
-		const shake = f < 8 ? (f % 2 === 0 ? 12 : -12) : 0;
+		const f = frame - 88;
+		const sceneOpacity = ci(frame, [85, 92, 160, 170], [0, 1, 1, 0]);
+
+		// Mola suave com amortecimento crítico (sem tremor/shake amador)
+		const stampSpring = spring({
+			frame: Math.max(0, f),
+			fps,
+			config: { damping: 26, mass: 0.9, stiffness: 140 },
+		});
+
+		// Respiração cinematográfica contínua (slow drift)
+		const breathingRot = -8.5 + Math.sin(t * 1.5) * 0.8;
+		const breathingScale = ci(stampSpring, [0, 1], [1.8, 1.0]) * (1.0 + Math.sin(t * 1.2) * 0.015);
 
 		return (
 			<AbsoluteFill
 				style={{
-					backgroundColor: '#080104',
+					backgroundColor: '#090508',
 					justifyContent: 'center',
 					alignItems: 'center',
 					padding: '0 50px',
-					transform: `translate(${shake}px, ${shake * 0.5}px)`,
+					opacity: sceneOpacity,
+					pointerEvents: 'none',
 				}}
 			>
-				{/* Grade de alerta vermelha */}
+				{/* Fundo com aura sutil de alerta (sem oscilação brusca) */}
 				<div
 					style={{
 						position: 'absolute',
 						inset: 0,
-						backgroundImage: 'radial-gradient(rgba(255, 0, 34, 0.15) 1px, transparent 1px)',
-						backgroundSize: '32px 32px',
+						background: 'radial-gradient(circle at center, rgba(255, 0, 34, 0.12) 0%, transparent 70%)',
 					}}
 				/>
 
-				{/* Texto prévio ofuscado pelo carimbo */}
+				{/* Texto prévio que é superado pelo carimbo */}
 				<div
 					style={{
 						fontFamily: fontMono,
-						fontSize: 28,
-						color: 'rgba(255, 100, 100, 0.4)',
-						marginBottom: 40,
+						fontSize: 26,
+						color: 'rgba(255, 120, 120, 0.45)',
+						marginBottom: 44,
 						textTransform: 'uppercase',
-						letterSpacing: '0.1em',
+						letterSpacing: '0.12em',
+						transform: `translateY(${ci(stampSpring, [0, 1], [20, 0])}px)`,
+						opacity: ci(stampSpring, [0, 1], [0.3, 0.7]),
 					}}
 				>
 					GRADIENTE ROXO • ROBÔS SEM ALMA
 				</div>
 
-				{/* Carimbo Brutalista de Tela Cheia */}
+				{/* Carimbo Brutalista com Entrada Suave e Firme */}
 				<div
 					style={{
-						transform: `scale(${ci(stampSpring, [0, 1], [3.5, 1])}) rotate(-9deg)`,
-						border: '14px solid #FF0022',
-						padding: '40px 48px',
+						transform: `scale(${breathingScale}) rotate(${breathingRot}deg)`,
+						border: '12px solid #FF0022',
+						padding: '44px 52px',
 						borderRadius: 16,
-						backgroundColor: 'rgba(255, 0, 34, 0.08)',
-						boxShadow: '0 0 100px rgba(255, 0, 34, 0.6), inset 0 0 60px rgba(255, 0, 34, 0.3)',
+						backgroundColor: 'rgba(255, 0, 34, 0.06)',
+						boxShadow: '0 20px 80px rgba(255, 0, 34, 0.4), inset 0 0 50px rgba(255, 0, 34, 0.2)',
 						display: 'flex',
 						flexDirection: 'column',
 						alignItems: 'center',
 						gap: 16,
+						opacity: ci(stampSpring, [0, 1], [0, 1]),
 					}}
 				>
 					<div
@@ -274,7 +309,7 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 							fontSize: 66,
 							color: '#FFFFFF',
 							backgroundColor: '#FF0022',
-							padding: '6px 28px',
+							padding: '6px 30px',
 							letterSpacing: '0.08em',
 							borderRadius: 6,
 						}}
@@ -285,7 +320,7 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 						style={{
 							fontFamily: fontMono,
 							fontSize: 18,
-							color: '#FFB3BA',
+							color: '#FFC2C7',
 							letterSpacing: '0.2em',
 							fontWeight: 700,
 						}}
@@ -298,13 +333,17 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 	};
 
 	// ────────────────────────────────────────────────────────────────────────────
-	// CENA 3 (FRAMES 165 - 334 / 5.5s - 11.13s): FULLSCREEN TERMINAL TAKEOVER
+	// CENA 3 (FRAMES 165 - 340 / 5.5s - 11.33s): TERMINAL TAKEOVER FLUIDO
 	// "Conheça o Vibe Design Studio: o estúdio criativo headless..."
 	// ────────────────────────────────────────────────────────────────────────────
 	const renderScene3TerminalTakeover = () => {
-		if (frame < 165 || frame >= 335) return null;
+		if (frame < 160 || frame > 345) return null;
 
 		const f = frame - 165;
+		const sceneOpacity = ci(frame, [162, 172, 330, 340], [0, 1, 1, 0]);
+		const cameraDrift = 1.0 + ci(f, [0, 175], [0, 0.025]);
+
+		// Digitação suave e contínua
 		const typedChars = Math.min(
 			48,
 			Math.floor(ci(f, [15, 80], [0, 48]))
@@ -314,24 +353,35 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 		const isDoneTyping = typedChars >= fullCommand.length;
 		const showCursor = (Math.floor(f / 8) % 2 === 0);
 
+		// Staggered fade suave nas linhas de saída
+		const log1Opacity = ci(f, [85, 95], [0, 1]);
+		const log2Opacity = ci(f, [95, 105], [0, 1]);
+		const log3Opacity = ci(f, [105, 115], [0, 1]);
+
+		// Entrada suave das métricas
+		const metricsSpring = spring({ frame: Math.max(0, f - 110), fps, config: { damping: 24, mass: 0.8 } });
+
 		return (
 			<AbsoluteFill
 				style={{
-					backgroundColor: '#07080B',
+					backgroundColor: '#06070A',
 					padding: '120px 48px',
 					display: 'flex',
 					flexDirection: 'column',
 					justifyContent: 'flex-start',
 					fontFamily: fontMono,
+					opacity: sceneOpacity,
+					transform: `scale(${cameraDrift})`,
+					pointerEvents: 'none',
 				}}
 			>
-				{/* Top Bar do Terminal nativo macOS */}
+				{/* Top Bar macOS com sutileza */}
 				<div
 					style={{
 						display: 'flex',
 						justifyContent: 'space-between',
 						alignItems: 'center',
-						borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+						borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
 						paddingBottom: 24,
 						marginBottom: 40,
 					}}
@@ -341,7 +391,7 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 						<div style={{ width: 14, height: 14, borderRadius: '50%', backgroundColor: '#FFBD2E' }} />
 						<div style={{ width: 14, height: 14, borderRadius: '50%', backgroundColor: '#27C93F' }} />
 					</div>
-					<span style={{ fontSize: 14, color: 'rgba(255, 255, 255, 0.45)', letterSpacing: '0.08em' }}>
+					<span style={{ fontSize: 14, color: 'rgba(255, 255, 255, 0.4)', letterSpacing: '0.08em' }}>
 						zsh — vibe-studio — 1080×1920 @ 60 FPS
 					</span>
 					<span style={{ fontSize: 13, color: MATRIX_GREEN, fontWeight: 700 }}>
@@ -349,12 +399,12 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 					</span>
 				</div>
 
-				{/* Título de Entrada da Solução */}
-				<div style={{ marginBottom: 40 }}>
+				{/* Título de Entrada */}
+				<div style={{ marginBottom: 36 }}>
 					<span
 						style={{
 							fontFamily: fontAnton,
-							fontSize: 64,
+							fontSize: 66,
 							color: PURE_WHITE,
 							textTransform: 'uppercase',
 							lineHeight: 1.0,
@@ -367,7 +417,7 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 						style={{
 							fontFamily: fontInstrumentSerif,
 							fontSize: 36,
-							color: 'rgba(255, 255, 255, 0.6)',
+							color: 'rgba(255, 255, 255, 0.65)',
 							fontStyle: 'italic',
 							marginTop: 8,
 						}}
@@ -376,18 +426,17 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 					</div>
 				</div>
 
-				{/* Linha de Comando Interativa em Digitação Real */}
+				{/* Linha de Comando Interativa */}
 				<div
 					style={{
-						backgroundColor: 'rgba(255, 255, 255, 0.04)',
-						border: '1px solid rgba(255, 255, 255, 0.12)',
+						backgroundColor: 'rgba(255, 255, 255, 0.03)',
+						border: '1px solid rgba(255, 255, 255, 0.1)',
 						borderRadius: 12,
 						padding: '24px 28px',
 						fontSize: 22,
 						color: PURE_WHITE,
 						lineHeight: 1.5,
 						wordBreak: 'break-all',
-						boxShadow: '0 12px 36px rgba(0,0,0,0.4)',
 					}}
 				>
 					<span style={{ color: MATRIX_GREEN, fontWeight: 700 }}>workspace $ </span>
@@ -397,11 +446,11 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 					)}
 				</div>
 
-				{/* Output Instantâneo pós-digitação */}
+				{/* Logs com entrada suave e fluida */}
 				{isDoneTyping && (
 					<div
 						style={{
-							marginTop: 36,
+							marginTop: 32,
 							display: 'flex',
 							flexDirection: 'column',
 							gap: 16,
@@ -409,33 +458,32 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 							color: 'rgba(255, 255, 255, 0.85)',
 						}}
 					>
-						<div style={{ color: MATRIX_GREEN }}>
+						<div style={{ color: MATRIX_GREEN, opacity: log1Opacity, transform: `translateY(${ci(log1Opacity, [0, 1], [8, 0])}px)` }}>
 							✔ Motor Remotion + Whisper C++ injetado com sucesso
 						</div>
-						<div style={{ color: MATRIX_GREEN }}>
+						<div style={{ color: MATRIX_GREEN, opacity: log2Opacity, transform: `translateY(${ci(log2Opacity, [0, 1], [8, 0])}px)` }}>
 							✔ 7 habilidades canônicas registradas no enxame
 						</div>
-						<div style={{ color: ELECTRIC_CYAN }}>
+						<div style={{ color: ELECTRIC_CYAN, opacity: log3Opacity, transform: `translateY(${ci(log3Opacity, [0, 1], [8, 0])}px)` }}>
 							✔ Studio compilado: http://localhost:3000 (0.6s)
-						</div>
-						<div style={{ color: 'rgba(255, 255, 255, 0.45)', marginTop: 8 }}>
-							[HEADLESS]: Sem navegador pesado aberto. Render 100% código.
 						</div>
 					</div>
 				)}
 
-				{/* Três Caixas de Métricas Técnicas em ASCII */}
+				{/* Três Caixas de Métricas com Slide-up Suave */}
 				<div
 					style={{
 						marginTop: 'auto',
 						display: 'grid',
 						gridTemplateColumns: 'repeat(3, 1fr)',
 						gap: 16,
+						opacity: ci(metricsSpring, [0, 1], [0, 1]),
+						transform: `translateY(${ci(metricsSpring, [0, 1], [30, 0])}px)`,
 					}}
 				>
 					<div
 						style={{
-							backgroundColor: 'rgba(0, 255, 102, 0.08)',
+							backgroundColor: 'rgba(0, 255, 102, 0.06)',
 							border: `1px solid ${MATRIX_GREEN}`,
 							borderRadius: 12,
 							padding: '24px 16px',
@@ -447,7 +495,7 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 					</div>
 					<div
 						style={{
-							backgroundColor: 'rgba(0, 240, 255, 0.08)',
+							backgroundColor: 'rgba(0, 240, 255, 0.06)',
 							border: `1px solid ${ELECTRIC_CYAN}`,
 							borderRadius: 12,
 							padding: '24px 16px',
@@ -459,7 +507,7 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 					</div>
 					<div
 						style={{
-							backgroundColor: 'rgba(255, 0, 34, 0.08)',
+							backgroundColor: 'rgba(255, 0, 34, 0.06)',
 							border: `1px solid ${FERRARI_RED}`,
 							borderRadius: 12,
 							padding: '24px 16px',
@@ -475,29 +523,31 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 	};
 
 	// ────────────────────────────────────────────────────────────────────────────
-	// CENA 4 (FRAMES 335 - 479 / 11.16s - 15.97s): FULLSCREEN OSCILOSCÓPIO APPLE SPRING & WHISPER
+	// CENA 4 (FRAMES 335 - 485 / 11.16s - 16.16s): OSCILOSCÓPIO APPLE SPRING & WHISPER
 	// "Física de mola Apple, legendas cinéticas sincronizadas no milissegundo..."
 	// ────────────────────────────────────────────────────────────────────────────
 	const renderScene4PhysicsAndWhisper = () => {
-		if (frame < 335 || frame >= 480) return null;
+		if (frame < 330 || frame > 490) return null;
 
 		const f = frame - 335;
-		const springPuckX = spring({
-			frame: f,
-			fps,
-			config: { damping: 20, mass: 0.85, stiffness: 90 },
-		});
-		const puckPos = ci(springPuckX, [0, 1], [-300, 300]);
+		const sceneOpacity = ci(frame, [332, 342, 475, 485], [0, 1, 1, 0]);
+		const cameraDrift = 1.0 + ci(f, [0, 150], [0, 0.02]);
+
+		// Movimento oscilatório suave e harmônico (sem sobressaltos)
+		const puckPos = Math.sin(f * 0.12) * 260 * Math.exp(-f * 0.005);
 
 		return (
 			<AbsoluteFill
 				style={{
-					backgroundColor: '#07090E',
+					backgroundColor: '#06080D',
 					padding: '120px 48px',
 					display: 'flex',
 					flexDirection: 'column',
 					justifyContent: 'space-between',
 					fontFamily: fontMono,
+					opacity: sceneOpacity,
+					transform: `scale(${cameraDrift})`,
+					pointerEvents: 'none',
 				}}
 			>
 				{/* Topo Técnico */}
@@ -535,12 +585,12 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 					</div>
 				</div>
 
-				{/* Osciloscópio Físico de Tela Cheia */}
+				{/* Osciloscópio Físico com Grid Suave */}
 				<div
 					style={{
 						height: 480,
-						backgroundColor: 'rgba(0, 0, 0, 0.6)',
-						border: '1px solid rgba(255, 255, 255, 0.12)',
+						backgroundColor: 'rgba(0, 0, 0, 0.5)',
+						border: '1px solid rgba(255, 255, 255, 0.1)',
 						borderRadius: 18,
 						position: 'relative',
 						overflow: 'hidden',
@@ -554,7 +604,7 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 						style={{
 							position: 'absolute',
 							inset: 0,
-							backgroundImage: 'linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px)',
+							backgroundImage: 'linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)',
 							backgroundSize: '40px 40px',
 						}}
 					/>
@@ -566,11 +616,11 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 							left: 0,
 							right: 0,
 							height: 2,
-							backgroundColor: 'rgba(255, 0, 34, 0.3)',
+							backgroundColor: 'rgba(255, 0, 34, 0.25)',
 						}}
 					/>
 
-					{/* Puck oscilante em amortecimento crítico */}
+					{/* Puck oscilante com movimento contínuo e orgânico */}
 					<div
 						style={{
 							transform: `translateX(${puckPos}px)`,
@@ -583,12 +633,12 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 					>
 						<div
 							style={{
-								width: 80,
-								height: 80,
+								width: 76,
+								height: 76,
 								borderRadius: '50%',
 								backgroundColor: FERRARI_RED,
-								boxShadow: '0 0 50px rgba(255, 0, 34, 0.8), inset 0 0 20px #FFF',
-								border: '4px solid #FFF',
+								boxShadow: '0 0 45px rgba(255, 0, 34, 0.7), inset 0 0 15px #FFF',
+								border: '3px solid #FFF',
 							}}
 						/>
 						<span style={{ fontSize: 13, color: '#FFF', fontWeight: 700, letterSpacing: '0.08em' }}>
@@ -596,7 +646,7 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 						</span>
 					</div>
 
-					{/* Live Parameters */}
+					{/* Parâmetros Técnicos */}
 					<div
 						style={{
 							position: 'absolute',
@@ -606,7 +656,7 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 							display: 'flex',
 							justifyContent: 'space-between',
 							fontSize: 14,
-							color: 'rgba(255, 255, 255, 0.5)',
+							color: 'rgba(255, 255, 255, 0.45)',
 						}}
 					>
 						<span>MASS: 0.85</span>
@@ -615,17 +665,17 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 					</div>
 				</div>
 
-				{/* Barra de Áudio Whisper Sub-15ms */}
+				{/* Card de Áudio Whisper Sub-15ms */}
 				<div
 					style={{
-						backgroundColor: 'rgba(255, 255, 255, 0.04)',
-						border: '1px solid rgba(255, 255, 255, 0.1)',
+						backgroundColor: 'rgba(255, 255, 255, 0.03)',
+						border: '1px solid rgba(255, 255, 255, 0.08)',
 						borderRadius: 14,
 						padding: '24px 30px',
 					}}
 				>
 					<div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12, fontSize: 14 }}>
-						<span style={{ color: 'rgba(255, 255, 255, 0.5)' }}>WHISPER SUB-15MS TOKEN TRACKER</span>
+						<span style={{ color: 'rgba(255, 255, 255, 0.45)' }}>WHISPER SUB-15MS TOKEN TRACKER</span>
 						<span style={{ color: MATRIX_GREEN }}>✔ 100% OFFLINE</span>
 					</div>
 					<div
@@ -647,13 +697,15 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 	};
 
 	// ────────────────────────────────────────────────────────────────────────────
-	// CENA 5 (FRAMES 480 - 624 / 16.0s - 20.8s): FULLSCREEN BROADCAST AUDIO CONSOLE
+	// CENA 5 (FRAMES 480 - 630 / 16.0s - 21.0s): BROADCAST AUDIO CONSOLE
 	// "Sound design dinâmico e masterização profissional EBU R128."
 	// ────────────────────────────────────────────────────────────────────────────
 	const renderScene5AudioMastering = () => {
-		if (frame < 480 || frame >= 625) return null;
+		if (frame < 475 || frame > 635) return null;
 
 		const f = frame - 480;
+		const sceneOpacity = ci(frame, [478, 488, 620, 630], [0, 1, 1, 0]);
+		const cameraDrift = 1.0 + ci(f, [0, 150], [0, 0.02]);
 		const barsCount = 28;
 
 		return (
@@ -665,6 +717,9 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 					flexDirection: 'column',
 					justifyContent: 'space-between',
 					fontFamily: fontMono,
+					opacity: sceneOpacity,
+					transform: `scale(${cameraDrift})`,
+					pointerEvents: 'none',
 				}}
 			>
 				{/* Top Bar Broadcast */}
@@ -702,18 +757,18 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 					</div>
 				</div>
 
-				{/* Medidores Digitais Gigantes */}
+				{/* Medidores Digitais */}
 				<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
 					<div
 						style={{
-							backgroundColor: 'rgba(0, 255, 102, 0.05)',
-							border: '1px solid rgba(0, 255, 102, 0.3)',
+							backgroundColor: 'rgba(0, 255, 102, 0.04)',
+							border: '1px solid rgba(0, 255, 102, 0.25)',
 							borderRadius: 16,
 							padding: '36px 24px',
 							textAlign: 'center',
 						}}
 					>
-						<div style={{ fontSize: 14, color: 'rgba(255, 255, 255, 0.5)', marginBottom: 8 }}>
+						<div style={{ fontSize: 14, color: 'rgba(255, 255, 255, 0.45)', marginBottom: 8 }}>
 							INTEGRATED LOUDNESS
 						</div>
 						<div
@@ -731,14 +786,14 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 
 					<div
 						style={{
-							backgroundColor: 'rgba(0, 240, 255, 0.05)',
-							border: '1px solid rgba(0, 240, 255, 0.3)',
+							backgroundColor: 'rgba(0, 240, 255, 0.04)',
+							border: '1px solid rgba(0, 240, 255, 0.25)',
 							borderRadius: 16,
 							padding: '36px 24px',
 							textAlign: 'center',
 						}}
 					>
-						<div style={{ fontSize: 14, color: 'rgba(255, 255, 255, 0.5)', marginBottom: 8 }}>
+						<div style={{ fontSize: 14, color: 'rgba(255, 255, 255, 0.45)', marginBottom: 8 }}>
 							TRUE PEAK CEILING
 						</div>
 						<div
@@ -755,11 +810,11 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 					</div>
 				</div>
 
-				{/* Analisador de Espectro de Frequências (VU Meter 28 Bandas) */}
+				{/* Analisador de Espectro com Balística Realista e Suave */}
 				<div
 					style={{
-						backgroundColor: 'rgba(0, 0, 0, 0.8)',
-						border: '1px solid rgba(255, 255, 255, 0.1)',
+						backgroundColor: 'rgba(0, 0, 0, 0.6)',
+						border: '1px solid rgba(255, 255, 255, 0.08)',
 						borderRadius: 16,
 						padding: '36px 30px',
 						display: 'flex',
@@ -767,7 +822,7 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 						gap: 16,
 					}}
 				>
-					<div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'rgba(255,255,255,0.4)' }}>
+					<div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'rgba(255,255,255,0.35)' }}>
 						<span>20 Hz</span>
 						<span>1 kHz</span>
 						<span>20 kHz</span>
@@ -783,9 +838,10 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 						}}
 					>
 						{Array.from({ length: barsCount }).map((_, i) => {
-							const wave = Math.sin(f * 0.4 + i * 0.35) * 0.5 + 0.5;
-							const heightPct = Math.max(15, Math.min(100, Math.floor(wave * 90 + (i % 3) * 6)));
-							const isClipping = heightPct > 85;
+							// Onda orgânica sem ruído caótico
+							const wave = Math.sin(f * 0.15 + i * 0.25) * 0.5 + 0.5;
+							const heightPct = Math.max(12, Math.min(95, Math.floor(wave * 75 + (i % 4) * 5)));
+							const isHigh = heightPct > 70;
 
 							return (
 								<div
@@ -793,10 +849,9 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 									style={{
 										flex: 1,
 										height: `${heightPct}%`,
-										backgroundColor: isClipping ? FERRARI_RED : (heightPct > 65 ? '#FFBD2E' : MATRIX_GREEN),
+										backgroundColor: isHigh ? '#FFBD2E' : MATRIX_GREEN,
 										borderRadius: 4,
-										boxShadow: isClipping ? '0 0 10px #FF0022' : 'none',
-										transition: 'height 0.05s ease',
+										opacity: 0.85,
 									}}
 								/>
 							);
@@ -805,7 +860,7 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 
 					<div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 14, color: MATRIX_GREEN }}>
 						<span>● SMART AUTO-DUCKING ATIVO (-12 dB)</span>
-						<span style={{ color: 'rgba(255,255,255,0.5)' }}>SEM DISTORÇÃO EM CELULARES</span>
+						<span style={{ color: 'rgba(255,255,255,0.45)' }}>SEM DISTORÇÃO EM CELULARES</span>
 					</div>
 				</div>
 			</AbsoluteFill>
@@ -813,14 +868,15 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 	};
 
 	// ────────────────────────────────────────────────────────────────────────────
-	// CENA 6 (FRAMES 625 - 749 / 20.83s - 24.97s): FULLSCREEN FERRARI RED OPEN SOURCE
+	// CENA 6 (FRAMES 625 - 755 / 20.83s - 25.17s): FERRARI RED OPEN SOURCE
 	// "Custo zero de API e 100% open source."
 	// ────────────────────────────────────────────────────────────────────────────
 	const renderScene6FerrariRedOpenSource = () => {
-		if (frame < 625 || frame >= 750) return null;
+		if (frame < 620 || frame > 760) return null;
 
 		const f = frame - 625;
-		const pulse = Math.sin(f * 0.3) * 0.03 + 1.0;
+		const sceneOpacity = ci(frame, [622, 630, 745, 755], [0, 1, 1, 0]);
+		const cameraDrift = 1.0 + ci(f, [0, 130], [0, 0.03]);
 
 		return (
 			<AbsoluteFill
@@ -832,6 +888,9 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 					justifyContent: 'center',
 					alignItems: 'flex-start',
 					fontFamily: fontMono,
+					opacity: sceneOpacity,
+					transform: `scale(${cameraDrift})`,
+					pointerEvents: 'none',
 				}}
 			>
 				<div
@@ -852,8 +911,6 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 
 				<div
 					style={{
-						transform: `scale(${pulse})`,
-						transformOrigin: 'left center',
 						display: 'flex',
 						flexDirection: 'column',
 						gap: 12,
@@ -903,7 +960,7 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 						marginTop: 64,
 						fontSize: 22,
 						color: 'rgba(255, 255, 255, 0.9)',
-						borderTop: '2px solid rgba(0, 0, 0, 0.2)',
+						borderTop: '2px solid rgba(0, 0, 0, 0.15)',
 						paddingTop: 32,
 						width: '100%',
 					}}
@@ -915,15 +972,24 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 	};
 
 	// ────────────────────────────────────────────────────────────────────────────
-	// CENA 7 (FRAMES 750 - 900 / 25.0s - 30.0s): FULLSCREEN GITHUB & CTA BRUTALISTA
+	// CENA 7 (FRAMES 750 - 900 / 25.0s - 30.0s): GITHUB & CTA BRUTALISTA FLUIDO
 	// "Instale via npx skills add e deixe sua estrela no GitHub."
 	// ────────────────────────────────────────────────────────────────────────────
 	const renderScene7GitHubCTA = () => {
-		if (frame < 750) return null;
+		if (frame < 745) return null;
 
 		const f = frame - 750;
-		const starCount = f > 24 ? 1482 : 1481;
+		const sceneOpacity = ci(frame, [748, 758], [0, 1]);
+		const cameraDrift = 1.0 + ci(f, [0, 150], [0, 0.02]);
+
 		const isStarClicked = f > 24;
+		const starCount = isStarClicked ? 1482 : 1481;
+
+		// Clique do Star com mola Apple orgânica (sem tremor)
+		const starButtonScale = isStarClicked
+			? spring({ frame: Math.max(0, f - 24), fps, config: { damping: 16, mass: 0.6 } })
+			: 1.0;
+		const finalStarScale = isStarClicked ? ci(starButtonScale, [0, 1], [0.92, 1.0]) : 1.0;
 
 		return (
 			<AbsoluteFill
@@ -934,6 +1000,9 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 					flexDirection: 'column',
 					justifyContent: 'space-between',
 					fontFamily: fontMono,
+					opacity: sceneOpacity,
+					transform: `scale(${cameraDrift})`,
+					pointerEvents: 'none',
 				}}
 			>
 				{/* Top Callout */}
@@ -958,14 +1027,14 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 				{/* Card de Terminal do GitHub em Tela Cheia */}
 				<div
 					style={{
-						backgroundColor: 'rgba(255, 255, 255, 0.05)',
-						border: '2px solid rgba(255, 255, 255, 0.15)',
+						backgroundColor: 'rgba(255, 255, 255, 0.04)',
+						border: '2px solid rgba(255, 255, 255, 0.12)',
 						borderRadius: 20,
 						padding: '40px 32px',
 						display: 'flex',
 						flexDirection: 'column',
 						gap: 28,
-						boxShadow: '0 20px 60px rgba(0,0,0,0.6)',
+						boxShadow: '0 20px 60px rgba(0,0,0,0.5)',
 					}}
 				>
 					<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -977,10 +1046,10 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 							</div>
 						</div>
 
-						{/* Botão Star do GitHub Reativo */}
+						{/* Botão Star do GitHub Reativo e Suave */}
 						<div
 							style={{
-								backgroundColor: isStarClicked ? '#E3B341' : 'rgba(255, 255, 255, 0.12)',
+								backgroundColor: isStarClicked ? '#E3B341' : 'rgba(255, 255, 255, 0.1)',
 								color: isStarClicked ? '#000000' : '#FFFFFF',
 								borderRadius: 10,
 								padding: '12px 24px',
@@ -989,8 +1058,8 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 								gap: 10,
 								fontWeight: 800,
 								fontSize: 20,
-								boxShadow: isStarClicked ? '0 0 30px rgba(227, 179, 65, 0.6)' : 'none',
-								transition: 'all 0.1s ease',
+								transform: `scale(${finalStarScale})`,
+								boxShadow: isStarClicked ? '0 0 30px rgba(227, 179, 65, 0.5)' : 'none',
 							}}
 						>
 							<span>⭐ Star</span>
@@ -1002,7 +1071,7 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 					<div
 						style={{
 							backgroundColor: '#000000',
-							border: '1px solid rgba(255, 255, 255, 0.2)',
+							border: '1px solid rgba(255, 255, 255, 0.18)',
 							borderRadius: 12,
 							padding: '20px 24px',
 							fontSize: 18,
@@ -1014,7 +1083,7 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 					</div>
 				</div>
 
-				{/* Call to Action Gigante */}
+				{/* Call to Action com Presença Firme e Elegante */}
 				<div
 					style={{
 						backgroundColor: FERRARI_RED,
@@ -1024,7 +1093,7 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 						flexDirection: 'column',
 						alignItems: 'center',
 						gap: 12,
-						boxShadow: '0 0 60px rgba(255, 0, 34, 0.4)',
+						boxShadow: '0 0 60px rgba(255, 0, 34, 0.35)',
 					}}
 				>
 					<div
@@ -1055,7 +1124,7 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 	};
 
 	// ────────────────────────────────────────────────────────────────────────────
-	// CAMADA DE ÁUDIO E SFX
+	// CAMADA DE ÁUDIO REFINADA (ZERO BOOMS / ZERO WHOOSHES / PURO BOM GOSTO)
 	// ────────────────────────────────────────────────────────────────────────────
 	const renderAudio = () => {
 		if (!enableSfx) return null;
@@ -1067,33 +1136,21 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 					<Audio src={staticFile(audioNarracao)} volume={1.0} />
 				)}
 
-				{/* Trilha Lo-Fi Minimalista Tech */}
-				<Audio src={staticFile('audio/trilha_lofi.mp3')} volume={0.14} />
+				{/* Trilha Lo-Fi Minimalista Tech (volume suave que permite à voz respirar) */}
+				<Audio src={staticFile('audio/trilha_lofi.mp3')} volume={0.16} />
 
-				{/* SFX com persistência garantida via Sequence */}
-				<Sequence from={2}>
-					<Audio src={staticFile('audio/whoosh_zoom.mp3')} volume={0.4} />
+				{/* Micro-feedback háptico apenas na digitação do terminal e clique do Star */}
+				<Sequence from={185} durationInFrames={8}>
+					<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.12} />
 				</Sequence>
-				<Sequence from={90}>
-					<Audio src={staticFile('audio/hud_boom.mp3')} volume={0.65} />
+				<Sequence from={210} durationInFrames={8}>
+					<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.12} />
 				</Sequence>
-				<Sequence from={165}>
-					<Audio src={staticFile('audio/futurista_click.mp3')} volume={0.35} />
+				<Sequence from={240} durationInFrames={8}>
+					<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.12} />
 				</Sequence>
-				<Sequence from={266}>
-					<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.4} />
-				</Sequence>
-				<Sequence from={335}>
-					<Audio src={staticFile('audio/sub_impact_warm.mp3')} volume={0.45} />
-				</Sequence>
-				<Sequence from={480}>
-					<Audio src={staticFile('audio/whoosh_zoom.mp3')} volume={0.4} />
-				</Sequence>
-				<Sequence from={625}>
-					<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.45} />
-				</Sequence>
-				<Sequence from={754}>
-					<Audio src={staticFile('audio/impacto_final.mp3')} volume={0.7} />
+				<Sequence from={774} durationInFrames={8}>
+					<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.15} />
 				</Sequence>
 			</>
 		);
