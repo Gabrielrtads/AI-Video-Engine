@@ -1,6 +1,6 @@
 /**
  * Catálogo Canônico de Ferramentas MCP do Vibe Design Studio
- * Auditoria realizada via Antigravity CLI (agy) sobre OpenChatCut
+ * Auditoria realizada via Antigravity CLI (agy) e OpenAI Codex sobre OpenChatCut
  * 
  * 5 Ferramentas de Alto Nível projetadas para o Swarm (Claude, Gemini, Codex)
  */
@@ -30,6 +30,7 @@ export const VIBE_STUDIO_MCP_TOOLS: McpToolDefinition[] = [
         },
         durationSeconds: {
           type: 'number',
+          minimum: 1,
           description: 'Duração total do vídeo em segundos (ex: 30 para vídeo de retenção).',
         },
         fps: {
@@ -83,10 +84,10 @@ export const VIBE_STUDIO_MCP_TOOLS: McpToolDefinition[] = [
             properties: {
               trackId: { type: 'string', description: 'ID da track (ex: V1, V2, A1, CAP1, GFX1).' },
               kind: { type: 'string', enum: ['video', 'audio', 'image', 'caption', 'graphics'] },
-              startFrame: { type: 'number', description: 'Frame exato de início na timeline global.' },
-              durationInFrames: { type: 'number', description: 'Duração em frames.' },
+              startFrame: { type: 'integer', minimum: 0, description: 'Frame exato de início na timeline global.' },
+              durationInFrames: { type: 'integer', minimum: 1, description: 'Duração em frames.' },
               src: { type: 'string', description: 'Origem da mídia ou texto/props.' },
-              volume: { type: 'number', description: 'Volume de áudio (0.0 a 1.0).' },
+              volume: { type: 'number', minimum: 0, maximum: 1, description: 'Volume de áudio (0.0 a 1.0).' },
               props: { type: 'object', description: 'Propriedades customizadas para componentes gráficos.' },
             },
             required: ['trackId', 'kind', 'startFrame', 'durationInFrames'],
@@ -98,17 +99,18 @@ export const VIBE_STUDIO_MCP_TOOLS: McpToolDefinition[] = [
           items: {
             type: 'object',
             properties: {
-              clipId: { type: 'string' },
-              startFrame: { type: 'number' },
-              durationInFrames: { type: 'number' },
-              volume: { type: 'number' },
+              clipId: { type: 'string', description: 'ID do clipe alvo.' },
+              startFrame: { type: 'integer', minimum: 0 },
+              durationInFrames: { type: 'integer', minimum: 1 },
+              volume: { type: 'number', minimum: 0, maximum: 1 },
             },
             required: ['clipId'],
           },
         },
         deletes: {
           type: 'array',
-          items: { type: 'string', description: 'IDs de clipes a remover.' },
+          description: 'Lista de IDs de clipes a remover da timeline.',
+          items: { type: 'string' },
         },
       },
     },
@@ -127,6 +129,8 @@ export const VIBE_STUDIO_MCP_TOOLS: McpToolDefinition[] = [
         },
         fontSize: {
           type: 'number',
+          minimum: 12,
+          maximum: 120,
           description: 'Tamanho da fonte em px (padrão 54 para vertical 1080x1920).',
         },
         highlightColor: {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { TimelineState, TimelineViewState } from './types';
 import { TimelineRuler } from './TimelineRuler';
 import { TrackLane } from './TrackLane';
@@ -16,12 +16,17 @@ export const TimelineViewer: React.FC<TimelineViewerProps> = ({
   onSelectClip,
 }) => {
   const [viewState, setViewState] = useState<TimelineViewState>({
-    pixelsPerFrame: 2.0, // Zoom padrão: 1 frame = 2px (30fps = 60px/s)
+    pixelsPerFrame: 2.0,
     scrollLeft: 0,
     snapTolerancePixels: 8,
   });
 
   const [selectedIds, setSelectedIds] = useState<string[]>(timeline.selectedClipIds ?? []);
+
+  // Sincroniza seleção externa vinda da timeline
+  useEffect(() => {
+    setSelectedIds(timeline.selectedClipIds ?? []);
+  }, [timeline.selectedClipIds]);
 
   const handleSeek = (f: number) => {
     onSeek?.(f);
@@ -32,7 +37,8 @@ export const TimelineViewer: React.FC<TimelineViewerProps> = ({
     onSelectClip?.(clipId);
   };
 
-  const playheadX = frameToPixel(timeline.currentFrame, viewState.pixelsPerFrame) + 140; // 140px é a largura do cabeçalho de track
+  const timelineWidth = Math.ceil(timeline.durationInFrames * viewState.pixelsPerFrame);
+  const playheadX = frameToPixel(timeline.currentFrame, viewState.pixelsPerFrame) + 140;
 
   return (
     <div
@@ -114,7 +120,7 @@ export const TimelineViewer: React.FC<TimelineViewerProps> = ({
         </div>
       </div>
 
-      {/* Área da Timeline com Rolagem */}
+      {/* Área da Timeline com Rolagem Horizontal Sincronizada */}
       <div
         style={{
           position: 'relative',
@@ -150,7 +156,7 @@ export const TimelineViewer: React.FC<TimelineViewerProps> = ({
         </div>
 
         {/* Régua de Tempo */}
-        <div style={{ display: 'flex' }}>
+        <div style={{ display: 'flex', width: 140 + timelineWidth }}>
           <div
             style={{
               width: 140,
@@ -176,6 +182,7 @@ export const TimelineViewer: React.FC<TimelineViewerProps> = ({
               track={track}
               clips={trackClips}
               pixelsPerFrame={viewState.pixelsPerFrame}
+              timelineWidth={timelineWidth}
               selectedClipIds={selectedIds}
               onSelectClip={handleSelect}
             />

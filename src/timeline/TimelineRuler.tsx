@@ -15,10 +15,18 @@ export const TimelineRuler: React.FC<TimelineRulerProps> = ({
   onSeek,
 }) => {
   const widthPx = frameToPixel(totalFrames, pixelsPerFrame);
-  // Intervalo de marcas a cada 1 segundo (fps frames) ou 0.5s se zoom alto
-  const stepFrames = pixelsPerFrame > 4 ? Math.round(fps / 2) : fps;
-  const markers: number[] = [];
 
+  // Nível de Detalhe Adaptativo (LOD): evita estouro de DOM em timelines longas com zoom baixo
+  let stepFrames = fps;
+  if (pixelsPerFrame > 4) {
+    stepFrames = Math.max(1, Math.round(fps / 2)); // 0.5s
+  } else if (pixelsPerFrame < 0.3) {
+    stepFrames = fps * 10; // 10s
+  } else if (pixelsPerFrame < 0.8) {
+    stepFrames = fps * 5; // 5s
+  }
+
+  const markers: number[] = [];
   for (let f = 0; f <= totalFrames; f += stepFrames) {
     markers.push(f);
   }
@@ -45,7 +53,7 @@ export const TimelineRuler: React.FC<TimelineRulerProps> = ({
     >
       {markers.map((f) => {
         const left = frameToPixel(f, pixelsPerFrame);
-        const isMajor = f % (fps * 5) === 0; // A cada 5s
+        const isMajor = f % (fps * 5) === 0;
         return (
           <div
             key={f}

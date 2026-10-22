@@ -1,11 +1,11 @@
 import React from 'react';
 import type { TrackItem, ClipItem } from './types';
-import { frameToPixel } from './timelineMath';
 
 interface TrackLaneProps {
   track: TrackItem;
   clips: ClipItem[];
   pixelsPerFrame: number;
+  timelineWidth: number;
   selectedClipIds: string[];
   onSelectClip: (clipId: string) => void;
 }
@@ -21,6 +21,7 @@ export const TrackLane: React.FC<TrackLaneProps> = ({
   track,
   clips,
   pixelsPerFrame,
+  timelineWidth,
   selectedClipIds,
   onSelectClip,
 }) => {
@@ -31,6 +32,7 @@ export const TrackLane: React.FC<TrackLaneProps> = ({
       style={{
         display: 'flex',
         height: 48,
+        width: 140 + timelineWidth,
         borderBottom: '1px solid #1E222D',
         backgroundColor: '#0D0E12',
       }}
@@ -50,16 +52,30 @@ export const TrackLane: React.FC<TrackLaneProps> = ({
         }}
       >
         <span style={{ fontSize: 12, fontWeight: 600, color: '#D8DEE9' }}>{track.name}</span>
-        <span style={{ fontSize: 10, color: color.text, textTransform: 'uppercase' }}>
-          {track.kind}
-        </span>
+        <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+          <span style={{ fontSize: 10, color: color.text, textTransform: 'uppercase' }}>
+            {track.kind}
+          </span>
+          {track.muted && (
+            <span style={{ fontSize: 9, color: '#EBCB8B', backgroundColor: '#3B321D', padding: '1px 3px', borderRadius: 2 }}>
+              MUTED
+            </span>
+          )}
+          {track.visible === false && (
+            <span style={{ fontSize: 9, color: '#BF616A', backgroundColor: '#3D1D24', padding: '1px 3px', borderRadius: 2 }}>
+              HIDDEN
+            </span>
+          )}
+        </div>
       </div>
 
-      {/* Track Clips Container */}
-      <div style={{ position: 'relative', flexGrow: 1, overflow: 'hidden' }}>
+      {/* Track Clips Container (com largura exatamente alinhada à régua) */}
+      <div style={{ position: 'relative', width: timelineWidth, flexShrink: 0, overflow: 'hidden' }}>
         {clips.map((clip) => {
-          const left = frameToPixel(clip.startFrame, pixelsPerFrame);
-          const width = frameToPixel(clip.durationInFrames, pixelsPerFrame);
+          // Cálculo preciso de borda esquerda e direita para evitar gaps de arredondamento
+          const left = Math.round(clip.startFrame * pixelsPerFrame);
+          const right = Math.round((clip.startFrame + clip.durationInFrames) * pixelsPerFrame);
+          const width = Math.max(2, right - left);
           const isSelected = selectedClipIds.includes(clip.id);
 
           return (
@@ -73,7 +89,7 @@ export const TrackLane: React.FC<TrackLaneProps> = ({
                 position: 'absolute',
                 left,
                 top: 4,
-                width: Math.max(width, 4),
+                width,
                 height: 40,
                 backgroundColor: color.bg,
                 border: `1px solid ${isSelected ? '#FFFFFF' : color.border}`,

@@ -10,6 +10,7 @@ import {
   pixelToFrame,
   formatFrameToTimestamp,
   snapToNearestClip,
+  assertValidTimeline,
 } from '../../src/timeline/timelineMath.ts';
 import { VIBE_STUDIO_MCP_TOOLS } from '../../src/mcp/vibeStudioTools.ts';
 
@@ -19,6 +20,7 @@ describe('Vibe Design Studio: Timeline Math & MCP Tools', () => {
       assert.equal(frameToPixel(0, 2.0), 0);
       assert.equal(frameToPixel(30, 2.0), 60);
       assert.equal(frameToPixel(900, 2.0), 1800);
+      assert.equal(frameToPixel(-10, 2.0), 0, 'frames negativos devem ser clampados a zero');
     });
 
     it('deve converter pixels para frames inteiros arredondados', () => {
@@ -34,6 +36,12 @@ describe('Vibe Design Studio: Timeline Math & MCP Tools', () => {
       assert.equal(formatFrameToTimestamp(30, 30), '00:01:00');
       assert.equal(formatFrameToTimestamp(900, 30), '00:30:00');
       assert.equal(formatFrameToTimestamp(1835, 30), '01:01:05');
+    });
+
+    it('deve formatar timecode longo em hh:mm:ss:ff quando exceder 1 hora', () => {
+      // 1 hora = 3600s = 108000 frames a 30fps
+      assert.equal(formatFrameToTimestamp(108000, 30), '01:00:00:00');
+      assert.equal(formatFrameToTimestamp(108035, 30), '01:00:01:05');
     });
 
     it('deve realizar snap magnético para o início ou fim de clipes vizinhos', () => {
@@ -53,6 +61,56 @@ describe('Vibe Design Studio: Timeline Math & MCP Tools', () => {
       // Alvo no frame 120 (longe dos clipes): não deve sofrer snap
       const unsnapped = snapToNearestClip(120, mockClips, 5);
       assert.equal(unsnapped, 120, 'fora da tolerância deve manter o frame original');
+
+      // Tolerância zero não altera
+      assert.equal(snapToNearestClip(88, mockClips, 0), 88);
+    });
+
+    it('assertValidTimeline deve aprovar timeline válida e rejeitar dados corrompidos', () => {
+      const validTimeline = {
+        fps: 30,
+        width: 1080,
+        height: 1920,
+        durationInFrames: 900,
+        currentFrame: 0,
+        tracks: [{ id: 'V1', kind: 'video', name: 'Main Video' }],
+        clips: [{ id: 'c1', trackId: 'V1', startFrame: 0, durationInFrames: 120, kind: 'video', src: 'clip.mp4' }],
+        selectedClipIds: [],
+      };
+
+      assert.doesNotThrow(() => assertValidTimeline(validTimeline));
+
+      // Rejeita FPS <= 0 ou não-finito
+      assert.throws(
+        () => assertValidTimeline({ ...validTimeline, fps: 0 }),
+        /fps precisa ser positivo/
+      );
+
+      // Rejeita durationInFrames <= 0
+      assert.throws(
+        () => assertValidTimeline({ ...validTimeline, durationInFrames: -5 }),
+        /durationInFrames precisa ser um inteiro positivo/
+      );
+
+      // Rejeita clip com startFrame negativo
+      assert.throws(
+        () =>
+          assertValidTimeline({
+            ...validTimeline,
+            clips: [{ id: 'bad', trackId: 'V1', startFrame: -1, durationInFrames: 10, kind: 'video', src: 'x.mp4' }],
+          }),
+        /startFrame inválido/
+      );
+
+      // Rejeita clip com durationInFrames zero
+      assert.throws(
+        () =>
+          assertValidTimeline({
+            ...validTimeline,
+            clips: [{ id: 'bad', trackId: 'V1', startFrame: 0, durationInFrames: 0, kind: 'video', src: 'x.mp4' }],
+          }),
+        /durationInFrames inválida/
+      );
     });
   });
 
@@ -69,27 +127,30 @@ describe('Vibe Design Studio: Timeline Math & MCP Tools', () => {
       ]);
     });
 
-    it('vibe_project_setup deve exigir ratio e durationSeconds', () => {
+    it('vibe_project_setup deve exigir ratio e durationSeconds com constraints', () => {
       const setupTool = VIBE_STUDIO_MCP_TOOLS.find((t) => t.name === 'vibe_project_setup');
       assert.ok(setupTool);
       assert.deepEqual(setupTool.inputSchema.required, ['ratio', 'durationSeconds']);
+      assert.equal(setupTool.inputSchema.properties.durationSeconds.minimum, 1);
     });
 
-    it('vibe_style_captions deve conter opções de animação cinéticas', () => {
+    it('vibe_style_captions deve conter opções de animação cinéticas e bounds', () => {
       const captionTool = VIBE_STUDIO_MCP_TOOLS.find((t) => t.name === 'vibe_style_captions');
       assert.ok(captionTool);
       const presets = captionTool.inputSchema.properties.motionPreset.enum;
       assert.ok(presets.includes('slam'));
       assert.ok(presets.includes('karaoke'));
       assert.ok(captionTool.inputSchema.properties.avoidFaceZones, 'deve incluir parâmetro de safe zone facial');
+      assert.equal(captionTool.inputSchema.properties.fontSize.minimum, 12);
+      assert.equal(captionTool.inputSchema.properties.fontSize.maximum, 120);
     });
 
-    it('vibe_compose_timeline deve suportar operações atômicas em lote', () => {
+    it('vibe_compose_timeline deve suportar operações atômicas em lote com schemas detalhados', () => {
       const composeTool = VIBE_STUDIO_MCP_TOOLS.find((t) => t.name === 'vibe_compose_timeline');
       assert.ok(composeTool);
-      assert.ok(composeTool.inputSchema.properties.adds);
-      assert.ok(composeTool.inputSchema.properties.updates);
-      assert.ok(composeTool.inputSchema.properties.deletes);
+      assert.ok(composeTool.inputSchema.properties.adds.items);
+      assert.ok(composeTool.inputSchema.properties.updates.items);
+      assert.ok(composeTool.inputSchema.properties.deletes.items);
     });
   });
 });
