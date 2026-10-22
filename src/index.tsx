@@ -2,6 +2,7 @@ import React from 'react';
 import {AbsoluteFill, Composition, registerRoot} from 'remotion';
 import {H, FPS, W} from './kit';
 import {FlowMotionMaster} from './FlowMotionMaster';
+import {FullBleedShowcase} from './FullBleedShowcase';
 import {CarrosselEditorial} from './CarrosselEditorial';
 import {Slide02Diagnostico} from './Slide02Diagnostico';
 import {Slide03Solucao} from './Slide03Solucao';
@@ -11,6 +12,12 @@ import {Slide05Final} from './Slide05Final';
 const FlowMotionRoot: React.FC = () => (
 	<AbsoluteFill style={{background: '#060709'}}>
 		<FlowMotionMaster audioNarracao="narracao_thalita.mp3" enableSfx={true} />
+	</AbsoluteFill>
+);
+
+const FullBleedRoot: React.FC = () => (
+	<AbsoluteFill style={{background: '#050608'}}>
+		<FullBleedShowcase audioNarracao="narracao_thalita.mp3" enableSfx={true} />
 	</AbsoluteFill>
 );
 
@@ -68,8 +75,8 @@ registerRoot(() => (
 	<>
 		{/* Core Motion Master Compositions */}
 		<Composition
-			id="FlowMotionMaster"
-			component={FlowMotionRoot}
+			id="FullBleedShowcase"
+			component={FullBleedRoot}
 			durationInFrames={900}
 			fps={FPS}
 			width={W}
@@ -77,6 +84,14 @@ registerRoot(() => (
 		/>
 		<Composition
 			id="Video"
+			component={FullBleedRoot}
+			durationInFrames={900}
+			fps={FPS}
+			width={W}
+			height={H}
+		/>
+		<Composition
+			id="FlowMotionMaster"
 			component={FlowMotionRoot}
 			durationInFrames={900}
 			fps={FPS}
