@@ -6,6 +6,7 @@ import {CarrosselEditorial} from './CarrosselEditorial';
 import {Slide02Diagnostico} from './Slide02Diagnostico';
 import {Slide03Solucao} from './Slide03Solucao';
 import {Slide04Engenharia} from './Slide04Engenharia';
+import {Slide05Final} from './Slide05Final';
 
 const FlowMotionRoot: React.FC = () => (
 	<AbsoluteFill style={{background: '#060709'}}>
@@ -111,6 +112,14 @@ registerRoot(() => (
 		<Composition
 			id="Slide04Engenharia"
 			component={Slide04Engenharia}
+			durationInFrames={120}
+			fps={30}
+			width={1080}
+			height={1350}
+		/>
+		<Composition
+			id="Slide05Final"
+			component={Slide05Final}
 			durationInFrames={120}
 			fps={30}
 			width={1080}
