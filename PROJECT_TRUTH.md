@@ -66,3 +66,11 @@ O estúdio pode ser alimentado e disparado 100% via API sem interface humana:
    - O Remotion recebe as propriedades via CLI:
      `npx remotion render Video out/video.mp4 --props='{"title": "..."}'`
    - O pipeline finaliza com `node scripts/masterizar_audio.mjs`.
+
+## 8. Protocolo de Carrosséis (Grill-Me Obrigatório)
+Sempre que uma demanda envolver a criação ou refatoração de um **Carrossel Editorial (4:5)**:
+- O agente é **estritamente obrigado** a disparar a entrevista interativa (`/alinhar` / `ask_question`) antes de tocar em código ou gerar telas.
+- Deve extrair obrigatoriamente:
+  1. **Quantidade exata de slides/cards**;
+  2. **Identidade visual dos slides**: se o estilo será uniforme (padrão único contínuo) ou se o usuário deseja editar e dirigir slide por slide individualmente;
+  3. **Destino (Estático vs. Futura Animação)**: se o carrossel será exportado apenas como imagens estáticas para o feed OU se a intenção é criar os slides preparados para depois **animá-los como vídeo motion** usando o motor do `vibe-design-studio`.

@@ -1,30 +1,44 @@
-# PROJECT.md — Vibe Design Studio: QA Headless Terminal Suite
+# PROJECT.md — Vibe Design Studio: Governança & Motor Headless Terminal
 
-## 1. Contexto & Diretrizes da Missão
-- **Missão:** QA Completo da versão 100% Terminal (Headless) do Vibe Design Studio.
-- **Modo Swarm:** Virtual Mono-Modelo (Contingência por Quota — Apenas Gemini ativo).
-- **Mesa de Trabalho:** `task/absorcao-timeline-mcp-20261022`
-- **Ambiente:** Node.js 24 / Windows / Remotion v4 / FFMPEG
+> **Status:** Homologado & Ativo  
+> **Equipe Ativa (com cota confirmada):** `gemini-local` *(Claude e Codex sem cota temporariamente isolados)*  
+> **Mesa Git:** `.worktrees/absorcao-timeline-mcp-20261022` (sincronizada com `main`)
 
-## 2. Agentes Ativos & Governança de Quota
-| Agente | Status de Quota | Papel Nesta Missão |
-|---|---|---|
-| **gemini-local** | **ATIVA** | Orquestrador, Executor TDD, QA Auditor e Engenheiro de Infra |
-| **claude-local / claude-vps** | ESGOTADA | Excluído (proibida qualquer invocação externa) |
-| **codex-local** | ESGOTADA | Excluído (proibida qualquer invocação externa) |
+---
 
-## 3. Feature Inventory & Escopo do QA
+## 1. Feature Inventory Consolidado
 
-| Feature | Tipo | Escopo / Contrato | Status |
-|---|---|---|---|
-| **Linter Anti-Slop** | CLI Estática | `node scripts/lint-motion-slop.mjs <file>` — valida foley, springs, hierarquia | A Validar |
-| **Bancada 1-Click** | CLI Headless | `node scripts/produzir_video_bancada.mjs --dry-run` — staging, lint, render e review | A Validar |
-| **Remotion Still Render** | CLI Headless | `npx remotion still Video out/still.png` — render estático 1080x1920 sem UI | A Validar |
-| **Carrossel Still Render** | CLI Headless | `npx remotion still CarrosselEditorial out/slide.png` — render 1080x1350 sem UI | A Validar |
-| **Timeline Math & MCP Tools** | Unit/E2E | `tests/e2e/timeline_and_mcp.test.mjs` — 5 canonical tools, gaps, assertValidTimeline | Validado (143/143) |
-| **E2E Terminal QA Suite** | Test Runner | `tests/e2e/terminal_headless_qa.test.mjs` — automação de teste da bancada CLI | A Implementar |
+| ID | Funcionalidade | Escopo & Arquivo | Status | Validação |
+|---|---|---|---|---|
+| **F1** | **Pontes Canônicas de Instrução** | Criação de `CLAUDE.md` e `GEMINI.md` apontando para `@AGENTS.md` | Entregue | `node scripts/instrucoes.mjs auditar` (8751 bytes / orçamento 12288) |
+| **F2** | **Sincronização Bidirecional da Mesa Git** | Reconciliação dos commits da `main` (`dfc4aff`) na worktree ativa | Entregue | `git merge main` limpo |
+| **F3** | **Interceptação & Trava de Carrossel 4:5** | Detecção automática de temas de carrossel no `studio_engine.mjs` com acionamento do Protocolo Grill-Me | Entregue | 90/90 testes unitários PASS |
+| **F4** | **Auditoria Global de Instruções do Hub** | Atualização de `scripts/instrucoes.mjs` para auditar recursivamente `projects/*` | Entregue | `node --test scripts/instrucoes.test.mjs` (7/7 PASS) |
+| **F5** | **Motor Headless de Terminal & QA** | Fix de `dotenv`, suíte de testes E2E de terminal e renderização headless via CLI Remotion | Entregue | `node --test tests/e2e/terminal_headless_qa.test.mjs` (5/5 PASS) |
+| **F6** | **Timeline Math & MCP Tools** | Matemática de cortes/snapping (`timelineMath.ts`) e 5 ferramentas MCP canônicas | Entregue | `tests/e2e/timeline_and_mcp.test.mjs` (10/10 PASS) |
 
-## 4. Contratos de Execução CLI
+---
+
+## 2. Contratos de Interface (TypeScript / Node.js)
+
+### 2.1. Configuração de Tela Limpa (`generateCleanSlate`)
+```typescript
+interface CarouselConfig {
+  slideCount: number;                  // Padrão: 5 (mínimo 1)
+  visualUniformity: 'uniforme' | 'individual'; // Padrão: 'uniforme'
+  targetType: 'motion' | 'estatico';   // Padrão: 'motion'
+}
+
+interface CleanSlateOptions {
+  theme?: string;
+  objective?: 'venda' | 'atracao' | 'autoridade' | 'geral';
+  aspect?: '9:16' | '4:5' | '1:1';
+  aspectRatio?: '9:16' | '4:5' | '1:1';
+  carousel?: CarouselConfig | null;
+}
+```
+
+### 2.2. Contratos de Execução CLI (Terminal Headless)
 - **Dry-run da Bancada:**
   ```bash
   node scripts/produzir_video_bancada.mjs FlowMotionMaster --dry-run
@@ -33,17 +47,21 @@
   ```bash
   node scripts/lint-motion-slop.mjs src/FlowMotionMaster.tsx
   ```
-- **Compilação TypeScript:**
+- **Remotion Still Render (Headless):**
   ```bash
-  npx tsc --noEmit
+  npx remotion still Video out/still.png --frame=0
   ```
 - **Suíte Completa:**
   ```bash
-  node --test tests/e2e/terminal_headless_qa.test.mjs
+  node --test tests/e2e/terminal_headless_qa.test.mjs tests/e2e/timeline_and_mcp.test.mjs
   ```
 
-## 5. Milestones de Execução
-- **[M1] Arquitetura & Especificação:** Registro de escopo e isolamento mono-modelo em `PROJECT.md` (Concluído).
-- **[M2] TDD & Testes de Terminal:** Criação do runner de teste automatizado `tests/e2e/terminal_headless_qa.test.mjs`.
-- **[M3] Execução de QA & Smoke Tests:** Execução do linter, tsc, renders headless e suíte de testes.
-- **[M4] Auditoria Forense & Scorecard:** Checagem de integridade, memória, git status e relatório executivo.
+---
+
+## 3. Milestones Concluídos
+
+- [x] **M1 (Diagnóstico & Revisão Cruzada):** Execução do `/cli-revisao-cruzada` identificando o drift git e a ausência de pontes.
+- [x] **M2 (Alinhamento de Quota & Escopo):** Invocação de `ask_question` (/equipe) mapeando cotas e escopo de QA headless.
+- [x] **M3 (Implementação & Fixes de Terminal):** Adicionada dependência `dotenv`, corrigido build script do `esbuild`, implementado runner `terminal_headless_qa.test.mjs`.
+- [x] **M4 (Desinchaço & Higiene de Arquitetura):** Removidos 400 linhas de componentes de UI redundantes com o Remotion Studio (`TimelineViewer.tsx`, `TimelineRuler.tsx`, `TrackLane.tsx`).
+- [x] **M5 (Validação E2E & Homologação):** Todos os 15 testes de terminal e timeline 100% verdes, renders reais de frames 1080x1920 e 1080x1350 validados.

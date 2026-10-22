@@ -53,6 +53,28 @@ describe('Unit: Studio Engine Interactive Onboarding & CLI Flow', () => {
       assert.strictEqual(result.briefing, 'showcase de fintech');
     });
 
+
+    it('deve interceptar carrossel editorial 4:5 na Rota 2 e aplicar Protocolo Grill-Me', async () => {
+      const outputBuffer = [];
+      const writer = (chunk) => outputBuffer.push(chunk);
+      const mockInput = ['2', 'Quero criar um carrossel editorial 4:5 sobre IA', '7', '2', '1'];
+
+      const result = await runOnboarding(mockInput, writer);
+
+      assert.strictEqual(result.route, 2);
+      assert.strictEqual(result.cleanSlate, true);
+      assert.strictEqual(result.defaults.aspectRatio, '4:5');
+      assert.strictEqual(result.defaults.width, 1080);
+      assert.strictEqual(result.defaults.height, 1350);
+      assert.deepStrictEqual(result.carousel, {
+        slideCount: 7,
+        visualUniformity: 'individual',
+        targetType: 'motion',
+      });
+
+      const fullOutput = outputBuffer.join('');
+      assert.ok(fullOutput.includes('Protocolo Grill-Me: Carrossel Editorial 4:5 Detectado'));
+    });
     it('deve completar Rota 2 (Criar do Zero) com tela limpa e defaults de 9:16', async () => {
       const outputBuffer = [];
       const writer = (chunk) => outputBuffer.push(chunk);

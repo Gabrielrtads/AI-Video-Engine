@@ -42,3 +42,8 @@ Todo agente tem à disposição neste repositório:
 5. **Portão de Aprovação de Templates:** O salvamento de templates em `src/templates/` só ocorre sob confirmação explícita `"Sim"` do usuário.
 6. **Trailer de Commit:** Todo commit no repositório deve incluir `--trailer "Agent=<seu-id>"`.
 7. **Higiene Pós-Render:** Sempre execute `node scripts/desligar-motor-video` ou verifique se processos do Chromium/Remotion foram finalizados após renderizações intensivas.
+8. **Protocolo Grill-Me Obrigatório para Carrosséis:** Se o usuário solicitar a criação de um **Carrossel (4:5)**, o agente **DEVE OBRIGATORIAMENTE** acionar a entrevista interativa (`/alinhar` / `ask_question`) antes de codar ou planejar, perguntando:
+   - **Quantidade de Slides:** Quantos cards/slides o carrossel terá;
+   - **Uniformidade Visual vs. Edição Individual:** Se o estilo visual (layout, tipografia, paleta) será uniforme para todos os slides ou se o usuário deseja dirigir e editar cada slide individualmente, um a um;
+   - **Estático vs. Futura Animação:** Se o carrossel é apenas para imagens estáticas (feed) OU se ele quer criar os slides estruturados para depois **animá-los como vídeo motion** usando o `vibe-design-studio`.
+   - O agente NUNCA deve assumir esses parâmetros ou começar a gerar slides no escuro.

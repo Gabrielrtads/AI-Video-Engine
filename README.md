@@ -1,5 +1,9 @@
 # Vibe Design Studio 🎨🎬
 
+[![GitHub stars](https://img.shields.io/github/stars/Gabrielrtads/vibe-design-studio?style=social)](https://github.com/Gabrielrtads/vibe-design-studio/stargazers)
+
+> ⭐ **If this tool saved you time or empowered your AI agents, please star this repository! It helps more developers discover the project.**
+
 > **The Headless Creative & Motion Design Studio for AI Agents.**  
 > Deterministic Code, Anti-Slop Linters, Physical Easing Curves & Dynamic Sound Design for [Claude Code](https://github.com/anthropics/claude-code), [OpenAI Codex](https://github.com/openai/codex), [Google Antigravity](https://github.com/google/antigravity), and [Remotion](https://www.remotion.dev).
 
