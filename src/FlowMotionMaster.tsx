@@ -1,823 +1,1472 @@
-import React, {useMemo, useRef, useEffect} from 'react';
+import React, { useMemo } from 'react';
 import {
 	AbsoluteFill,
 	Audio,
 	interpolate,
-	random,
+	interpolateColors,
+	spring,
 	staticFile,
 	useCurrentFrame,
 	useVideoConfig,
 } from 'remotion';
-import WORDS_DATA from './data/words.json';
-import {
-	ci,
-	lerp,
-	EASE,
-	E_IN,
-	E_IO,
-	E_OUT,
-	MONO,
-	SANS,
-	SERIF,
-	AutoImpactTrack,
-	SoundImpactTrigger,
-	KineticWordCaption,
-} from './kit';
+import { loadFont as loadAnton } from '@remotion/google-fonts/Anton';
+import { loadFont as loadInstrumentSerif } from '@remotion/google-fonts/InstrumentSerif';
+import { loadFont as loadPlusJakartaSans } from '@remotion/google-fonts/PlusJakartaSans';
+import RAW_WORDS from './data/words.json';
 
-// ════════════════════════════════════════════════════════════════════════════
-// VIBE DESIGN STUDIO — SHOWCASE REEL PONTILHISMO 3D (30.6s @ 30 FPS = 918 FRAMES)
-// Direção Visual: Pontilhismo Matemático Contínuo & Live Terminal & Orquestração Multiagente
-// Estética: Luxo P&B Nobre (#050505 & #EDEBE6) + Instrument Serif + JetBrains Mono
-// ════════════════════════════════════════════════════════════════════════════
+// Pré-carregamento determinístico de Google Fonts via Remotion
+const { fontFamily: fontAnton } = loadAnton();
+const { fontFamily: fontInstrumentSerif } = loadInstrumentSerif('italic');
+const { fontFamily: fontPlusJakartaSans } = loadPlusJakartaSans('normal', {
+	weights: ['600', '700', '800'],
+});
 
-const W = 1080;
-const H = 1920;
-const CENTER_X = 540;
-const CENTER_Y = 880;
-const TAU = Math.PI * 2;
-const N_POINTS = 3800;
+const fontMono = 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace';
 
-type P5 = [number, number, number, number, number, string]; // x, y, z, raio, opacidade, cor
-
-// Sementes determinísticas para consistência absoluta frame a frame
-const R = Array.from({length: N_POINTS}, (_, i) => ({
-	a: random('pa' + i),
-	b: random('pb' + i),
-	c: random('pc' + i),
-	d: random('pd' + i),
-}));
-
-// Paleta Nobre de Pontilhismo de IA
-const COLOR_WHITE = '#EDEBE6';
-const COLOR_GOLD = '#FDE047';
-const COLOR_CYAN = '#38BDF8';
-const COLOR_EMERALD = '#34D399';
-
-// Câmera Tridimensional Contínua
-type Cam = {yaw: number; pitch: number; dist: number; x: number; y: number; roll: number};
-const FOCAL = 1350;
-
-const camAt = (t: number): Cam => {
-	let yaw = 0;
-	let pitch = 0;
-	let dist = 1450;
-	let x = 0;
-	let y = 0;
-
-	if (t < 5.6) {
-		// Cena 1: Live Terminal de Código (Dolly-in sutil focado no terminal)
-		yaw = ci(t, [0, 5.6], [-0.12, 0.12]);
-		pitch = ci(t, [0, 5.6], [0.08, -0.04]);
-		dist = ci(t, [0, 5.6], [1550, 1380]);
-		y = ci(t, [0, 5.6], [20, -40]);
-	} else if (t < 12.0) {
-		// Cena 2: Monograma 3D Vibe Design Studio (Órbita e abertura de plano)
-		yaw = ci(t, [5.6, 12.0], [0.12, 0.55]);
-		pitch = ci(t, [5.6, 12.0], [-0.04, 0.22]);
-		dist = ci(t, [5.6, 12.0], [1380, 1420]);
-		y = 0;
-	} else if (t < 22.2) {
-		// Cena 3: Constelação Multiagente (Órbita atômica 3D inclinada)
-		yaw = ci(t, [12.0, 22.2], [0.55, -0.65]);
-		pitch = ci(t, [12.0, 22.2], [0.22, -0.18]);
-		dist = ci(t, [12.0, 22.2], [1420, 1280]);
-		y = -20;
-	} else {
-		// Cena 4: A Grande Estrela 3D do GitHub (Punch-in majestoso com rotação suave)
-		yaw = ci(t, [22.2, 30.6], [-0.65, 0.45]);
-		pitch = ci(t, [22.2, 30.6], [-0.18, 0.14]);
-		dist = ci(t, [22.2, 30.6], [1280, 1150]);
-		y = ci(t, [22.2, 30.6], [-20, -60]);
-	}
-
-	// Respiração orgânica contínua da câmera
-	yaw += Math.sin(t * 0.75) * 0.025;
-	pitch += Math.cos(t * 0.6) * 0.018;
-
-	return {yaw, pitch, dist, x, y, roll: 0};
+// Helper de interpolação clampada flexível
+const ci = (
+	val: number,
+	inRange: readonly number[] | number[],
+	outRange: readonly number[] | number[]
+) => {
+	return interpolate(val, inRange as number[], outRange as number[], {
+		extrapolateLeft: 'clamp',
+		extrapolateRight: 'clamp',
+	});
 };
 
-const project = (x: number, y: number, z: number, c: Cam): [number, number, number] => {
-	x -= c.x;
-	y -= c.y;
-	const cy = Math.cos(c.yaw);
-	const sy = Math.sin(c.yaw);
-	const x1 = x * cy + z * sy;
-	const z1 = -x * sy + z * cy;
+export interface KineticWord {
+	text: string;
+	start: number;
+	end: number;
+	index: number;
+	accent?: boolean;
+}
 
-	const cp = Math.cos(c.pitch);
-	const sp = Math.sin(c.pitch);
-	const y1 = y * cp - z1 * sp;
-	const z2 = y * sp + z1 * cp;
+// Enriquecimento das 63 palavras da locução com índices e flags de ênfase
+const WORDS: KineticWord[] = (RAW_WORDS as { text: string; start: number; end: number }[]).map((w, i) => {
+	const clean = w.text.toLowerCase().replace(/[.,:!?⭐"']/g, '').trim();
+	const isAccent = [
+		'vibe', 'design', 'studio', 'headless', 'puro', 'whisper', 'ebu', 'r128',
+		'zero', '100%', 'open-source', 'skills', 'estrela', 'github', 'apple', 'mola', 'genéricos'
+	].includes(clean);
+	return {
+		...w,
+		index: i,
+		accent: isAccent,
+	};
+});
 
-	const zz = z2 + c.dist;
-	if (zz < 30) return [0, 0, -1];
-	const s = FOCAL / zz;
-	return [CENTER_X + x1 * s, CENTER_Y + y1 * s, s];
-};
-
-// ════════════════════════════════════════════════════════════════════════════
-// 4 GEOMETRIAS MATEMÁTICAS 3D (MORPH CONTÍNUO)
-// ════════════════════════════════════════════════════════════════════════════
-
-// Poeira estelar ambiente de respiro
-const ambientDust = (i: number, t: number, color = COLOR_WHITE, o = 0.12): P5 => {
-	const d = R[i];
-	const x = (d.a - 0.5) * 2200;
-	const y = (d.b - 0.5) * 3200;
-	const z = (d.c - 0.5) * 2000 + Math.sin(t * 0.4 + d.a * 10) * 50;
-	return [x, y, z, 1.0 + d.d * 0.8, o, color];
-};
-
-// Forma 1: Grid Matricial do Terminal 3D (0s - 5.6s)
-const shapeTerminalGrid = (i: number, t: number): P5 => {
-	const d = R[i];
-	// 2600 pontos desenhando a tela holográfica do terminal
-	if (i < 2600) {
-		const u = i / 2600;
-		const col = Math.floor(u * 28);
-		const row = Math.floor((u * 28) % 18);
-		const x = (col - 14) * 24 + (d.a - 0.5) * 6;
-		const y = (row - 9) * 28 + (d.b - 0.5) * 8 - 40;
-		const z = Math.sin(col * 0.2 + t * 3) * 35;
-		const scan = (y + 300 + t * 180) % 600;
-		const isBeam = Math.abs(scan - 300) < 40;
-		return [x, y, z, isBeam ? 1.8 : 1.1, isBeam ? 0.95 : 0.45, isBeam ? COLOR_GOLD : COLOR_WHITE];
-	}
-	// 1200 pontos para feixe de laser superior
-	const u = (i - 2600) / 1200;
-	const x = (u - 0.5) * 780;
-	const y = -340 + Math.sin(u * 15 + t * 4) * 15;
-	const z = (d.c - 0.5) * 40;
-	return [x, y, z, 1.4, 0.8, COLOR_GOLD];
-};
-
-// Forma 2: O Monograma "V" Dimensional & Estúdio Headless (5.6s - 12.0s)
-const shapeStudioPrism = (i: number, t: number): P5 => {
-	const d = R[i];
-	// 2800 pontos para o Grande "V" Geométrico Tridimensional
-	if (i < 2800) {
-		const u = i / 2800;
-		const arm = u < 0.5 ? -1 : 1;
-		const prog = (u % 0.5) * 2;
-		const x0 = arm * (180 - prog * 150);
-		const y0 = -220 + prog * 360;
-		const thickness = 28 * Math.sqrt(d.a);
-		const a = d.b * TAU;
-		const x = x0 + Math.cos(a) * thickness;
-		const y = y0 + Math.sin(a) * thickness;
-		const z = (prog - 0.5) * 80 + Math.sin(t * 2 + prog * 4) * 25;
-		const isGold = d.c > 0.65;
-		return [x, y - 30, z, isGold ? 1.8 : 1.3, isGold ? 0.95 : 0.75, isGold ? COLOR_GOLD : COLOR_WHITE];
-	}
-	return ambientDust(i, t, COLOR_WHITE, 0.15);
-};
-
-// Forma 3: Orquestração Multiagente — Tríade Atômica (12.0s - 22.2s)
-const shapeMultiagentTriad = (i: number, t: number): P5 => {
-	const d = R[i];
-	// 3 Órbitas Elípticas 3D representando Claude Code, OpenAI Codex e Google Antigravity
-	if (i < 3000) {
-		const agentIndex = Math.floor(i / 1000); // 0 = Claude, 1 = Codex, 2 = Antigravity
-		const u = ((i % 1000) / 1000) * TAU;
-		const spin = t * 1.5;
-
-		const rX = 320;
-		const rY = 140;
-
-		let x0 = Math.cos(u) * rX;
-		let y0 = Math.sin(u) * rY;
-		let z0 = Math.sin(u * 2 + spin) * 70;
-
-		// Rotação espacial dos 3 anéis em ângulos distintos (120 graus entre si)
-		const tiltAngle = (agentIndex * Math.PI) / 3;
-		const rotSpeed = spin + agentIndex * 2.1;
-		const x = x0 * Math.cos(tiltAngle) - y0 * Math.sin(tiltAngle) + Math.cos(rotSpeed) * 30;
-		const y = x0 * Math.sin(tiltAngle) + y0 * Math.cos(tiltAngle);
-		const z = z0 + (d.a - 0.5) * 40;
-
-		const color = agentIndex === 0 ? COLOR_GOLD : agentIndex === 1 ? COLOR_EMERALD : COLOR_CYAN;
-		const isCore = d.b > 0.8;
-		return [x, y - 40, z, isCore ? 2.0 : 1.2, isCore ? 0.95 : 0.65, color];
-	}
-
-	// 800 pontos para o Núcleo Central de Código Pulsante
-	const a = d.a * TAU;
-	const r = 85 * Math.sqrt(d.b);
-	const pulse = 1 + Math.sin(t * 5) * 0.12;
-	const x = Math.cos(a) * r * pulse;
-	const y = Math.sin(a) * r * pulse - 40;
-	const z = (d.c - 0.5) * 70;
-	return [x, y, z, 1.6, 0.85, COLOR_WHITE];
-};
-
-// Forma 4: A Grande Estrela Pentagrama 3D do GitHub ⭐ (22.2s - 30.6s)
-const shapeGitHubStar = (i: number, t: number): P5 => {
-	const d = R[i];
-	// 3000 pontos desenhando a Estrela de 5 Pontas 3D
-	if (i < 3000) {
-		const u = i / 3000;
-		const point = Math.floor(u * 10);
-		const prog = (u * 10) % 1;
-		const spin = t * 0.8;
-
-		// Vértices externo e interno alternados
-		const isOuter = point % 2 === 0;
-		const a0 = (point * Math.PI) / 5 - Math.PI / 2 + spin;
-		const a1 = ((point + 1) * Math.PI) / 5 - Math.PI / 2 + spin;
-		const r0 = isOuter ? 260 : 110;
-		const r1 = isOuter ? 110 : 260;
-
-		const x0 = Math.cos(a0) * r0;
-		const y0 = Math.sin(a0) * r0;
-		const x1 = Math.cos(a1) * r1;
-		const y1 = Math.sin(a1) * r1;
-
-		const x = lerp(x0, x1, prog) + (d.a - 0.5) * 20;
-		const y = lerp(y0, y1, prog) + (d.b - 0.5) * 20 - 70;
-		const z = (d.c - 0.5) * 60 + Math.sin(t * 3 + u * 10) * 30;
-
-		const isShimmer = d.d > 0.7;
-		return [x, y, z, isShimmer ? 2.2 : 1.4, isShimmer ? 1.0 : 0.75, COLOR_GOLD];
-	}
-
-	// 800 pontos para os Raios Estelares em Expansão
-	const u = (i - 3000) / 800;
-	const angle = d.a * TAU;
-	const dist = 320 + d.b * 450 + Math.sin(t * 2 + d.c * 10) * 60;
-	const x = Math.cos(angle) * dist;
-	const y = Math.sin(angle) * dist - 70;
-	const z = (d.d - 0.5) * 200;
-	return [x, y, z, 1.2, 0.45, COLOR_GOLD];
-};
-
-// ════════════════════════════════════════════════════════════════════════════
-// MOTOR PRINCIPAL
-// ════════════════════════════════════════════════════════════════════════════
+interface NarrativeBeat {
+	id: number;
+	start: number;
+	end: number;
+	lineIndices: number[][];
+	subtitleConfig: {
+		top: number;
+		align: 'center' | 'left' | 'right';
+		maxWidth?: number;
+	};
+	slideConfig: {
+		top: number;
+		x: number;
+		y: number;
+		z: number;
+		rotX: number;
+		rotY: number;
+		rotZ: number;
+		scale: number;
+	};
+}
 
 export interface FlowMotionMasterProps {
 	audioNarracao?: string;
-	audioTrilha?: string;
 	enableSfx?: boolean;
 }
 
 export const FlowMotionMaster: React.FC<FlowMotionMasterProps> = ({
 	audioNarracao = 'narracao.mp3',
-	audioTrilha,
 	enableSfx = true,
 }) => {
 	const frame = useCurrentFrame();
-	const {fps} = useVideoConfig();
+	const { fps } = useVideoConfig();
 	const t = frame / fps;
 
-	// Sound Triggers Hápticos
-	const soundTriggers: SoundImpactTrigger[] = useMemo(
-		() => [
-			{startFrame: 0, durationFrames: 25, type: 'whoosh', ease: 'glide', volume: 0.16},
-			{startFrame: 45, durationFrames: 15, type: 'click', ease: 'snapSettle', volume: 0.14},
-			{startFrame: 168, durationFrames: 25, type: 'whoosh', ease: 'glide', volume: 0.18},
-			{startFrame: 210, durationFrames: 15, type: 'click', ease: 'snapSettle', volume: 0.14},
-			{startFrame: 360, durationFrames: 28, type: 'whoosh', ease: 'glide', volume: 0.20},
-			{startFrame: 440, durationFrames: 15, type: 'click', ease: 'snapSettle', volume: 0.12},
-			{startFrame: 520, durationFrames: 15, type: 'click', ease: 'snapSettle', volume: 0.12},
-			{startFrame: 666, durationFrames: 30, type: 'whoosh', ease: 'glide', volume: 0.22},
-			{startFrame: 720, durationFrames: 18, type: 'click', ease: 'snapSettle', volume: 0.18},
+	// ────────────────────────────────────────────────────────────────────────────
+	// CORES E DESIGN TOKENS (EDITORIAL LUXO, ZERO NEON POLUÍDO)
+	// ────────────────────────────────────────────────────────────────────────────
+	const FERRARI_RED = '#FF0022';
+	const ELECTRIC_LIME = '#D4FF00';
+	const EMERALD = '#10B981';
+	const GOLD = '#F59E0B';
+	const CYAN = '#38BDF8';
+	const PURE_WHITE = '#FFFFFF';
+
+	// ────────────────────────────────────────────────────────────────────────────
+	// TRANSIÇÃO DE CORES DE FUNDO FLUIDA (8 BEATS NARRATIVOS)
+	// ────────────────────────────────────────────────────────────────────────────
+	const bgColor = interpolateColors(
+		frame,
+		[
+			0, 80, 92,          // Beat 1: Black -> Red (0 - 3.05s)
+			160, 174,           // Beat 2: Red -> Crisp Off-White (3.05 - 5.8s)
+			250, 265,           // Beat 3: Off-White -> Dark Obsidian (5.8 - 8.85s)
+			345, 360,           // Beat 4: Obsidian -> Deep Forest Emerald (8.85 - 12.0s)
+			495, 510,           // Beat 5: Deep Forest -> Ferrari Red (12.0 - 17.0s)
+			650, 666,           // Beat 6: Red -> High-contrast White (17.0 - 22.2s)
+			750, 768, 918       // Beat 7 & 8: White -> Deep Obsidian / Black (22.2 - 30.6s)
 		],
-		[]
+		[
+			'#08090C', '#08090C', '#FF0022',
+			'#FF0022', '#F5F6F8',
+			'#F5F6F8', '#0A0B0E',
+			'#0A0B0E', '#060B08',
+			'#060B08', '#FF0022',
+			'#FF0022', '#F8F9FA',
+			'#F8F9FA', '#08090C', '#08090C'
+		]
 	);
 
-	// Curva de Áudio
-	const musicVolume = useMemo(() => {
-		if (frame < 60) return interpolate(frame, [0, 60], [0.08, 0.14]);
-		if (frame >= 60 && frame < 820) return 0.12;
-		return interpolate(frame, [820, 918], [0.12, 0.0]);
-	}, [frame]);
+	// Detecção de contraste de fundo
+	const isLightBg = (frame >= 165 && frame < 260) || (frame >= 655 && frame < 760);
+	const isRedBg = (frame >= 88 && frame < 170) || (frame >= 505 && frame < 660);
+	const textPrimaryColor = isLightBg ? '#111111' : PURE_WHITE;
 
-	// Câmera no instante t
-	const cam = camAt(t);
-
-	// Interpolação Matemática Contínua entre as 4 Formas (Morphing Puro)
-	let shape: (i: number) => P5;
-
-	if (t < 5.6) {
-		shape = (i) => shapeTerminalGrid(i, t);
-	} else if (t < 6.4) {
-		// Transição 1 -> 2 (0.8s morph suave)
-		const m = E_IO(ci(t, [5.6, 6.4], [0, 1]));
-		shape = (i) => {
-			const p1 = shapeTerminalGrid(i, t);
-			const p2 = shapeStudioPrism(i, t);
-			return [
-				lerp(p1[0], p2[0], m),
-				lerp(p1[1], p2[1], m),
-				lerp(p1[2], p2[2], m),
-				lerp(p1[3], p2[3], m),
-				lerp(p1[4], p2[4], m),
-				m > 0.5 ? p2[5] : p1[5],
-			];
-		};
-	} else if (t < 12.0) {
-		shape = (i) => shapeStudioPrism(i, t);
-	} else if (t < 12.8) {
-		// Transição 2 -> 3 (0.8s morph para o Clímax Multiagente)
-		const m = E_IO(ci(t, [12.0, 12.8], [0, 1]));
-		shape = (i) => {
-			const p2 = shapeStudioPrism(i, t);
-			const p3 = shapeMultiagentTriad(i, t);
-			return [
-				lerp(p2[0], p3[0], m),
-				lerp(p2[1], p3[1], m),
-				lerp(p2[2], p3[2], m),
-				lerp(p2[3], p3[3], m),
-				lerp(p2[4], p3[4], m),
-				m > 0.5 ? p3[5] : p2[5],
-			];
-		};
-	} else if (t < 22.2) {
-		shape = (i) => shapeMultiagentTriad(i, t);
-	} else if (t < 23.0) {
-		// Transição 3 -> 4 (0.8s morph para a Estrela do GitHub)
-		const m = E_IO(ci(t, [22.2, 23.0], [0, 1]));
-		shape = (i) => {
-			const p3 = shapeMultiagentTriad(i, t);
-			const p4 = shapeGitHubStar(i, t);
-			return [
-				lerp(p3[0], p4[0], m),
-				lerp(p3[1], p4[1], m),
-				lerp(p3[2], p4[2], m),
-				lerp(p3[3], p4[3], m),
-				lerp(p3[4], p4[4], m),
-				m > 0.5 ? p4[5] : p3[5],
-			];
-		};
-	} else {
-		shape = (i) => shapeGitHubStar(i, t);
-	}
-
-	// Projeta os 3.800 pontos do universo 3D
-	const particlesNodes = [];
-	for (let i = 0; i < N_POINTS; i++) {
-		const p = shape(i);
-		const proj = project(p[0], p[1], p[2], cam);
-		if (proj[2] <= 0) continue; // Ponto atrás do plano focal
-
-		const px = proj[0];
-		const py = proj[1];
-		const scale = proj[2];
-		const r = p[3] * scale;
-		const alpha = Math.min(1, Math.max(0.04, p[4] * (scale > 1.2 ? 1 : scale * 0.85)));
-
-		particlesNodes.push(
-			<circle
-				key={i}
-				cx={px.toFixed(1)}
-				cy={py.toFixed(1)}
-				r={r.toFixed(1)}
-				fill={p[5]}
-				opacity={alpha.toFixed(2)}
-			/>
-		);
-	}
+	// Câmera 3D contínua com respiração orgânica
+	const camRotX = 6 + Math.sin(t * 0.45) * 1.8;
+	const camRotY = Math.sin(t * 0.4) * 2.2;
+	const camZoom = 1.0 + Math.sin(t * 0.3) * 0.015;
 
 	// ────────────────────────────────────────────────────────────────────────────
-	// LIVE TERMINAL TYPING EFFECT (CENA 1)
+	// MAPEAMENTO DOS 8 BEATS NARRATIVOS COM ALTERNÂNCIA 4:5
 	// ────────────────────────────────────────────────────────────────────────────
-	const fullTerminalCommand = 'npx skills add Gabrielrtads/vibe-design-studio';
-	const typedChars = Math.min(
-		fullTerminalCommand.length,
-		Math.floor(ci(frame, [15, 120], [0, fullTerminalCommand.length], EASE.glide))
+	const BEATS: NarrativeBeat[] = useMemo(() => [
+		{
+			// Beat 1: "Cansado de vídeos de inteligência artificial genéricos"
+			// SLIDE EM BAIXO | LEGENDA NO TOPO
+			id: 1,
+			start: 0.0,
+			end: 3.05,
+			lineIndices: [
+				[0, 1, 2, 3], // "Cansado de vídeos de"
+				[4, 5, 6],    // "inteligência artificial genéricos"
+			],
+			subtitleConfig: {
+				top: 240,
+				align: 'center',
+				maxWidth: 860,
+			},
+			slideConfig: {
+				top: 860,
+				x: 0,
+				y: 20,
+				z: 0,
+				rotX: 10,
+				rotY: 10,
+				rotZ: -2,
+				scale: 1.04,
+			},
+		},
+		{
+			// Beat 2: "com gradiente roxo e robôs sem alma?"
+			// 🔄 INVERSÃO: SLIDE EM CIMA | LEGENDA EM BAIXO
+			id: 2,
+			start: 3.05,
+			end: 5.8,
+			lineIndices: [
+				[7, 8, 9],       // "com gradiente roxo"
+				[10, 11, 12, 13] // "e robôs sem alma?"
+			],
+			subtitleConfig: {
+				top: 1380,
+				align: 'center',
+				maxWidth: 860,
+			},
+			slideConfig: {
+				top: 240,
+				x: 0,
+				y: 0,
+				z: 0,
+				rotX: 8,
+				rotY: -8,
+				rotZ: 2,
+				scale: 1.02,
+			},
+		},
+		{
+			// Beat 3: "Conheça o Vibe Design Studio: o estúdio"
+			// 🔄 INVERSÃO: SLIDE EM BAIXO | LEGENDA NO TOPO
+			id: 3,
+			start: 5.8,
+			end: 8.85,
+			lineIndices: [
+				[14, 15, 16, 17], // "Conheça o Vibe Design Studio:"
+				[18, 19],         // "o estúdio"
+			],
+			subtitleConfig: {
+				top: 220,
+				align: 'center',
+				maxWidth: 880,
+			},
+			slideConfig: {
+				top: 860,
+				x: 0,
+				y: 20,
+				z: 10,
+				rotX: 9,
+				rotY: 10,
+				rotZ: -1,
+				scale: 1.04,
+			},
+		},
+		{
+			// Beat 4: "criativo headless para agentes em código puro."
+			// 🔄 INVERSÃO: SLIDE EM CIMA | LEGENDA EM BAIXO
+			id: 4,
+			start: 8.85,
+			end: 12.0,
+			lineIndices: [
+				[20, 21, 22], // "criativo headless para agentes"
+				[23, 24, 25], // "em código puro."
+			],
+			subtitleConfig: {
+				top: 1380,
+				align: 'center',
+				maxWidth: 860,
+			},
+			slideConfig: {
+				top: 240,
+				x: 0,
+				y: 0,
+				z: 10,
+				rotX: 8,
+				rotY: -9,
+				rotZ: 2,
+				scale: 1.03,
+			},
+		},
+		{
+			// Beat 5: "Física de mola Apple, legendas cinéticas sincronizadas no milissegundo com Whisper,"
+			// 🔄 INVERSÃO: SLIDE EM BAIXO | LEGENDA NO TOPO
+			id: 5,
+			start: 12.0,
+			end: 17.0,
+			lineIndices: [
+				[26, 27, 28, 29], // "Física de mola Apple,"
+				[30, 31, 32],     // "legendas cinéticas sincronizadas"
+				[33, 34, 35, 36], // "no milissegundo com Whisper,"
+			],
+			subtitleConfig: {
+				top: 200,
+				align: 'center',
+				maxWidth: 880,
+			},
+			slideConfig: {
+				top: 860,
+				x: 0,
+				y: 20,
+				z: 20,
+				rotX: 10,
+				rotY: 8,
+				rotZ: -2,
+				scale: 1.05,
+			},
+		},
+		{
+			// Beat 6: "sound design dinâmico e masterização profissional EBU R128."
+			// 🔄 INVERSÃO: SLIDE EM CIMA | LEGENDA EM BAIXO
+			id: 6,
+			start: 17.0,
+			end: 22.2,
+			lineIndices: [
+				[37, 38, 39, 40], // "sound design dinâmico"
+				[41, 42],         // "e masterização profissional"
+				[43, 44],         // "EBU R128."
+			],
+			subtitleConfig: {
+				top: 1380,
+				align: 'center',
+				maxWidth: 860,
+			},
+			slideConfig: {
+				top: 240,
+				x: 0,
+				y: 0,
+				z: 20,
+				rotX: 8,
+				rotY: -8,
+				rotZ: 1,
+				scale: 1.03,
+			},
+		},
+		{
+			// Beat 7: "Custo zero de API e 100% open-source."
+			// 🔄 INVERSÃO: SLIDE EM BAIXO | LEGENDA NO TOPO
+			id: 7,
+			start: 22.2,
+			end: 25.6,
+			lineIndices: [
+				[45, 46, 47, 48], // "Custo zero de API"
+				[49, 50, 51],     // "e 100% open-source."
+			],
+			subtitleConfig: {
+				top: 220,
+				align: 'center',
+				maxWidth: 860,
+			},
+			slideConfig: {
+				top: 860,
+				x: 0,
+				y: 20,
+				z: 30,
+				rotX: 9,
+				rotY: 9,
+				rotZ: -2,
+				scale: 1.05,
+			},
+		},
+		{
+			// Beat 8: "Instale via npx skills add e deixe sua estrela no GitHub! ⭐"
+			// 🔄 CLÍMAX HERO: SLIDE EM BAIXO/CENTRO | LEGENDA NO TOPO
+			id: 8,
+			start: 25.6,
+			end: 30.6,
+			lineIndices: [
+				[52, 53, 54, 55, 56], // "Instale via npx skills add"
+				[57, 58, 59, 60],     // "e deixe sua estrela"
+				[61, 62],             // "no GitHub! ⭐"
+			],
+			subtitleConfig: {
+				top: 180,
+				align: 'center',
+				maxWidth: 880,
+			},
+			slideConfig: {
+				top: 760,
+				x: 0,
+				y: 20,
+				z: 80,
+				rotX: 6,
+				rotY: 0,
+				rotZ: 0,
+				scale: 1.08,
+			},
+		},
+	], []);
+
+	// Transição suave entre beats por mola Apple
+	const activeBeatIndex = BEATS.findIndex((b) => t >= b.start && t < b.end);
+	const curIdx = activeBeatIndex === -1 ? BEATS.length - 1 : activeBeatIndex;
+	const currentBeat = BEATS[curIdx];
+	const prevBeat = curIdx > 0 ? BEATS[curIdx - 1] : currentBeat;
+
+	const beatStartFrame = Math.round(currentBeat.start * fps);
+	const beatTransitionSpring = spring({
+		frame: Math.max(0, frame - beatStartFrame),
+		fps,
+		config: {
+			damping: 20,
+			mass: 0.85,
+			stiffness: 90,
+		},
+	});
+
+	const stageTop = interpolate(
+		beatTransitionSpring,
+		[0, 1],
+		[prevBeat.slideConfig.top, currentBeat.slideConfig.top]
 	);
-	const displayedCommand = fullTerminalCommand.substring(0, typedChars);
 
-	return (
-		<AbsoluteFill style={{background: '#050505', overflow: 'hidden'}}>
-			{/* Áudio Trilha & Narração Neural Edge-TTS */}
-			{audioTrilha ? <Audio src={staticFile(audioTrilha)} volume={musicVolume} /> : null}
-			{audioNarracao ? <Audio src={staticFile(audioNarracao)} volume={1.0} /> : null}
-			{enableSfx ? <AutoImpactTrack triggers={soundTriggers} masterVolume={0.28} /> : null}
+	const subtitleTop = interpolate(
+		beatTransitionSpring,
+		[0, 1],
+		[prevBeat.subtitleConfig.top, currentBeat.subtitleConfig.top]
+	);
 
-			{/* Grid & Retícula de Fundo Sutil */}
-			<div
+	const stageRotX = interpolate(
+		beatTransitionSpring,
+		[0, 1],
+		[prevBeat.slideConfig.rotX, currentBeat.slideConfig.rotX]
+	);
+	const stageRotY = interpolate(
+		beatTransitionSpring,
+		[0, 1],
+		[prevBeat.slideConfig.rotY, currentBeat.slideConfig.rotY]
+	);
+	const stageRotZ = interpolate(
+		beatTransitionSpring,
+		[0, 1],
+		[prevBeat.slideConfig.rotZ, currentBeat.slideConfig.rotZ]
+	);
+	const stageScale = interpolate(
+		beatTransitionSpring,
+		[0, 1],
+		[prevBeat.slideConfig.scale, currentBeat.slideConfig.scale]
+	);
+
+	// Tipografia refinada (Anton + Instrument Serif + Plus Jakarta Sans)
+	const getWordTypography = (word: KineticWord) => {
+		const t_clean = word.text.toLowerCase().replace(/[.,:!?⭐"']/g, '').trim();
+
+		// 1. EDITORIAL SERIF ITÁLICO
+		if (
+			[
+				'genéricos', 'alma', 'estúdio', 'criativo', 'puro',
+				'sincronizadas', 'milissegundo', 'profissional', 'estrela'
+			].includes(t_clean)
+		) {
+			return {
+				fontFamily: fontInstrumentSerif,
+				fontStyle: 'italic',
+				fontWeight: 400,
+				textTransform: 'none' as const,
+				letterSpacing: '0.01em',
+				isSerif: true,
+				isHero: false,
+			};
+		}
+
+		// 2. HERO BRUTALIST (Anton)
+		if (
+			[
+				'cansado', 'vídeos', 'gradiente', 'roxo', 'robôs',
+				'vibe', 'design', 'studio', 'headless', 'código',
+				'física', 'mola', 'apple', 'whisper', 'sound',
+				'dinâmico', 'masterização', 'ebu', 'r128',
+				'custo', 'zero', 'api', '100%', 'open-source',
+				'github', 'skills'
+			].includes(t_clean)
+		) {
+			return {
+				fontFamily: fontAnton,
+				fontStyle: 'normal',
+				fontWeight: 900,
+				textTransform: 'uppercase' as const,
+				letterSpacing: '0.02em',
+				isSerif: false,
+				isHero: true,
+			};
+		}
+
+		// 3. MODERN GEOMETRIC SANS
+		return {
+			fontFamily: fontPlusJakartaSans,
+			fontStyle: 'normal',
+			fontWeight: 700,
+			textTransform: 'none' as const,
+			letterSpacing: '0.01em',
+			isSerif: false,
+			isHero: false,
+		};
+	};
+
+	// Renderizador de palavra cinética com spotlight de alto contraste
+	const renderKineticWord = (word: KineticWord) => {
+		const wordStartFrame = Math.round(word.start * fps);
+		const isPast = t > word.end + 0.04;
+		const isCurrent = t >= word.start && t <= word.end + 0.04;
+		const typo = getWordTypography(word);
+
+		const punchSpring = spring({
+			frame: Math.max(0, frame - wordStartFrame),
+			fps,
+			config: {
+				damping: 16,
+				mass: 0.3,
+				stiffness: 260,
+			},
+		});
+
+		let fontSize = 48;
+		if (typo.isHero) {
+			fontSize = 72;
+			if (word.text.toLowerCase().includes('vibe')) fontSize = 84;
+			if (word.text.toLowerCase().includes('zero')) fontSize = 82;
+			if (word.text.toLowerCase().includes('github')) fontSize = 84;
+		} else if (typo.isSerif) {
+			fontSize = 64;
+			if (word.text.toLowerCase().includes('genéricos')) fontSize = 72;
+			if (word.text.toLowerCase().includes('estrela')) fontSize = 74;
+		} else {
+			fontSize = 46;
+		}
+
+		let scale = 1.0;
+		let opacity = 1.0;
+		let textColor = textPrimaryColor;
+
+		if (isCurrent) {
+			scale = ci(punchSpring, [0, 0.7, 1], [0.97, 1.08, 1.02]);
+			opacity = 1.0;
+
+			if (isRedBg) {
+				// No fundo Ferrari Red, o Electric Lime (#D4FF00) é o rei absoluto do contraste editorial
+				textColor = ELECTRIC_LIME;
+			} else if (isLightBg) {
+				textColor = word.accent ? (currentBeat.id >= 3 && currentBeat.id <= 6 ? '#059669' : FERRARI_RED) : '#000000';
+			} else {
+				textColor = word.accent ? (currentBeat.id >= 7 ? GOLD : EMERALD) : FERRARI_RED;
+			}
+		} else if (isPast) {
+			scale = 1.0;
+			opacity = isRedBg ? 0.95 : 0.95;
+			textColor = isLightBg ? '#1A1A1A' : PURE_WHITE;
+		} else {
+			scale = 1.0;
+			if (isRedBg) {
+				opacity = 0.55;
+				textColor = PURE_WHITE;
+			} else if (isLightBg) {
+				opacity = 0.28;
+				textColor = '#111111';
+			} else {
+				opacity = 0.32;
+				textColor = PURE_WHITE;
+			}
+		}
+
+		const textShadow = isRedBg
+			? '0 4px 18px rgba(0, 0, 0, 0.75)'
+			: isLightBg
+			? 'none'
+			: '0 3px 14px rgba(0, 0, 0, 0.6)';
+
+		return (
+			<span
+				key={word.index}
 				style={{
-					position: 'absolute',
-					inset: 0,
-					pointerEvents: 'none',
-					opacity: 0.15,
-					backgroundImage: `radial-gradient(circle, rgba(237, 235, 230, 0.4) 1px, transparent 1px)`,
-					backgroundSize: '56px 56px',
-				}}
-			/>
-
-			{/* SVG DO UNIVERSO DE PONTILHISMO 3D */}
-			<svg width={W} height={H} style={{position: 'absolute', inset: 0, pointerEvents: 'none'}}>
-				{particlesNodes}
-			</svg>
-
-			{/* ══════════════════════════════════════════════════════════════════════
-			    HEADER & STATUS EDITORIAL SUPERIOR
-			══════════════════════════════════════════════════════════════════════ */}
-			<div
-				style={{
-					position: 'absolute',
-					top: 80,
-					left: 64,
-					right: 64,
-					display: 'flex',
-					justifyContent: 'space-between',
-					alignItems: 'center',
-					fontFamily: MONO,
-					fontSize: 13,
-					letterSpacing: '0.14em',
-					color: 'rgba(237, 235, 230, 0.65)',
-					borderBottom: '1px solid rgba(237, 235, 230, 0.12)',
-					paddingBottom: 16,
-					zIndex: 50,
+					display: 'inline-block',
+					position: 'relative',
+					fontFamily: typo.fontFamily,
+					fontStyle: typo.fontStyle,
+					fontSize,
+					fontWeight: typo.fontWeight,
+					textTransform: typo.textTransform,
+					color: textColor,
+					opacity,
+					transform: `scale(${scale})`,
+					transformOrigin: 'center center',
+					letterSpacing: typo.letterSpacing,
+					lineHeight: 1.15,
+					margin: '0 8px',
+					transition: 'color 0.12s ease, opacity 0.12s ease',
+					textShadow,
 				}}
 			>
-				<div style={{display: 'flex', alignItems: 'center', gap: 10}}>
-					<div
-						style={{
-							width: 8,
-							height: 8,
-							borderRadius: '50%',
-							background: COLOR_GOLD,
-							boxShadow: `0 0 10px ${COLOR_GOLD}`,
-						}}
-					/>
-					<span style={{fontWeight: 700}}>VIBE DESIGN STUDIO // PONTILHISMO 3D</span>
-				</div>
-				<div>FRAME: {frame} // {t.toFixed(1)}s</div>
+				{word.text}
+			</span>
+		);
+	};
+
+	// ────────────────────────────────────────────────────────────────────────────
+	// RENDERIZAÇÃO DOS 5 CARDS 4:5 EM REACT/CSS PURO (VETORIAL, ULTRA-SHARP)
+	// ────────────────────────────────────────────────────────────────────────────
+	const renderDynamicSlideCards = () => {
+		const floatY = Math.sin(t * 1.5) * 5;
+		const floatRotY = Math.sin(t * 1.2) * 2;
+		const floatRotZ = Math.cos(t * 1.0) * 1;
+
+		const luxuryCardBorder = isLightBg
+			? '1px solid rgba(0, 0, 0, 0.08)'
+			: '1px solid rgba(255, 255, 255, 0.14)';
+
+		const luxuryCardShadow = isLightBg
+			? '0 30px 70px -15px rgba(0, 0, 0, 0.18), 0 10px 25px -5px rgba(0, 0, 0, 0.10)'
+			: '0 35px 85px -15px rgba(0, 0, 0, 0.75), 0 10px 35px -5px rgba(0, 0, 0, 0.5)';
+
+		return (
+			<div
+				style={{
+					position: 'absolute',
+					top: stageTop,
+					left: '50%',
+					width: 1000,
+					height: 680,
+					transform: `translateX(-50%) perspective(1200px) scale(${camZoom * stageScale}) rotateX(${camRotX + stageRotX}deg) rotateY(${camRotY + stageRotY}deg) rotateZ(${stageRotZ}deg)`,
+					transformStyle: 'preserve-3d',
+					zIndex: 10,
+					display: 'flex',
+					alignItems: 'center',
+					justifyContent: 'center',
+					pointerEvents: 'none',
+				}}
+			>
+				{/* ═══════════════════════════════════════════════════════════════
+				    CARD 1 (Frames 0 a 174 — Beats 1 & 2): AI SLOP ALERT & REJEIÇÃO
+				    ═══════════════════════════════════════════════════════════════ */}
+				{frame < 174 && (() => {
+					const enterProgress = ci(frame, [0, 14], [0, 1]);
+					const exitProgress = ci(frame, [160, 174], [0, 1]);
+					const opacity = enterProgress * (1 - exitProgress);
+					const enterY = (1 - enterProgress) * 50;
+
+					// Mola física para impacto do carimbo de rejeição no Frame 92
+					const stampSpring = spring({
+						frame: Math.max(0, frame - 92),
+						fps,
+						config: { damping: 14, mass: 0.45, stiffness: 220 },
+					});
+					const stampScale = frame < 92 ? 0 : ci(stampSpring, [0, 1], [2.2, 1.0]);
+					const stampOpacity = frame < 92 ? 0 : ci(stampSpring, [0, 0.3, 1], [0, 0.8, 1]);
+
+					return (
+						<div
+							style={{
+								position: 'absolute',
+								width: 520,
+								height: 650,
+								opacity,
+								transform: `translateY(${enterY + floatY}px) rotateY(${floatRotY}deg) rotateZ(${floatRotZ}deg)`,
+								transformStyle: 'preserve-3d',
+							}}
+						>
+							<div
+								style={{
+									width: '100%',
+									height: '100%',
+									borderRadius: 28,
+									overflow: 'hidden',
+									boxShadow: luxuryCardShadow,
+									border: luxuryCardBorder,
+									background: 'linear-gradient(145deg, #120e18 0%, #09080e 100%)',
+									padding: 36,
+									boxSizing: 'border-box',
+									display: 'flex',
+									flexDirection: 'column',
+									justifyContent: 'space-between',
+									position: 'relative',
+								}}
+							>
+								{/* Top Header Card */}
+								<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+									<div
+										style={{
+											display: 'inline-flex',
+											alignItems: 'center',
+											gap: 8,
+											background: 'rgba(239, 68, 68, 0.18)',
+											border: '1px solid rgba(239, 68, 68, 0.4)',
+											borderRadius: 999,
+											padding: '6px 14px',
+											fontFamily: fontMono,
+											fontSize: 13,
+											color: '#f87171',
+											fontWeight: 700,
+											letterSpacing: '0.08em',
+										}}
+									>
+										<span>⚠️</span> AI SLOP DETECTED
+									</div>
+									<span style={{ fontFamily: fontMono, fontSize: 13, color: 'rgba(255,255,255,0.4)' }}>
+										01 / 05
+									</span>
+								</div>
+
+								{/* Mock Prompt Box com Gradiente Roxo Slop */}
+								<div
+									style={{
+										background: 'rgba(255, 255, 255, 0.04)',
+										border: '1px dashed rgba(168, 85, 247, 0.5)',
+										borderRadius: 18,
+										padding: 20,
+										display: 'flex',
+										flexDirection: 'column',
+										gap: 10,
+									}}
+								>
+									<span style={{ fontFamily: fontMono, fontSize: 12, color: '#c084fc', textTransform: 'uppercase' }}>
+										Prompt Genérico:
+									</span>
+									<span style={{ fontFamily: fontPlusJakartaSans, fontSize: 16, color: '#e2e8f0', lineHeight: 1.4 }}>
+										"Crie um vídeo futurista com gradiente roxo, robôs neon e transições aleatórias..."
+									</span>
+								</div>
+
+								{/* Métricas de Fracasso */}
+								<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+									<div
+										style={{
+											background: 'rgba(0,0,0,0.4)',
+											border: '1px solid rgba(255,255,255,0.06)',
+											borderRadius: 16,
+											padding: 16,
+										}}
+									>
+										<div style={{ fontFamily: fontMono, fontSize: 11, color: 'rgba(255,255,255,0.5)' }}>
+											RETENÇÃO MÉDIA
+										</div>
+										<div style={{ fontFamily: fontAnton, fontSize: 36, color: '#f87171', marginTop: 4 }}>
+											1.2s
+										</div>
+									</div>
+									<div
+										style={{
+											background: 'rgba(0,0,0,0.4)',
+											border: '1px solid rgba(255,255,255,0.06)',
+											borderRadius: 16,
+											padding: 16,
+										}}
+									>
+										<div style={{ fontFamily: fontMono, fontSize: 11, color: 'rgba(255,255,255,0.5)' }}>
+											ALMA / ORIGINALIDADE
+										</div>
+										<div style={{ fontFamily: fontAnton, fontSize: 36, color: '#f87171', marginTop: 4 }}>
+											0%
+										</div>
+									</div>
+								</div>
+
+								{/* Carimbo de Rejeição Brutalista com Animação de Slam */}
+								<div
+									style={{
+										border: '3px solid #ef4444',
+										borderRadius: 14,
+										padding: '12px 20px',
+										textAlign: 'center',
+										transform: `rotate(-4deg) scale(${stampScale})`,
+										opacity: stampOpacity,
+										background: 'rgba(239, 68, 68, 0.15)',
+										boxShadow: '0 0 30px rgba(239, 68, 68, 0.35)',
+									}}
+								>
+									<span
+										style={{
+											fontFamily: fontAnton,
+											fontSize: 32,
+											color: '#ef4444',
+											letterSpacing: '0.12em',
+										}}
+									>
+										REJEITADO POR SLOP
+									</span>
+								</div>
+							</div>
+						</div>
+					);
+				})()}
+
+				{/* ═══════════════════════════════════════════════════════════════
+				    CARD 2 (Frames 165 a 365 — Beats 3 & 4): VIBE DESIGN STUDIO TERMINAL
+				    ═══════════════════════════════════════════════════════════════ */}
+				{frame >= 165 && frame < 365 && (() => {
+					const enterProgress = ci(frame, [165, 180], [0, 1]);
+					const exitProgress = ci(frame, [345, 360], [0, 1]);
+					const opacity = enterProgress * (1 - exitProgress);
+					const enterX = (1 - enterProgress) * 70;
+
+					return (
+						<div
+							style={{
+								position: 'absolute',
+								width: 520,
+								height: 650,
+								opacity,
+								transform: `translateX(${enterX}px) translateY(${floatY}px) rotateY(${floatRotY}deg) rotateZ(${floatRotZ}deg)`,
+								transformStyle: 'preserve-3d',
+							}}
+						>
+							<div
+								style={{
+									width: '100%',
+									height: '100%',
+									borderRadius: 28,
+									overflow: 'hidden',
+									boxShadow: luxuryCardShadow,
+									border: luxuryCardBorder,
+									background: '#0d1117',
+									display: 'flex',
+									flexDirection: 'column',
+									position: 'relative',
+								}}
+							>
+								{/* Top Bar macOS com Botões */}
+								<div
+									style={{
+										height: 48,
+										background: '#161b22',
+										borderBottom: '1px solid rgba(255,255,255,0.08)',
+										display: 'flex',
+										alignItems: 'center',
+										padding: '0 20px',
+										gap: 8,
+										justifyContent: 'space-between',
+									}}
+								>
+									<div style={{ display: 'flex', gap: 8 }}>
+										<div style={{ width: 12, height: 12, borderRadius: 6, background: '#ff5f56' }} />
+										<div style={{ width: 12, height: 12, borderRadius: 6, background: '#ffbd2e' }} />
+										<div style={{ width: 12, height: 12, borderRadius: 6, background: '#27c93f' }} />
+									</div>
+									<span style={{ fontFamily: fontMono, fontSize: 12, color: 'rgba(255,255,255,0.6)' }}>
+										vibe-design-studio — zsh
+									</span>
+									<span style={{ width: 28 }} />
+								</div>
+
+								{/* Terminal Body */}
+								<div
+									style={{
+										padding: 28,
+										flex: 1,
+										display: 'flex',
+										flexDirection: 'column',
+										justifyContent: 'space-between',
+										fontFamily: fontMono,
+									}}
+								>
+									<div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+										<div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+											<span style={{ color: '#38bdf8' }}>➜</span>
+											<span style={{ color: '#a78bfa' }}>workspace</span>
+											<span style={{ color: '#ffffff' }}>npx skills add vibe-design-studio</span>
+										</div>
+
+										<div style={{ color: '#34d399', fontSize: 13, lineHeight: 1.6 }}>
+											✔ [INSTALLED] Vibe Design Studio v1.0.0<br />
+											✔ [ENGINE] Remotion + React 18 Puro<br />
+											✔ [AUDIO] Whisper C++ Sub-15ms<br />
+											✔ [PHYSICS] Apple Spring Engine
+										</div>
+
+										<div
+											style={{
+												marginTop: 8,
+												padding: 14,
+												background: 'rgba(56, 189, 248, 0.08)',
+												border: '1px solid rgba(56, 189, 248, 0.25)',
+												borderRadius: 12,
+											}}
+										>
+											<div style={{ color: '#38bdf8', fontSize: 12, fontWeight: 700 }}>
+												ARQUITETURA HEADLESS PARA AGENTES:
+											</div>
+											<div style={{ color: '#e2e8f0', fontSize: 13, marginTop: 4 }}>
+												Claude Code, Codex e Antigravity criam e editam vídeos diretamente em código.
+											</div>
+										</div>
+									</div>
+
+									{/* Badge Inferior */}
+									<div
+										style={{
+											display: 'flex',
+											justifyContent: 'space-between',
+											alignItems: 'center',
+											borderTop: '1px solid rgba(255,255,255,0.08)',
+											paddingTop: 16,
+										}}
+									>
+										<span style={{ color: '#34d399', fontSize: 13, fontWeight: 700 }}>
+											● 100% CÓDIGO PURO
+										</span>
+										<span style={{ color: 'rgba(255,255,255,0.4)', fontSize: 12 }}>
+											Zero Web UIs lentas
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					);
+				})()}
+
+				{/* ═══════════════════════════════════════════════════════════════
+				    CARD 3 (Frames 355 a 515 — Beat 5): APPLE SPRING & WHISPER SYNC
+				    ═══════════════════════════════════════════════════════════════ */}
+				{frame >= 355 && frame < 515 && (() => {
+					const enterProgress = ci(frame, [355, 370], [0, 1]);
+					const exitProgress = ci(frame, [495, 510], [0, 1]);
+					const opacity = enterProgress * (1 - exitProgress);
+					const enterY = (1 - enterProgress) * -45;
+
+					const bars = [18, 38, 54, 78, 62, 88, 45, 92, 70, 48, 35, 68, 85, 42, 60];
+
+					return (
+						<div
+							style={{
+								position: 'absolute',
+								width: 520,
+								height: 650,
+								opacity,
+								transform: `translateY(${enterY + floatY}px) rotateY(${floatRotY}deg) rotateZ(${floatRotZ}deg)`,
+								transformStyle: 'preserve-3d',
+							}}
+						>
+							<div
+								style={{
+									width: '100%',
+									height: '100%',
+									borderRadius: 28,
+									overflow: 'hidden',
+									boxShadow: luxuryCardShadow,
+									border: luxuryCardBorder,
+									background: 'linear-gradient(155deg, #071710 0%, #040906 100%)',
+									padding: 34,
+									boxSizing: 'border-box',
+									display: 'flex',
+									flexDirection: 'column',
+									justifyContent: 'space-between',
+									position: 'relative',
+								}}
+							>
+								{/* Header */}
+								<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+									<div
+										style={{
+											display: 'inline-flex',
+											alignItems: 'center',
+											gap: 8,
+											background: 'rgba(16, 185, 129, 0.18)',
+											border: '1px solid rgba(16, 185, 129, 0.4)',
+											borderRadius: 999,
+											padding: '6px 14px',
+											fontFamily: fontMono,
+											fontSize: 13,
+											color: '#34d399',
+											fontWeight: 700,
+										}}
+									>
+										<span>🍏</span> APPLE SPRING ENGINE
+									</div>
+									<span style={{ fontFamily: fontMono, fontSize: 13, color: 'rgba(255,255,255,0.4)' }}>
+										03 / 05
+									</span>
+								</div>
+
+								{/* Visualizador de Curva de Mola Apple */}
+								<div
+									style={{
+										background: 'rgba(0,0,0,0.5)',
+										border: '1px solid rgba(16, 185, 129, 0.2)',
+										borderRadius: 20,
+										padding: 20,
+										display: 'flex',
+										flexDirection: 'column',
+										gap: 12,
+									}}
+								>
+									<div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: fontMono, fontSize: 12 }}>
+										<span style={{ color: '#34d399' }}>CURVA DE MOVIMENTO FÍSICO</span>
+										<span style={{ color: 'rgba(255,255,255,0.5)' }}>damping: 20 • stiffness: 90</span>
+									</div>
+
+									{/* Traçado SVG da mola crítica */}
+									<svg width="100%" height="80" viewBox="0 0 450 80" style={{ overflow: 'visible' }}>
+										<path
+											d="M 10 70 Q 80 5, 150 15 T 260 20 T 360 20 L 440 20"
+											fill="none"
+											stroke="#10b981"
+											strokeWidth="4"
+											strokeLinecap="round"
+										/>
+										<circle cx="260" cy="20" r="6" fill="#d4ff00" />
+									</svg>
+								</div>
+
+								{/* Waveform Whisper Sync */}
+								<div
+									style={{
+										background: 'rgba(0,0,0,0.5)',
+										border: '1px solid rgba(255,255,255,0.06)',
+										borderRadius: 20,
+										padding: 20,
+									}}
+								>
+									<div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: fontMono, fontSize: 12, marginBottom: 14 }}>
+										<span style={{ color: '#38bdf8' }}>WHISPER C++ SYNC</span>
+										<span style={{ color: '#34d399', fontWeight: 700 }}>00:14.280 ms [LOCKED]</span>
+									</div>
+
+									<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 50, gap: 4 }}>
+										{bars.map((h, i) => {
+											const waveH = Math.max(12, Math.min(48, h * (0.8 + Math.sin(t * 8 + i) * 0.3)));
+											return (
+												<div
+													key={i}
+													style={{
+														width: 14,
+														height: waveH,
+														background: i > 8 ? '#10b981' : '#38bdf8',
+														borderRadius: 6,
+														transition: 'height 0.08s ease',
+													}}
+												/>
+											);
+										})}
+									</div>
+								</div>
+
+								{/* Rodapé Card */}
+								<div style={{ fontFamily: fontMono, fontSize: 13, color: 'rgba(255,255,255,0.7)', textAlign: 'center' }}>
+									Zero delays manuais • Legendas cravadas na fala
+								</div>
+							</div>
+						</div>
+					);
+				})()}
+
+				{/* ═══════════════════════════════════════════════════════════════
+				    CARD 4 (Frames 505 a 665 — Beat 6): SOUND DESIGN & EBU R128
+				    ═══════════════════════════════════════════════════════════════ */}
+				{frame >= 505 && frame < 665 && (() => {
+					const enterProgress = ci(frame, [505, 520], [0, 1]);
+					const exitProgress = ci(frame, [650, 665], [0, 1]);
+					const opacity = enterProgress * (1 - exitProgress);
+					const enterScale = ci(enterProgress, [0, 1], [0.95, 1.03]);
+
+					return (
+						<div
+							style={{
+								position: 'absolute',
+								width: 520,
+								height: 650,
+								opacity,
+								transform: `translateY(${floatY}px) rotateY(${floatRotY}deg) rotateZ(${floatRotZ}deg) scale(${enterScale})`,
+								transformStyle: 'preserve-3d',
+							}}
+						>
+							<div
+								style={{
+									width: '100%',
+									height: '100%',
+									borderRadius: 28,
+									overflow: 'hidden',
+									boxShadow: luxuryCardShadow,
+									border: luxuryCardBorder,
+									background: 'linear-gradient(155deg, #18090a 0%, #0d0405 100%)',
+									padding: 34,
+									boxSizing: 'border-box',
+									display: 'flex',
+									flexDirection: 'column',
+									justifyContent: 'space-between',
+									position: 'relative',
+								}}
+							>
+								{/* Header */}
+								<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+									<div
+										style={{
+											display: 'inline-flex',
+											alignItems: 'center',
+											gap: 8,
+											background: 'rgba(255, 0, 34, 0.18)',
+											border: '1px solid rgba(255, 0, 34, 0.4)',
+											borderRadius: 999,
+											padding: '6px 14px',
+											fontFamily: fontMono,
+											fontSize: 13,
+											color: '#ff4d6d',
+											fontWeight: 700,
+										}}
+									>
+										<span>🎚️</span> MASTER AUDIO CONSOLE
+									</div>
+									<span style={{ fontFamily: fontMono, fontSize: 13, color: 'rgba(255,255,255,0.4)' }}>
+										04 / 05
+									</span>
+								</div>
+
+								{/* Medidores de Masterização EBU R128 */}
+								<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+									<div
+										style={{
+											background: 'rgba(0,0,0,0.5)',
+											border: '1px solid rgba(255, 0, 34, 0.3)',
+											borderRadius: 18,
+											padding: 18,
+										}}
+									>
+										<div style={{ fontFamily: fontMono, fontSize: 11, color: 'rgba(255,255,255,0.5)' }}>
+											INTEGRATED LOUDNESS
+										</div>
+										<div style={{ fontFamily: fontAnton, fontSize: 40, color: '#ff0022', marginTop: 4 }}>
+											-14 LUFS
+										</div>
+										<div style={{ fontFamily: fontMono, fontSize: 12, color: '#34d399', marginTop: 4 }}>
+											● EBU R128 LOCKED
+										</div>
+									</div>
+
+									<div
+										style={{
+											background: 'rgba(0,0,0,0.5)',
+											border: '1px solid rgba(255,255,255,0.08)',
+											borderRadius: 18,
+											padding: 18,
+										}}
+									>
+										<div style={{ fontFamily: fontMono, fontSize: 11, color: 'rgba(255,255,255,0.5)' }}>
+											TRUE PEAK LIMIT
+										</div>
+										<div style={{ fontFamily: fontAnton, fontSize: 40, color: '#ffffff', marginTop: 4 }}>
+											-1.0 dB
+										</div>
+										<div style={{ fontFamily: fontMono, fontSize: 12, color: 'rgba(255,255,255,0.5)', marginTop: 4 }}>
+											Zero clipping
+										</div>
+									</div>
+								</div>
+
+								{/* Gatilhos SFX Automáticos */}
+								<div
+									style={{
+										background: 'rgba(0,0,0,0.4)',
+										border: '1px solid rgba(255,255,255,0.06)',
+										borderRadius: 18,
+										padding: 20,
+										display: 'flex',
+										flexDirection: 'column',
+										gap: 10,
+									}}
+								>
+									<span style={{ fontFamily: fontMono, fontSize: 12, color: 'rgba(255,255,255,0.6)' }}>
+										CAMADA DE SFX AUTOMATIZADA:
+									</span>
+									<div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+										{['WHOOSH_ZOOM', 'HAPTIC_CLICK', 'SUB_BASS_DROP', 'FUTURISTA_RISE'].map((sfx, idx) => (
+											<div
+												key={idx}
+												style={{
+													background: idx === 0 ? '#ff0022' : 'rgba(255,255,255,0.08)',
+													color: idx === 0 ? '#ffffff' : '#e2e8f0',
+													padding: '6px 12px',
+													borderRadius: 8,
+													fontFamily: fontMono,
+													fontSize: 12,
+													fontWeight: 700,
+												}}
+											>
+												{sfx}
+											</div>
+										))}
+									</div>
+								</div>
+
+								{/* Rodapé Card */}
+								<div style={{ fontFamily: fontMono, fontSize: 13, color: 'rgba(255,255,255,0.7)', textAlign: 'center' }}>
+									Áudio encorpado para Instagram, TikTok e YouTube
+								</div>
+							</div>
+						</div>
+					);
+				})()}
+
+				{/* ═══════════════════════════════════════════════════════════════
+				    CARD 5 (Frames 660 a 918 — Beats 7 & 8): HERO GITHUB & MULTIAGENT
+				    ═══════════════════════════════════════════════════════════════ */}
+				{frame >= 660 && (() => {
+					const enterProgress = ci(frame, [660, 680], [0, 1]);
+					const starPop = spring({
+						frame: Math.max(0, frame - 770),
+						fps,
+						config: { damping: 14, mass: 0.5, stiffness: 120 },
+					});
+
+					const starCount = Math.round(interpolate(starPop, [0, 1], [120, 1482]));
+
+					return (
+						<div
+							style={{
+								position: 'absolute',
+								width: 540,
+								height: 680,
+								opacity: enterProgress,
+								transform: `translateY(${floatY}px) rotateY(${floatRotY}deg) scale(${1.02 + starPop * 0.04})`,
+								transformStyle: 'preserve-3d',
+							}}
+						>
+							<div
+								style={{
+									width: '100%',
+									height: '100%',
+									borderRadius: 32,
+									overflow: 'hidden',
+									boxShadow: '0 40px 100px -15px rgba(0, 0, 0, 0.9), 0 0 45px rgba(245, 158, 11, 0.25)',
+									border: '1.5px solid rgba(245, 158, 11, 0.45)',
+									background: 'linear-gradient(160deg, #111116 0%, #08080a 100%)',
+									padding: 38,
+									boxSizing: 'border-box',
+									display: 'flex',
+									flexDirection: 'column',
+									justifyContent: 'space-between',
+									position: 'relative',
+								}}
+							>
+								{/* Header Hero */}
+								<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+									<div
+										style={{
+											display: 'inline-flex',
+											alignItems: 'center',
+											gap: 8,
+											background: 'rgba(245, 158, 11, 0.18)',
+											border: '1px solid rgba(245, 158, 11, 0.4)',
+											borderRadius: 999,
+											padding: '8px 16px',
+											fontFamily: fontMono,
+											fontSize: 13,
+											color: '#fbbf24',
+											fontWeight: 700,
+										}}
+									>
+										<span>⭐</span> 100% OPEN SOURCE • MIT
+									</div>
+									<span style={{ fontFamily: fontMono, fontSize: 13, color: 'rgba(255,255,255,0.5)' }}>
+										CUSTO ZERO
+									</span>
+								</div>
+
+								{/* Repositório e Grande Contador de Estrelas */}
+								<div
+									style={{
+										background: 'rgba(255,255,255,0.03)',
+										border: '1px solid rgba(255,255,255,0.08)',
+										borderRadius: 22,
+										padding: 24,
+										display: 'flex',
+										flexDirection: 'column',
+										alignItems: 'center',
+										gap: 12,
+									}}
+								>
+									<span style={{ fontFamily: fontMono, fontSize: 13, color: 'rgba(255,255,255,0.6)' }}>
+										github.com/Gabrielrtads/vibe-design-studio
+									</span>
+
+									<div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+										<span style={{ fontSize: 48 }}>⭐</span>
+										<span
+											style={{
+												fontFamily: fontAnton,
+												fontSize: 64,
+												color: '#fbbf24',
+												letterSpacing: '0.04em',
+											}}
+										>
+											{starCount}
+										</span>
+									</div>
+
+									<span style={{ fontFamily: fontPlusJakartaSans, fontSize: 14, color: '#34d399', fontWeight: 600 }}>
+										Deixe sua estrela no repositório oficial!
+									</span>
+								</div>
+
+								{/* Suporte Multiagente */}
+								<div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+									<span style={{ fontFamily: fontMono, fontSize: 11, color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase' }}>
+										Orquestrado nos 3 Grandes Agentes:
+									</span>
+									<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8 }}>
+										<div
+											style={{
+												background: 'rgba(245, 158, 11, 0.12)',
+												border: '1px solid rgba(245, 158, 11, 0.3)',
+												borderRadius: 10,
+												padding: '8px 10px',
+												textAlign: 'center',
+												fontFamily: fontMono,
+												fontSize: 11,
+												color: '#fbbf24',
+												fontWeight: 700,
+											}}
+										>
+											Claude Code
+										</div>
+										<div
+											style={{
+												background: 'rgba(16, 185, 129, 0.12)',
+												border: '1px solid rgba(16, 185, 129, 0.3)',
+												borderRadius: 10,
+												padding: '8px 10px',
+												textAlign: 'center',
+												fontFamily: fontMono,
+												fontSize: 11,
+												color: '#34d399',
+												fontWeight: 700,
+											}}
+										>
+											OpenAI Codex
+										</div>
+										<div
+											style={{
+												background: 'rgba(56, 189, 248, 0.12)',
+												border: '1px solid rgba(56, 189, 248, 0.3)',
+												borderRadius: 10,
+												padding: '8px 10px',
+												textAlign: 'center',
+												fontFamily: fontMono,
+												fontSize: 11,
+												color: '#38bdf8',
+												fontWeight: 700,
+											}}
+										>
+											Antigravity
+										</div>
+									</div>
+								</div>
+
+								{/* Botão de Comando Copiável */}
+								<div
+									style={{
+										background: '#ffffff',
+										borderRadius: 16,
+										padding: '16px 20px',
+										display: 'flex',
+										justifyContent: 'space-between',
+										alignItems: 'center',
+									}}
+								>
+									<span
+										style={{
+											fontFamily: fontMono,
+											fontSize: 14,
+											color: '#0a0a0f',
+											fontWeight: 700,
+										}}
+									>
+										$ npx skills add Gabrielrtads/...
+									</span>
+									<div
+										style={{
+											background: '#0a0a0f',
+											color: '#ffffff',
+											borderRadius: 8,
+											padding: '6px 12px',
+											fontFamily: fontMono,
+											fontSize: 12,
+											fontWeight: 700,
+										}}
+									>
+										COPIAR
+									</div>
+								</div>
+							</div>
+						</div>
+					);
+				})()}
 			</div>
+		);
+	};
 
-			{/* ══════════════════════════════════════════════════════════════════════
-			    CENA 1: LIVE TERMINAL DE CÓDIGO (0s a 5.6s)
-			══════════════════════════════════════════════════════════════════════ */}
-			{t < 5.8 && (
-				<div
-					style={{
-						position: 'absolute',
-						top: 170,
-						left: 64,
-						right: 64,
-						display: 'flex',
-						flexDirection: 'column',
-						alignItems: 'center',
-						opacity: ci(frame, [0, 20], [0, 1]) * ci(frame, [155, 172], [1, 0]),
-					}}
-				>
-					{/* Terminal Minimalista P&B */}
+	// ────────────────────────────────────────────────────────────────────────────
+	// RENDERIZAÇÃO DA LEGENDA CINÉTICA EM BLOCO DE LINHAS
+	// ────────────────────────────────────────────────────────────────────────────
+	const renderKineticSubtitles = () => {
+		return (
+			<div
+				style={{
+					position: 'absolute',
+					top: subtitleTop,
+					left: '50%',
+					transform: 'translateX(-50%)',
+					width: currentBeat.subtitleConfig.maxWidth || 860,
+					display: 'flex',
+					flexDirection: 'column',
+					alignItems: 'center',
+					justifyContent: 'center',
+					zIndex: 20,
+					pointerEvents: 'none',
+				}}
+			>
+				{currentBeat.lineIndices.map((lineWords, lineIdx) => (
 					<div
+						key={lineIdx}
 						style={{
-							width: '100%',
-							maxWidth: 820,
-							background: 'rgba(12, 12, 12, 0.88)',
-							border: '1px solid rgba(237, 235, 230, 0.22)',
-							borderRadius: 16,
-							padding: '18px 24px',
-							boxShadow: '0 20px 60px rgba(0, 0, 0, 0.8)',
 							display: 'flex',
-							flexDirection: 'column',
-							gap: 12,
+							flexWrap: 'wrap',
+							justifyContent: 'center',
+							alignItems: 'baseline',
+							margin: '4px 0',
 						}}
 					>
-						<div
-							style={{
-								display: 'flex',
-								alignItems: 'center',
-								justifyContent: 'space-between',
-								borderBottom: '1px solid rgba(237, 235, 230, 0.08)',
-								paddingBottom: 10,
-							}}
-						>
-							<div style={{display: 'flex', gap: 8}}>
-								<div style={{width: 10, height: 10, borderRadius: '50%', background: '#EF4444'}} />
-								<div style={{width: 10, height: 10, borderRadius: '50%', background: '#F59E0B'}} />
-								<div style={{width: 10, height: 10, borderRadius: '50%', background: '#10B981'}} />
-							</div>
-							<span style={{fontFamily: MONO, fontSize: 11, color: 'rgba(237, 235, 230, 0.45)'}}>
-								headless-code-studio // live
-							</span>
-							<div style={{width: 30}} />
-						</div>
-
-						<div
-							style={{
-								fontFamily: MONO,
-								fontSize: 18,
-								color: COLOR_GOLD,
-								display: 'flex',
-								alignItems: 'center',
-								gap: 10,
-							}}
-						>
-							<span style={{color: 'rgba(237, 235, 230, 0.4)'}}>&gt;</span>
-							<span>{displayedCommand}</span>
-							<span
-								style={{
-									width: 8,
-									height: 18,
-									background: COLOR_GOLD,
-									opacity: frame % 16 < 8 ? 1 : 0,
-								}}
-							/>
-						</div>
+						{lineWords.map((wordIdx) => {
+							const word = WORDS[wordIdx];
+							if (!word) return null;
+							return renderKineticWord(word);
+						})}
 					</div>
+				))}
+			</div>
+		);
+	};
 
-					<h2
-						style={{
-							fontFamily: SERIF,
-							fontStyle: 'italic',
-							fontSize: 44,
-							color: COLOR_WHITE,
-							textAlign: 'center',
-							marginTop: 32,
-							letterSpacing: '-0.02em',
-							lineHeight: 1.15,
-						}}
-					>
-						Cansado do AI Slop genérico?
-					</h2>
-				</div>
-			)}
+	// ────────────────────────────────────────────────────────────────────────────
+	// TRIGGER DE SFX EM FRAMES DETERMINÍSTICOS
+	// ────────────────────────────────────────────────────────────────────────────
+	const renderAudioTriggers = () => {
+		if (!enableSfx) return null;
 
-			{/* ══════════════════════════════════════════════════════════════════════
-			    CENA 2: VIBE DESIGN STUDIO (5.6s a 12.0s)
-			══════════════════════════════════════════════════════════════════════ */}
-			{t >= 5.6 && t < 12.2 && (
-				<div
-					style={{
-						position: 'absolute',
-						top: 170,
-						left: 64,
-						right: 64,
-						textAlign: 'center',
-						opacity: ci(frame, [168, 190], [0, 1]) * ci(frame, [345, 365], [1, 0]),
-					}}
-				>
-					<div
-						style={{
-							fontFamily: MONO,
-							fontSize: 13,
-							letterSpacing: '0.12em',
-							color: COLOR_GOLD,
-							marginBottom: 12,
-						}}
-					>
-						O Estúdio Criativo Headless
-					</div>
+		return (
+			<>
+				{/* Narração Principal Sincronizada */}
+				{audioNarracao && (
+					<Audio src={staticFile(audioNarracao)} volume={1.0} />
+				)}
 
-					<h1
-						style={{
-							fontFamily: SERIF,
-							fontStyle: 'italic',
-							fontSize: 66,
-							fontWeight: 400,
-							color: COLOR_WHITE,
-							letterSpacing: '-0.03em',
-							lineHeight: 1.05,
-							margin: 0,
-						}}
-					>
-						Vibe Design Studio
-					</h1>
+				{/* Trilha de Luxo Duckada */}
+				<Audio src={staticFile('audio/trilha_luxo.mp3')} volume={0.12} />
 
-					<p
-						style={{
-							fontFamily: SANS,
-							fontSize: 22,
-							color: 'rgba(237, 235, 230, 0.65)',
-							marginTop: 14,
-							fontWeight: 300,
-						}}
-					>
-						Código Puro para Agentes Autônomos
-					</p>
-				</div>
-			)}
+				{/* Efeitos Sonoros nas Transições de Beat */}
+				{/* Beat 1 Drop */}
+				{frame === 2 && <Audio src={staticFile('audio/whoosh_zoom.mp3')} volume={0.4} />}
 
-			{/* ══════════════════════════════════════════════════════════════════════
-			    CENA 3: CLÍMAX MULTIAGENTE — 3 ÓRBITAS (12.0s a 22.2s)
-			══════════════════════════════════════════════════════════════════ */}
-			{t >= 12.0 && t < 22.4 && (
-				<div
-					style={{
-						position: 'absolute',
-						top: 170,
-						left: 64,
-						right: 64,
-						display: 'flex',
-						flexDirection: 'column',
-						alignItems: 'center',
-						opacity: ci(frame, [360, 385], [0, 1]) * ci(frame, [650, 670], [1, 0]),
-					}}
-				>
-					<div
-						style={{
-							fontFamily: MONO,
-							fontSize: 12,
-							letterSpacing: '0.12em',
-							color: 'rgba(237, 235, 230, 0.6)',
-							marginBottom: 10,
-						}}
-					>
-						Arquitetura Multiagente
-					</div>
+				{/* Beat 2 Shock */}
+				{frame === 92 && <Audio src={staticFile('audio/hud_boom.mp3')} volume={0.5} />}
 
-					<h2
-						style={{
-							fontFamily: SERIF,
-							fontStyle: 'italic',
-							fontSize: 52,
-							color: COLOR_WHITE,
-							textAlign: 'center',
-							letterSpacing: '-0.02em',
-							margin: '0 0 24px 0',
-						}}
-					>
-						Orquestração em Código Puro
-					</h2>
+				{/* Beat 3 Terminal Rise */}
+				{frame === 174 && <Audio src={staticFile('audio/hud_rise.mp3')} volume={0.45} />}
 
-					{/* 3 Badges de Agentes Conectados */}
-					<div style={{display: 'flex', gap: 14, flexWrap: 'wrap', justifyContent: 'center'}}>
-						{[
-							{name: 'Claude Code', detail: 'Sonnet & Opus', color: COLOR_GOLD},
-							{name: 'OpenAI Codex', detail: 'Sandboxed Engine', color: COLOR_EMERALD},
-							{name: 'Google Antigravity', detail: 'AGY Swarm SDK', color: COLOR_CYAN},
-						].map((ag, idx) => (
-							<div
-								key={idx}
-								style={{
-									display: 'flex',
-									alignItems: 'center',
-									gap: 8,
-									padding: '8px 16px',
-									borderRadius: 999,
-									background: 'rgba(12, 12, 12, 0.85)',
-									border: `1px solid ${ag.color}55`,
-									boxShadow: `0 0 15px ${ag.color}22`,
-								}}
-							>
-								<div
-									style={{
-										width: 8,
-										height: 8,
-										borderRadius: '50%',
-										background: ag.color,
-										boxShadow: `0 0 8px ${ag.color}`,
-									}}
-								/>
-								<span style={{fontFamily: SANS, fontSize: 14, fontWeight: 600, color: COLOR_WHITE}}>
-									{ag.name}
-								</span>
-								<span style={{fontFamily: MONO, fontSize: 11, color: 'rgba(237, 235, 230, 0.45)'}}>
-									({ag.detail})
-								</span>
-							</div>
-						))}
-					</div>
-				</div>
-			)}
+				{/* Beat 4 Code Click */}
+				{frame === 265 && <Audio src={staticFile('audio/futurista_click.mp3')} volume={0.35} />}
 
-			{/* ══════════════════════════════════════════════════════════════════════
-			    CENA 4: CALL TO ACTION — ESTRELA NO GITHUB (22.2s a 30.6s)
-			══════════════════════════════════════════════════════════════════════ */}
-			{t >= 22.2 && (
-				<div
-					style={{
-						position: 'absolute',
-						top: 170,
-						left: 64,
-						right: 64,
-						display: 'flex',
-						flexDirection: 'column',
-						alignItems: 'center',
-						opacity: ci(frame, [666, 690], [0, 1]),
-					}}
-				>
-					<div
-						style={{
-							fontFamily: MONO,
-							fontSize: 12,
-							letterSpacing: '0.12em',
-							color: COLOR_GOLD,
-							marginBottom: 8,
-						}}
-					>
-						100% Open-Source &middot; Custo Zero
-					</div>
+				{/* Beat 5 Apple Spring Warm Bass */}
+				{frame === 360 && <Audio src={staticFile('audio/sub_impact_warm.mp3')} volume={0.4} />}
 
-					<h1
-						style={{
-							fontFamily: SERIF,
-							fontStyle: 'italic',
-							fontSize: 60,
-							color: COLOR_WHITE,
-							textAlign: 'center',
-							letterSpacing: '-0.03em',
-							margin: '0 0 24px 0',
-							lineHeight: 1.05,
-						}}
-					>
-						Deixe sua estrela no GitHub
-					</h1>
+				{/* Beat 6 Audio Console Whoosh */}
+				{frame === 510 && <Audio src={staticFile('audio/whoosh_zoom.mp3')} volume={0.45} />}
 
-					{/* Card GitHub Repositório */}
-					<div
-						style={{
-							width: '100%',
-							maxWidth: 780,
-							background: 'rgba(12, 12, 12, 0.9)',
-							border: '1px solid rgba(253, 224, 71, 0.4)',
-							borderRadius: 20,
-							padding: '24px 30px',
-							boxShadow: '0 25px 70px rgba(0, 0, 0, 0.8), 0 0 30px rgba(253, 224, 71, 0.15)',
-							display: 'flex',
-							flexDirection: 'column',
-							gap: 16,
-						}}
-					>
-						<div
-							style={{
-								display: 'flex',
-								alignItems: 'center',
-								justifyContent: 'space-between',
-							}}
-						>
-							<div>
-								<div
-									style={{
-										fontFamily: MONO,
-										fontSize: 18,
-										fontWeight: 700,
-										color: COLOR_WHITE,
-									}}
-								>
-									Gabrielrtads/vibe-design-studio
-								</div>
-								<div
-									style={{
-										fontFamily: SANS,
-										fontSize: 13,
-										color: 'rgba(237, 235, 230, 0.5)',
-										marginTop: 4,
-									}}
-								>
-									github.com/Gabrielrtads/vibe-design-studio
-								</div>
-							</div>
+				{/* Beat 7 Zero API Drop */}
+				{frame === 666 && <Audio src={staticFile('audio/click_haptic.mp3')} volume={0.4} />}
 
-							<div
-								style={{
-									display: 'flex',
-									alignItems: 'center',
-									gap: 8,
-									padding: '8px 18px',
-									borderRadius: 10,
-									background: COLOR_GOLD,
-									color: '#0A0A0A',
-									fontFamily: SANS,
-									fontSize: 15,
-									fontWeight: 800,
-									boxShadow: '0 0 20px rgba(253, 224, 71, 0.4)',
-								}}
-							>
-								<span>★</span>
-								<span>Star Repo</span>
-							</div>
-						</div>
+				{/* Beat 8 Clímax Final GitHub Star */}
+				{frame === 768 && <Audio src={staticFile('audio/impacto_final.mp3')} volume={0.65} />}
+			</>
+		);
+	};
 
-						{/* One-Liner Install */}
-						<div
-							style={{
-								padding: '12px 18px',
-								borderRadius: 10,
-								background: 'rgba(255, 255, 255, 0.04)',
-								border: '1px solid rgba(255, 255, 255, 0.08)',
-								fontFamily: MONO,
-								fontSize: 15,
-								color: COLOR_GOLD,
-								display: 'flex',
-								alignItems: 'center',
-								gap: 10,
-							}}
-						>
-							<span style={{color: 'rgba(237, 235, 230, 0.4)'}}>$</span>
-							<span>npx skills add Gabrielrtads/vibe-design-studio</span>
-						</div>
-					</div>
-				</div>
-			)}
-
-			{/* ══════════════════════════════════════════════════════════════════════
-			    LEGENDAS CINÉTICAS PALAVRA POR PALAVRA (WHISPER SYNC)
-			══════════════════════════════════════════════════════════════════════ */}
-			<KineticWordCaption
-				words={WORDS_DATA}
-				preset="gold-glow"
-				bottom={115}
-				fontSize={32}
-				windowSize={4}
+	return (
+		<AbsoluteFill
+			style={{
+				width: 1080,
+				height: 1920,
+				backgroundColor: bgColor,
+				overflow: 'hidden',
+				position: 'relative',
+			}}
+		>
+			{/* Grid Fino de Fundo Editorial */}
+			<div
+				style={{
+					position: 'absolute',
+					top: 0,
+					left: 0,
+					right: 0,
+					bottom: 0,
+					opacity: isLightBg ? 0.04 : 0.06,
+					backgroundImage: `radial-gradient(${isLightBg ? '#000000' : '#ffffff'} 1px, transparent 1px)`,
+					backgroundSize: '36px 36px',
+					pointerEvents: 'none',
+				}}
 			/>
+
+			{/* Palco 3D Dinâmico com os Cards */}
+			{renderDynamicSlideCards()}
+
+			{/* Legendas Cinéticas Sincronizadas */}
+			{renderKineticSubtitles()}
+
+			{/* Camada de Áudio e SFX */}
+			{renderAudioTriggers()}
 		</AbsoluteFill>
 	);
 };
