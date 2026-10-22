@@ -58,6 +58,14 @@ A common pitfall when building guardrails for AI is creating a **straitjacket**:
    - The studio acts as a **supercharged launchpad**. The agent does not waste time fighting Chromium memory leaks or calculating loudness decibels.
    - Using the **`[2] Criar do Zero`** route or **`[4] Ingest Reference`**, creative agents have carte blanche to invent entirely new motion choreographies, custom 3D card physics, and agency-level typography.
 
+### 💡 Prompting Quality & Economics at Scale: A Force Multiplier, Not a Miracle Worker
+
+> *"Vibe Design Studio does not do miracles on empty input — but it acts as a massive force multiplier for well-crafted prompts, dramatically elevating what accessible models can deliver."*
+
+* **The Reality of AI Generation:** If you feed a generic prompt like *"make a cool video about tech"*, no engine can invent your creative soul, timing, or narrative tension. While Vibe Design Studio will guarantee zero technical errors (safe zones respected, audio normalized to -14 LUFS, physical spring curves applied), the punchline, rhythm, and visual story rely directly on prompt quality.
+* **Elevating Economical Models (Gemini Flash, Haiku, GPT-4o-mini):** The true superpower of Vibe Design Studio is **financial efficiency at scale**. Frontier models are expensive. When you pair rich, intentional prompting with Vibe Design Studio's deterministic floor, **fast, cost-effective models (such as Gemini Flash)** achieve delivery quality comparable to elite creative models. The studio absorbs the technical heavy-lifting (loudness mastering, word-level Whisper sync, spring kinematics), freeing budget-friendly models to focus purely on executing the briefing.
+* **Process Over Magic:** It is not a rigid dogma or an imposed rule, but a proven operational insight: **investing two minutes into a crisp, thoughtful prompt unlocks 10x higher aesthetic output while cutting token costs by up to 80% in production scale.**
+
 ---
 
 ## 📊 Market Comparison: Why Vibe Design Studio is Different

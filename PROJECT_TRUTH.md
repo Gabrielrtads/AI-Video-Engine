@@ -54,6 +54,20 @@ O Vibe Design Studio foi concebido para elevar a linha de base de agentes econô
   - Modelos com alta sensibilidade de design (como Claude) **NÃO** devem ser engessados a formulários de templates básicos.
   - O ecossistema suporta Three.js nativo (`@react-three/fiber`, `@remotion/three`), shaders GLSL, cartões isométricos com iluminação PBR simulada e composições React 18 100% customizadas sob a rota `[2] Criar do Zero`.
 
+### 6.1. O Papel dos Bons Prompts: Multiplicador de Força, Não Milagre
+
+O Vibe Design Studio não opera como uma "caixa preta mágica" que transforma briefings genéricos em obras de arte premiadas, mas sim como uma **alavanca de alta precisão que potencializa o processo criativo**:
+
+- **Qualidade de Entrada Determina o Teto Estético:**
+  - Briefings vagos ("faça um carrossel sobre marketing") receberão garantias técnicas inegociáveis (áudio normalizado, sem corte de texto, safe zones mobile), mas faltará alma e impacto narrativo.
+  - Prompts ricos em intenção, tom de voz, referências de ritmo e densidade de conteúdo permitem ao motor brilhar em sua capacidade máxima.
+- **Elevação do Nível de Modelos Econômicos (Escala & Eficiência Financeira):**
+  - Nem todo fluxo precisa de modelos de ponta com custos proibitivos de token.
+  - O grande valor prático do Vibe Design Studio é **elevar o nível de entrega de modelos mais rápidos e econômicos (como a família Gemini Flash, Haiku ou similares)**.
+  - Como o estúdio já resolve deterministamente a engenharia pesada (cálculo de LUFS, alinhamento Whisper milissegundo a milissegundo, físicas elásticas, safe zones de UI), um modelo econômico munido de um bom prompt entrega resultados de padrão agência a uma fração mínima do custo.
+- **Princípio Operacional, Não Regra Imposta:**
+  - Não se trata de uma imposição dogmática, mas de um princípio de processo testado e validado: investir clareza no prompt poupa iterações, economiza tokens e viabiliza produção audiovisual em escala real.
+
 ## 7. Alimentação Headless via API (OpenRouter, LLMs Externos)
 O estúdio pode ser alimentado e disparado 100% via API sem interface humana:
 1. **Via OpenRouter / APIs de LLMs:**

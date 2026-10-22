@@ -47,3 +47,5 @@ Todo agente tem à disposição neste repositório:
    - **Uniformidade Visual vs. Edição Individual:** Se o estilo visual (layout, tipografia, paleta) será uniforme para todos os slides ou se o usuário deseja dirigir e editar cada slide individualmente, um a um;
    - **Estático vs. Futura Animação:** Se o carrossel é apenas para imagens estáticas (feed) OU se ele quer criar os slides estruturados para depois **animá-los como vídeo motion** usando o `vibe-design-studio`.
    - O agente NUNCA deve assumir esses parâmetros ou começar a gerar slides no escuro.
+
+9. **Qualidade do Prompt & Escala:** O estúdio não faz milagre com briefings vazios. Briefings claros e bem estruturados elevam a qualidade de entrega até de modelos mais rápidos e econômicos (Gemini Flash, Haiku), reduzindo custos de API em escala.
