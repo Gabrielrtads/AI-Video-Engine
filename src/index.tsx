@@ -3,11 +3,47 @@ import {AbsoluteFill, Composition, registerRoot} from 'remotion';
 import {H, FPS, W} from './kit';
 import {FlowMotionMaster} from './FlowMotionMaster';
 import {CarrosselEditorial} from './CarrosselEditorial';
+import {Slide02Diagnostico} from './Slide02Diagnostico';
 
 const FlowMotionRoot: React.FC = () => (
 	<AbsoluteFill style={{background: '#060709'}}>
 		<FlowMotionMaster audioNarracao="narracao.mp3" enableSfx={true} />
 	</AbsoluteFill>
+);
+
+// ────────────────────────────────────────────────────────────────────────────
+// CARROSSEL EDITORIAL — SLIDE 01 (CAPA / HOOK)
+// Brutalismo de Alto Contraste (P&B + Vermelho Ferrari)
+// ────────────────────────────────────────────────────────────────────────────
+export const Slide01Capa: React.FC = () => (
+	<CarrosselEditorial
+		headerTagLeft="VIBE DESIGN STUDIO × AGENTES"
+		headerTagRight="ESTÚDIO HEADLESS"
+		categoryTag="— CRIATIVO 100% EM CÓDIGO PURO"
+		categoryColor="#FF0022"
+		titleLine1="O FIM DOS"
+		titleLine2="VÍDEOS DE IA"
+		titleLine3="SEM"
+		highlightWord="ALMA"
+		gradientColors={['#FF0022', '#FF3355', '#FF0022']}
+		subtitle="Adeus plataformas no-code travadas e gradientes roxos genéricos. Conheça o estúdio criativo headless em Remotion + React para agentes criarem vídeos direto do terminal."
+		subtitleColor="#475569"
+		backgroundColor="#FCFCFD"
+		textColor="#09090B"
+		badgeNumber="01"
+		badgeOthers="02  03  04  05"
+		badgeOthersColor="rgba(255, 255, 255, 0.75)"
+		badgeCategory="ZERO SLOP"
+		badgeCategoryColor="#FFFFFF"
+		stageHighlightWord="SEM SLOP"
+		stageRepeatedWord="CÓDIGO PURO"
+		stageWatermarkColor="rgba(255, 255, 255, 0.18)"
+		stageBgColor="#FF0022"
+		stageTextColor="#FFFFFF"
+		underlineColor="#09090B"
+		footerAuthor="GABRIEL TOLEDO"
+		footerAction="ARRASTA  →"
+	/>
 );
 
 // ────────────────────────────────────────────────────────────────────────────
@@ -45,11 +81,27 @@ registerRoot(() => (
 			height={H}
 		/>
 
-		{/* Editorial Carousel Composition (Instagram 4:5 - 1080x1350, 30fps, 240 frames) */}
+		{/* Editorial Carousel Compositions (Instagram 4:5 - 1080x1350, 30fps) */}
+		<Composition
+			id="Slide01Capa"
+			component={Slide01Capa}
+			durationInFrames={120}
+			fps={30}
+			width={1080}
+			height={1350}
+		/>
+		<Composition
+			id="Slide02Diagnostico"
+			component={Slide02Diagnostico}
+			durationInFrames={120}
+			fps={30}
+			width={1080}
+			height={1350}
+		/>
 		<Composition
 			id="CarrosselEditorial"
-			component={CarrosselEditorial}
-			durationInFrames={240}
+			component={Slide01Capa}
+			durationInFrames={120}
 			fps={30}
 			width={1080}
 			height={1350}

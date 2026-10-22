@@ -20,40 +20,56 @@ export interface CarrosselEditorialProps {
 	headerTagLeft?: string;
 	headerTagRight?: string;
 	categoryTag?: string;
+	categoryColor?: string;
 	titleLine1?: string;
 	titleLine2?: string;
 	titleLine3?: string;
 	highlightWord?: string;
 	gradientColors?: string[];
 	subtitle?: string;
+	subtitleColor?: string;
+	backgroundColor?: string;
+	textColor?: string;
 	badgeNumber?: string;
 	badgeOthers?: string;
+	badgeOthersColor?: string;
 	badgeCategory?: string;
+	badgeCategoryColor?: string;
 	stageHighlightWord?: string;
 	stageRepeatedWord?: string;
+	stageWatermarkColor?: string;
 	stageBgColor?: string;
 	stageTextColor?: string;
+	underlineColor?: string;
 	footerAuthor?: string;
 	footerAction?: string;
 }
 
 export const CarrosselEditorial: React.FC<CarrosselEditorialProps> = ({
-	headerTagLeft = 'VIBE-DEV × SWARM',
-	headerTagRight = 'SALVA ESSE POST',
-	categoryTag = '— 4 REGRAS DE OURO NO VIBE CODING',
-	titleLine1 = 'A PALAVRA QUE',
-	titleLine2 = 'FALTA NO SEU',
-	titleLine3 = 'CÓDIGO COM',
-	highlightWord = 'IA',
-	gradientColors = ['#a3e635', '#22d3ee', '#3b82f6', '#a855f7', '#ec4899'],
-	subtitle = 'Spoiler: o erro não é da IA. 4 regras de isolamento, cada uma com o comando pronto pra rodar. Salva antes de perder.',
+	headerTagLeft = 'VIBE DESIGN STUDIO × AGENTES',
+	headerTagRight = 'ESTÚDIO HEADLESS',
+	categoryTag = '— CRIATIVO 100% EM CÓDIGO PURO',
+	categoryColor = '#FF0022',
+	titleLine1 = 'O FIM DOS',
+	titleLine2 = 'VÍDEOS DE IA',
+	titleLine3 = 'SEM',
+	highlightWord = 'ALMA',
+	gradientColors = ['#FF0022', '#FF3355', '#FF0022'],
+	subtitle = 'Adeus ferramentas no-code travadas e vídeos que todo mundo ignora. Um estúdio headless em React e Remotion para agentes criarem vídeos direto do terminal.',
+	subtitleColor = '#475569',
+	backgroundColor = '#FCFCFD',
+	textColor = '#09090B',
 	badgeNumber = '01',
-	badgeOthers = '02  03  04',
-	badgeCategory = 'MESAS ISOLADAS',
-	stageHighlightWord = 'SEM BUGS',
-	stageRepeatedWord = 'SEM BUGS',
-	stageBgColor = '#5fdc30',
-	stageTextColor = '#050505',
+	badgeOthers = '02  03  04  05',
+	badgeOthersColor = 'rgba(255, 255, 255, 0.75)',
+	badgeCategory = 'ZERO SLOP',
+	badgeCategoryColor = '#FFFFFF',
+	stageHighlightWord = 'SEM SLOP',
+	stageRepeatedWord = 'CÓDIGO PURO',
+	stageWatermarkColor = 'rgba(255, 255, 255, 0.18)',
+	stageBgColor = '#FF0022',
+	stageTextColor = '#FFFFFF',
+	underlineColor = '#09090B',
 	footerAuthor = 'GABRIEL TOLEDO',
 	footerAction = 'ARRASTA  →',
 }) => {
@@ -87,7 +103,7 @@ export const CarrosselEditorial: React.FC<CarrosselEditorialProps> = ({
 			style={{
 				width: 1080,
 				height: 1350,
-				background: '#fcfcfd',
+				background: backgroundColor,
 				display: 'flex',
 				flexDirection: 'column',
 				justifyContent: 'space-between',
@@ -124,7 +140,7 @@ export const CarrosselEditorial: React.FC<CarrosselEditorialProps> = ({
 						fontSize: 17,
 						fontWeight: 800,
 						letterSpacing: '0.18em',
-						color: '#34a814',
+						color: categoryColor,
 						textTransform: 'uppercase',
 					}}
 				>
@@ -136,9 +152,9 @@ export const CarrosselEditorial: React.FC<CarrosselEditorialProps> = ({
 					style={{
 						fontFamily: fontBebas,
 						fontSize: 132,
-						lineHeight: 0.84,
+						lineHeight: 0.91,
 						letterSpacing: '0.01em',
-						color: '#09090b',
+						color: textColor,
 						margin: 0,
 						textTransform: 'uppercase',
 					}}
@@ -148,7 +164,7 @@ export const CarrosselEditorial: React.FC<CarrosselEditorialProps> = ({
 					{titleLine2}
 					<br />
 					{titleLine3}{' '}
-					{/* SVG Text Iridescente com ID dinâmico único - imune a colisões e ao bug do Chromium */}
+					{/* SVG Text com gradiente ou cor sólida */}
 					{(() => {
 						const wordLen = highlightWord.length;
 						const estWidthPx = Math.max(wordLen * 64 + 16, 80);
@@ -211,7 +227,7 @@ export const CarrosselEditorial: React.FC<CarrosselEditorialProps> = ({
 						fontFamily: fontPlusJakartaSans,
 						fontSize: 23,
 						lineHeight: 1.38,
-						color: '#475569',
+						color: subtitleColor,
 						margin: 0,
 						fontWeight: 600,
 						maxWidth: 960,
@@ -230,7 +246,7 @@ export const CarrosselEditorial: React.FC<CarrosselEditorialProps> = ({
 					borderRadius: 28,
 					background: stageBgColor,
 					overflow: 'hidden',
-					boxShadow: '0 20px 45px -10px rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(0, 0, 0, 0.06)',
+					boxShadow: '0 25px 50px -12px rgba(255, 0, 34, 0.35), 0 0 0 1px rgba(0, 0, 0, 0.08)',
 					transform: `scale(${0.96 + stageEntrance * 0.04}) translateY(${(1 - stageEntrance) * 20}px)`,
 					opacity: Math.min(Math.max(stageEntrance, 0), 1),
 				}}
@@ -273,7 +289,7 @@ export const CarrosselEditorial: React.FC<CarrosselEditorialProps> = ({
 						</span>
 						<span
 							style={{
-								color: '#2e7d0e',
+								color: badgeOthersColor,
 								letterSpacing: '0.12em',
 							}}
 						>
@@ -288,7 +304,7 @@ export const CarrosselEditorial: React.FC<CarrosselEditorialProps> = ({
 							fontSize: 14,
 							fontWeight: 700,
 							letterSpacing: '0.16em',
-							color: '#1a4d09',
+							color: badgeCategoryColor,
 							textTransform: 'uppercase',
 						}}
 					>
@@ -326,7 +342,7 @@ export const CarrosselEditorial: React.FC<CarrosselEditorialProps> = ({
 									fontSize: 78,
 									lineHeight: 1,
 									letterSpacing: '0.04em',
-									color: '#43bb0e',
+									color: stageWatermarkColor,
 									textTransform: 'uppercase',
 									transform: `translateX(${xOffset}px)`,
 									userSelect: 'none',
@@ -360,7 +376,7 @@ export const CarrosselEditorial: React.FC<CarrosselEditorialProps> = ({
 							letterSpacing: '0.01em',
 							color: stageTextColor,
 							textTransform: 'uppercase',
-							textShadow: '0 2px 20px rgba(0, 0, 0, 0.08)',
+							textShadow: '0 2px 20px rgba(0, 0, 0, 0.15)',
 							whiteSpace: 'nowrap',
 						}}
 					>
@@ -373,7 +389,7 @@ export const CarrosselEditorial: React.FC<CarrosselEditorialProps> = ({
 							marginTop: 10,
 							height: 8,
 							borderRadius: 999,
-							background: stageTextColor,
+							background: underlineColor,
 							width: `${Math.min(Math.max(underlineProgress, 0), 1) * 102}%`,
 							boxShadow: '0 2px 10px rgba(0, 0, 0, 0.15)',
 						}}
