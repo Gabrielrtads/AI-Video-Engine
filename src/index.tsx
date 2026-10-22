@@ -6,7 +6,7 @@ import {CarrosselEditorial} from './CarrosselEditorial';
 
 const FlowMotionRoot: React.FC = () => (
 	<AbsoluteFill style={{background: '#060709'}}>
-		<FlowMotionMaster />
+		<FlowMotionMaster audioNarracao="narracao.mp3" enableSfx={true} />
 	</AbsoluteFill>
 );
 
@@ -31,7 +31,7 @@ registerRoot(() => (
 		<Composition
 			id="FlowMotionMaster"
 			component={FlowMotionRoot}
-			durationInFrames={825}
+			durationInFrames={918}
 			fps={FPS}
 			width={W}
 			height={H}
@@ -39,7 +39,7 @@ registerRoot(() => (
 		<Composition
 			id="Video"
 			component={FlowMotionRoot}
-			durationInFrames={825}
+			durationInFrames={918}
 			fps={FPS}
 			width={W}
 			height={H}
