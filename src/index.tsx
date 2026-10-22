@@ -17,7 +17,7 @@ const FlowMotionRoot: React.FC = () => (
 
 const FullBleedRoot: React.FC = () => (
 	<AbsoluteFill style={{background: '#050608'}}>
-		<FullBleedShowcase audioNarracao="narracao_thalita.mp3" enableSfx={true} />
+		<FullBleedShowcase audioNarracao="narracao_thalita_fast.mp3" enableSfx={true} />
 	</AbsoluteFill>
 );
 

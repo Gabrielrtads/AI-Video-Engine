@@ -108,7 +108,7 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 						left: 64,
 						display: 'flex',
 						alignItems: 'center',
-						gap: 12,
+						gap: 14,
 						opacity: ci(frame, [0, 15], [0, 1]),
 						transform: `translateY(${ci(frame, [0, 15], [10, 0])}px)`,
 					}}
@@ -116,20 +116,21 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 					<span
 						style={{
 							display: 'inline-block',
-							width: 10,
-							height: 10,
+							width: 14,
+							height: 14,
 							borderRadius: '50%',
 							backgroundColor: FERRARI_RED,
-							boxShadow: `0 0 16px ${FERRARI_RED}`,
+							boxShadow: `0 0 20px ${FERRARI_RED}`,
 						}}
 					/>
 					<span
 						style={{
 							fontFamily: fontMono,
-							fontSize: 16,
-							color: 'rgba(255, 255, 255, 0.45)',
-							letterSpacing: '0.15em',
+							fontSize: 24,
+							color: 'rgba(255, 255, 255, 0.6)',
+							letterSpacing: '0.12em',
 							textTransform: 'uppercase',
+							fontWeight: 700,
 						}}
 					>
 						[DIAGNÓSTICO CRÍTICO 01]
@@ -142,14 +143,14 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 						width: '100%',
 						display: 'flex',
 						flexDirection: 'column',
-						gap: 10,
+						gap: 12,
 					}}
 				>
 					{/* Linha 1 */}
 					<div
 						style={{
 							fontFamily: fontAnton,
-							fontSize: 114,
+							fontSize: 124,
 							lineHeight: 0.92,
 							color: PURE_WHITE,
 							textTransform: 'uppercase',
@@ -165,7 +166,7 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 					<div
 						style={{
 							fontFamily: fontAnton,
-							fontSize: 132,
+							fontSize: 142,
 							lineHeight: 0.9,
 							color: FERRARI_RED,
 							textTransform: 'uppercase',
@@ -182,9 +183,9 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 					<div
 						style={{
 							fontFamily: fontInstrumentSerif,
-							fontSize: 92,
+							fontSize: 98,
 							lineHeight: 1.0,
-							color: 'rgba(255, 255, 255, 0.65)',
+							color: 'rgba(255, 255, 255, 0.75)',
 							fontStyle: 'italic',
 							opacity: ci(line3Spring, [0, 1], [0, 1]),
 							transform: `translateY(${ci(line3Spring, [0, 1], [40, 0])}px)`,
@@ -194,24 +195,25 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 					</div>
 				</div>
 
-				{/* Micro-ticker inferior */}
+				{/* Micro-ticker inferior legível em mobile */}
 				<div
 					style={{
 						position: 'absolute',
-						bottom: 120,
+						bottom: 140,
 						left: 64,
 						right: 64,
 						display: 'flex',
 						justifyContent: 'space-between',
-						borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+						borderTop: '2px solid rgba(255, 255, 255, 0.12)',
 						paddingTop: 24,
 						fontFamily: fontMono,
-						fontSize: 15,
-						color: 'rgba(255, 255, 255, 0.35)',
+						fontSize: 24,
+						fontWeight: 700,
+						color: 'rgba(255, 255, 255, 0.55)',
 						opacity: ci(frame, [15, 30], [0, 1]),
 					}}
 				>
-					<span>RETENÇÃO MÉDIA: 1.2s</span>
+					<span>RETENÇÃO: 1.2s</span>
 					<span style={{ color: FERRARI_RED }}>ZERO IDENTIDADE</span>
 				</div>
 			</AbsoluteFill>
@@ -263,13 +265,14 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 				<div
 					style={{
 						fontFamily: fontMono,
-						fontSize: 26,
-						color: 'rgba(255, 120, 120, 0.45)',
+						fontSize: 32,
+						fontWeight: 700,
+						color: 'rgba(255, 120, 120, 0.6)',
 						marginBottom: 44,
 						textTransform: 'uppercase',
 						letterSpacing: '0.12em',
 						transform: `translateY(${ci(stampSpring, [0, 1], [20, 0])}px)`,
-						opacity: ci(stampSpring, [0, 1], [0.3, 0.7]),
+						opacity: ci(stampSpring, [0, 1], [0.3, 0.85]),
 					}}
 				>
 					GRADIENTE ROXO • ROBÔS SEM ALMA
@@ -279,22 +282,22 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 				<div
 					style={{
 						transform: `scale(${breathingScale}) rotate(${breathingRot}deg)`,
-						border: '12px solid #FF0022',
-						padding: '44px 52px',
-						borderRadius: 16,
-						backgroundColor: 'rgba(255, 0, 34, 0.06)',
+						border: '14px solid #FF0022',
+						padding: '48px 60px',
+						borderRadius: 20,
+						backgroundColor: 'rgba(255, 0, 34, 0.08)',
 						boxShadow: '0 20px 80px rgba(255, 0, 34, 0.4), inset 0 0 50px rgba(255, 0, 34, 0.2)',
 						display: 'flex',
 						flexDirection: 'column',
 						alignItems: 'center',
-						gap: 16,
+						gap: 18,
 						opacity: ci(stampSpring, [0, 1], [0, 1]),
 					}}
 				>
 					<div
 						style={{
 							fontFamily: fontAnton,
-							fontSize: 88,
+							fontSize: 104,
 							color: '#FF0022',
 							letterSpacing: '0.04em',
 							lineHeight: 0.9,
@@ -306,12 +309,12 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 					<div
 						style={{
 							fontFamily: fontAnton,
-							fontSize: 66,
+							fontSize: 78,
 							color: '#FFFFFF',
 							backgroundColor: '#FF0022',
-							padding: '6px 30px',
+							padding: '8px 36px',
 							letterSpacing: '0.08em',
-							borderRadius: 6,
+							borderRadius: 8,
 						}}
 					>
 						POR SLOP
@@ -319,10 +322,10 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 					<div
 						style={{
 							fontFamily: fontMono,
-							fontSize: 18,
+							fontSize: 26,
 							color: '#FFC2C7',
-							letterSpacing: '0.2em',
-							fontWeight: 700,
+							letterSpacing: '0.16em',
+							fontWeight: 800,
 						}}
 					>
 						99% GENÉRICO • ZERO RETENÇÃO
@@ -375,36 +378,36 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 					pointerEvents: 'none',
 				}}
 			>
-				{/* Top Bar macOS com sutileza */}
+				{/* Top Bar macOS legível em mobile */}
 				<div
 					style={{
 						display: 'flex',
 						justifyContent: 'space-between',
 						alignItems: 'center',
-						borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+						borderBottom: '2px solid rgba(255, 255, 255, 0.1)',
 						paddingBottom: 24,
-						marginBottom: 40,
+						marginBottom: 44,
 					}}
 				>
-					<div style={{ display: 'flex', gap: 10 }}>
-						<div style={{ width: 14, height: 14, borderRadius: '50%', backgroundColor: '#FF5F56' }} />
-						<div style={{ width: 14, height: 14, borderRadius: '50%', backgroundColor: '#FFBD2E' }} />
-						<div style={{ width: 14, height: 14, borderRadius: '50%', backgroundColor: '#27C93F' }} />
+					<div style={{ display: 'flex', gap: 12 }}>
+						<div style={{ width: 18, height: 18, borderRadius: '50%', backgroundColor: '#FF5F56' }} />
+						<div style={{ width: 18, height: 18, borderRadius: '50%', backgroundColor: '#FFBD2E' }} />
+						<div style={{ width: 18, height: 18, borderRadius: '50%', backgroundColor: '#27C93F' }} />
 					</div>
-					<span style={{ fontSize: 14, color: 'rgba(255, 255, 255, 0.4)', letterSpacing: '0.08em' }}>
-						zsh — vibe-studio — 1080×1920 @ 60 FPS
+					<span style={{ fontSize: 20, color: 'rgba(255, 255, 255, 0.55)', letterSpacing: '0.06em' }}>
+						zsh — vibe-studio
 					</span>
-					<span style={{ fontSize: 13, color: MATRIX_GREEN, fontWeight: 700 }}>
+					<span style={{ fontSize: 20, color: MATRIX_GREEN, fontWeight: 800 }}>
 						● CLI HEADLESS
 					</span>
 				</div>
 
 				{/* Título de Entrada */}
-				<div style={{ marginBottom: 36 }}>
+				<div style={{ marginBottom: 44 }}>
 					<span
 						style={{
 							fontFamily: fontAnton,
-							fontSize: 66,
+							fontSize: 82,
 							color: PURE_WHITE,
 							textTransform: 'uppercase',
 							lineHeight: 1.0,
@@ -416,33 +419,33 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 					<div
 						style={{
 							fontFamily: fontInstrumentSerif,
-							fontSize: 36,
-							color: 'rgba(255, 255, 255, 0.65)',
+							fontSize: 44,
+							color: 'rgba(255, 255, 255, 0.75)',
 							fontStyle: 'italic',
-							marginTop: 8,
+							marginTop: 10,
 						}}
 					>
 						O estúdio criativo em código puro para agentes
 					</div>
 				</div>
 
-				{/* Linha de Comando Interativa */}
+				{/* Linha de Comando Interativa em Escala Mobile */}
 				<div
 					style={{
-						backgroundColor: 'rgba(255, 255, 255, 0.03)',
-						border: '1px solid rgba(255, 255, 255, 0.1)',
-						borderRadius: 12,
-						padding: '24px 28px',
-						fontSize: 22,
+						backgroundColor: 'rgba(255, 255, 255, 0.04)',
+						border: '2px solid rgba(255, 255, 255, 0.14)',
+						borderRadius: 16,
+						padding: '32px 34px',
+						fontSize: 32,
 						color: PURE_WHITE,
 						lineHeight: 1.5,
 						wordBreak: 'break-all',
 					}}
 				>
-					<span style={{ color: MATRIX_GREEN, fontWeight: 700 }}>workspace $ </span>
-					<span>{currentText}</span>
+					<span style={{ color: MATRIX_GREEN, fontWeight: 800 }}>workspace $ </span>
+					<span style={{ fontWeight: 600 }}>{currentText}</span>
 					{showCursor && (
-						<span style={{ backgroundColor: MATRIX_GREEN, color: '#000', display: 'inline-block', width: 12, height: 22, verticalAlign: 'middle', marginLeft: 4 }} />
+						<span style={{ backgroundColor: MATRIX_GREEN, color: '#000', display: 'inline-block', width: 16, height: 32, verticalAlign: 'middle', marginLeft: 6 }} />
 					)}
 				</div>
 
@@ -450,22 +453,22 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 				{isDoneTyping && (
 					<div
 						style={{
-							marginTop: 32,
+							marginTop: 36,
 							display: 'flex',
 							flexDirection: 'column',
-							gap: 16,
-							fontSize: 19,
-							color: 'rgba(255, 255, 255, 0.85)',
+							gap: 18,
+							fontSize: 26,
+							color: 'rgba(255, 255, 255, 0.9)',
 						}}
 					>
 						<div style={{ color: MATRIX_GREEN, opacity: log1Opacity, transform: `translateY(${ci(log1Opacity, [0, 1], [8, 0])}px)` }}>
-							✔ Motor Remotion + Whisper C++ injetado com sucesso
+							✔ Motor Remotion + Whisper C++ injetado
 						</div>
 						<div style={{ color: MATRIX_GREEN, opacity: log2Opacity, transform: `translateY(${ci(log2Opacity, [0, 1], [8, 0])}px)` }}>
-							✔ 7 habilidades canônicas registradas no enxame
+							✔ 7 habilidades canônicas registradas
 						</div>
 						<div style={{ color: ELECTRIC_CYAN, opacity: log3Opacity, transform: `translateY(${ci(log3Opacity, [0, 1], [8, 0])}px)` }}>
-							✔ Studio compilado: http://localhost:3000 (0.6s)
+							✔ Studio compilado: localhost:3000 (0.6s)
 						</div>
 					</div>
 				)}
@@ -483,39 +486,39 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 				>
 					<div
 						style={{
-							backgroundColor: 'rgba(0, 255, 102, 0.06)',
-							border: `1px solid ${MATRIX_GREEN}`,
-							borderRadius: 12,
+							backgroundColor: 'rgba(0, 255, 102, 0.08)',
+							border: `2px solid ${MATRIX_GREEN}`,
+							borderRadius: 14,
 							padding: '24px 16px',
 							textAlign: 'center',
 						}}
 					>
-						<div style={{ fontSize: 13, color: 'rgba(255, 255, 255, 0.5)', marginBottom: 6 }}>CUSTO</div>
-						<div style={{ fontFamily: fontAnton, fontSize: 36, color: MATRIX_GREEN }}>R$ 0,00</div>
+						<div style={{ fontSize: 20, color: 'rgba(255, 255, 255, 0.6)', fontWeight: 700, marginBottom: 8 }}>CUSTO</div>
+						<div style={{ fontFamily: fontAnton, fontSize: 44, color: MATRIX_GREEN }}>R$ 0,00</div>
 					</div>
 					<div
 						style={{
-							backgroundColor: 'rgba(0, 240, 255, 0.06)',
-							border: `1px solid ${ELECTRIC_CYAN}`,
-							borderRadius: 12,
+							backgroundColor: 'rgba(0, 240, 255, 0.08)',
+							border: `2px solid ${ELECTRIC_CYAN}`,
+							borderRadius: 14,
 							padding: '24px 16px',
 							textAlign: 'center',
 						}}
 					>
-						<div style={{ fontSize: 13, color: 'rgba(255, 255, 255, 0.5)', marginBottom: 6 }}>CONTROLE</div>
-						<div style={{ fontFamily: fontAnton, fontSize: 32, color: ELECTRIC_CYAN }}>100% CÓDIGO</div>
+						<div style={{ fontSize: 20, color: 'rgba(255, 255, 255, 0.6)', fontWeight: 700, marginBottom: 8 }}>CONTROLE</div>
+						<div style={{ fontFamily: fontAnton, fontSize: 36, color: ELECTRIC_CYAN }}>100% CÓDIGO</div>
 					</div>
 					<div
 						style={{
-							backgroundColor: 'rgba(255, 0, 34, 0.06)',
-							border: `1px solid ${FERRARI_RED}`,
-							borderRadius: 12,
+							backgroundColor: 'rgba(255, 0, 34, 0.08)',
+							border: `2px solid ${FERRARI_RED}`,
+							borderRadius: 14,
 							padding: '24px 16px',
 							textAlign: 'center',
 						}}
 					>
-						<div style={{ fontSize: 13, color: 'rgba(255, 255, 255, 0.5)', marginBottom: 6 }}>LICENÇA</div>
-						<div style={{ fontFamily: fontAnton, fontSize: 36, color: FERRARI_RED }}>MIT OPEN</div>
+						<div style={{ fontSize: 20, color: 'rgba(255, 255, 255, 0.6)', fontWeight: 700, marginBottom: 8 }}>LICENÇA</div>
+						<div style={{ fontFamily: fontAnton, fontSize: 44, color: FERRARI_RED }}>MIT OPEN</div>
 					</div>
 				</div>
 			</AbsoluteFill>
@@ -553,17 +556,17 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 				{/* Topo Técnico */}
 				<div>
 					<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-						<span style={{ fontSize: 14, color: MATRIX_GREEN, letterSpacing: '0.12em' }}>
-							● APPLE SPRING ENGINE (60 FPS NATIVO)
+						<span style={{ fontSize: 22, color: MATRIX_GREEN, letterSpacing: '0.12em', fontWeight: 800 }}>
+							● APPLE SPRING ENGINE (60 FPS)
 						</span>
-						<span style={{ fontSize: 14, color: 'rgba(255, 255, 255, 0.4)' }}>
-							CRITICAL DAMPING: ZERO OVERSHOOT
+						<span style={{ fontSize: 20, color: 'rgba(255, 255, 255, 0.55)', fontWeight: 600 }}>
+							CRITICAL DAMPING
 						</span>
 					</div>
 					<h2
 						style={{
 							fontFamily: fontAnton,
-							fontSize: 72,
+							fontSize: 84,
 							color: PURE_WHITE,
 							textTransform: 'uppercase',
 							lineHeight: 1.0,
@@ -575,10 +578,10 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 					<div
 						style={{
 							fontFamily: fontInstrumentSerif,
-							fontSize: 38,
-							color: 'rgba(255, 255, 255, 0.7)',
+							fontSize: 44,
+							color: 'rgba(255, 255, 255, 0.75)',
 							fontStyle: 'italic',
-							marginTop: 8,
+							marginTop: 10,
 						}}
 					>
 						Legendas sincronizadas no milissegundo com Whisper C++
@@ -588,10 +591,10 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 				{/* Osciloscópio Físico com Grid Suave */}
 				<div
 					style={{
-						height: 480,
-						backgroundColor: 'rgba(0, 0, 0, 0.5)',
-						border: '1px solid rgba(255, 255, 255, 0.1)',
-						borderRadius: 18,
+						height: 440,
+						backgroundColor: 'rgba(0, 0, 0, 0.55)',
+						border: '2px solid rgba(255, 255, 255, 0.12)',
+						borderRadius: 20,
 						position: 'relative',
 						overflow: 'hidden',
 						display: 'flex',
@@ -604,7 +607,7 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 						style={{
 							position: 'absolute',
 							inset: 0,
-							backgroundImage: 'linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)',
+							backgroundImage: 'linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)',
 							backgroundSize: '40px 40px',
 						}}
 					/>
@@ -616,7 +619,7 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 							left: 0,
 							right: 0,
 							height: 2,
-							backgroundColor: 'rgba(255, 0, 34, 0.25)',
+							backgroundColor: 'rgba(255, 0, 34, 0.35)',
 						}}
 					/>
 
@@ -627,26 +630,26 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 							display: 'flex',
 							flexDirection: 'column',
 							alignItems: 'center',
-							gap: 8,
+							gap: 10,
 							zIndex: 2,
 						}}
 					>
 						<div
 							style={{
-								width: 76,
-								height: 76,
+								width: 84,
+								height: 84,
 								borderRadius: '50%',
 								backgroundColor: FERRARI_RED,
-								boxShadow: '0 0 45px rgba(255, 0, 34, 0.7), inset 0 0 15px #FFF',
+								boxShadow: '0 0 50px rgba(255, 0, 34, 0.8), inset 0 0 18px #FFF',
 								border: '3px solid #FFF',
 							}}
 						/>
-						<span style={{ fontSize: 13, color: '#FFF', fontWeight: 700, letterSpacing: '0.08em' }}>
+						<span style={{ fontSize: 20, color: '#FFF', fontWeight: 800, letterSpacing: '0.08em', backgroundColor: 'rgba(0,0,0,0.6)', padding: '4px 12px', borderRadius: 6 }}>
 							damping: 20
 						</span>
 					</div>
 
-					{/* Parâmetros Técnicos */}
+					{/* Parâmetros Técnicos Legíveis */}
 					<div
 						style={{
 							position: 'absolute',
@@ -655,8 +658,9 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 							right: 24,
 							display: 'flex',
 							justifyContent: 'space-between',
-							fontSize: 14,
-							color: 'rgba(255, 255, 255, 0.45)',
+							fontSize: 20,
+							fontWeight: 700,
+							color: 'rgba(255, 255, 255, 0.6)',
 						}}
 					>
 						<span>MASS: 0.85</span>
@@ -665,29 +669,29 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 					</div>
 				</div>
 
-				{/* Card de Áudio Whisper Sub-15ms */}
+				{/* Card de Áudio Whisper Sub-15ms em Escala Mobile Real */}
 				<div
 					style={{
-						backgroundColor: 'rgba(255, 255, 255, 0.03)',
-						border: '1px solid rgba(255, 255, 255, 0.08)',
-						borderRadius: 14,
-						padding: '24px 30px',
+						backgroundColor: 'rgba(255, 255, 255, 0.04)',
+						border: '2px solid rgba(255, 255, 255, 0.12)',
+						borderRadius: 18,
+						padding: '30px 36px',
 					}}
 				>
-					<div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12, fontSize: 14 }}>
-						<span style={{ color: 'rgba(255, 255, 255, 0.45)' }}>WHISPER SUB-15MS TOKEN TRACKER</span>
+					<div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 14, fontSize: 20, fontWeight: 700 }}>
+						<span style={{ color: 'rgba(255, 255, 255, 0.55)' }}>WHISPER SUB-15MS TOKEN TRACKER</span>
 						<span style={{ color: MATRIX_GREEN }}>✔ 100% OFFLINE</span>
 					</div>
 					<div
 						style={{
-							fontSize: 24,
+							fontSize: 34,
 							fontFamily: fontPlusJakartaSans,
-							fontWeight: 700,
+							fontWeight: 800,
 							color: PURE_WHITE,
 						}}
 					>
 						Palavra ativa:{' '}
-						<span style={{ color: FERRARI_RED, textTransform: 'uppercase', fontSize: 28 }}>
+						<span style={{ color: FERRARI_RED, textTransform: 'uppercase', fontSize: 38, padding: '2px 10px', backgroundColor: 'rgba(255,0,34,0.12)', borderRadius: 6 }}>
 							{activeWord ? activeWord.text : '...'}
 						</span>
 					</div>
@@ -725,17 +729,17 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 				{/* Top Bar Broadcast */}
 				<div>
 					<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-						<span style={{ fontSize: 14, color: MATRIX_GREEN, letterSpacing: '0.12em' }}>
-							● BROADCAST AUDIO MASTERING ENGINE
+						<span style={{ fontSize: 22, color: MATRIX_GREEN, letterSpacing: '0.12em', fontWeight: 800 }}>
+							● BROADCAST MASTERING ENGINE
 						</span>
-						<span style={{ fontSize: 14, color: 'rgba(255, 255, 255, 0.4)' }}>
-							EBU R128 / ITU-R BS.1770
+						<span style={{ fontSize: 20, color: 'rgba(255, 255, 255, 0.55)', fontWeight: 600 }}>
+							EBU R128
 						</span>
 					</div>
 					<h2
 						style={{
 							fontFamily: fontAnton,
-							fontSize: 68,
+							fontSize: 82,
 							color: PURE_WHITE,
 							textTransform: 'uppercase',
 							lineHeight: 1.0,
@@ -747,10 +751,10 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 					<div
 						style={{
 							fontFamily: fontInstrumentSerif,
-							fontSize: 38,
-							color: 'rgba(255, 255, 255, 0.7)',
+							fontSize: 44,
+							color: 'rgba(255, 255, 255, 0.75)',
 							fontStyle: 'italic',
-							marginTop: 8,
+							marginTop: 10,
 						}}
 					>
 						Masterização com loudness padronizado a -14 LUFS
@@ -761,51 +765,51 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 				<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
 					<div
 						style={{
-							backgroundColor: 'rgba(0, 255, 102, 0.04)',
-							border: '1px solid rgba(0, 255, 102, 0.25)',
-							borderRadius: 16,
+							backgroundColor: 'rgba(0, 255, 102, 0.06)',
+							border: '2px solid rgba(0, 255, 102, 0.3)',
+							borderRadius: 18,
 							padding: '36px 24px',
 							textAlign: 'center',
 						}}
 					>
-						<div style={{ fontSize: 14, color: 'rgba(255, 255, 255, 0.45)', marginBottom: 8 }}>
+						<div style={{ fontSize: 20, color: 'rgba(255, 255, 255, 0.6)', fontWeight: 700, marginBottom: 10 }}>
 							INTEGRATED LOUDNESS
 						</div>
 						<div
 							style={{
 								fontFamily: fontAnton,
-								fontSize: 72,
+								fontSize: 84,
 								color: MATRIX_GREEN,
 								letterSpacing: '-0.02em',
 							}}
 						>
 							-14.0{' '}
-							<span style={{ fontSize: 28, fontFamily: fontMono }}>LUFS</span>
+							<span style={{ fontSize: 32, fontFamily: fontMono }}>LUFS</span>
 						</div>
 					</div>
 
 					<div
 						style={{
-							backgroundColor: 'rgba(0, 240, 255, 0.04)',
-							border: '1px solid rgba(0, 240, 255, 0.25)',
-							borderRadius: 16,
+							backgroundColor: 'rgba(0, 240, 255, 0.06)',
+							border: '2px solid rgba(0, 240, 255, 0.3)',
+							borderRadius: 18,
 							padding: '36px 24px',
 							textAlign: 'center',
 						}}
 					>
-						<div style={{ fontSize: 14, color: 'rgba(255, 255, 255, 0.45)', marginBottom: 8 }}>
+						<div style={{ fontSize: 20, color: 'rgba(255, 255, 255, 0.6)', fontWeight: 700, marginBottom: 10 }}>
 							TRUE PEAK CEILING
 						</div>
 						<div
 							style={{
 								fontFamily: fontAnton,
-								fontSize: 72,
+								fontSize: 84,
 								color: ELECTRIC_CYAN,
 								letterSpacing: '-0.02em',
 							}}
 						>
 							-1.0{' '}
-							<span style={{ fontSize: 28, fontFamily: fontMono }}>dBTP</span>
+							<span style={{ fontSize: 32, fontFamily: fontMono }}>dBTP</span>
 						</div>
 					</div>
 				</div>
@@ -813,16 +817,16 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 				{/* Analisador de Espectro com Balística Realista e Suave */}
 				<div
 					style={{
-						backgroundColor: 'rgba(0, 0, 0, 0.6)',
-						border: '1px solid rgba(255, 255, 255, 0.08)',
-						borderRadius: 16,
+						backgroundColor: 'rgba(0, 0, 0, 0.65)',
+						border: '2px solid rgba(255, 255, 255, 0.1)',
+						borderRadius: 18,
 						padding: '36px 30px',
 						display: 'flex',
 						flexDirection: 'column',
-						gap: 16,
+						gap: 18,
 					}}
 				>
-					<div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'rgba(255,255,255,0.35)' }}>
+					<div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 18, fontWeight: 700, color: 'rgba(255,255,255,0.45)' }}>
 						<span>20 Hz</span>
 						<span>1 kHz</span>
 						<span>20 kHz</span>
@@ -858,9 +862,9 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 						})}
 					</div>
 
-					<div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 14, color: MATRIX_GREEN }}>
+					<div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 20, fontWeight: 700, color: MATRIX_GREEN }}>
 						<span>● SMART AUTO-DUCKING ATIVO (-12 dB)</span>
-						<span style={{ color: 'rgba(255,255,255,0.45)' }}>SEM DISTORÇÃO EM CELULARES</span>
+						<span style={{ color: 'rgba(255,255,255,0.6)' }}>SEM DISTORÇÃO EM CELULARES</span>
 					</div>
 				</div>
 			</AbsoluteFill>
@@ -896,14 +900,14 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 				<div
 					style={{
 						fontFamily: fontMono,
-						fontSize: 20,
+						fontSize: 26,
 						fontWeight: 800,
 						color: '#000000',
 						backgroundColor: '#FFFFFF',
-						padding: '8px 20px',
-						borderRadius: 6,
+						padding: '10px 24px',
+						borderRadius: 8,
 						letterSpacing: '0.15em',
-						marginBottom: 40,
+						marginBottom: 44,
 					}}
 				>
 					LIBERDADE ABSOLUTA
@@ -913,13 +917,13 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 					style={{
 						display: 'flex',
 						flexDirection: 'column',
-						gap: 12,
+						gap: 14,
 					}}
 				>
 					<div
 						style={{
 							fontFamily: fontAnton,
-							fontSize: 126,
+							fontSize: 136,
 							color: '#FFFFFF',
 							lineHeight: 0.9,
 							letterSpacing: '-0.02em',
@@ -931,7 +935,7 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 					<div
 						style={{
 							fontFamily: fontAnton,
-							fontSize: 126,
+							fontSize: 136,
 							color: '#000000',
 							lineHeight: 0.9,
 							letterSpacing: '-0.02em',
@@ -943,12 +947,12 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 					<div
 						style={{
 							fontFamily: fontAnton,
-							fontSize: 104,
+							fontSize: 112,
 							color: '#FFFFFF',
 							lineHeight: 0.92,
 							letterSpacing: '-0.02em',
 							textTransform: 'uppercase',
-							marginTop: 18,
+							marginTop: 20,
 						}}
 					>
 						100% OPEN SOURCE
@@ -958,9 +962,10 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 				<div
 					style={{
 						marginTop: 64,
-						fontSize: 22,
-						color: 'rgba(255, 255, 255, 0.9)',
-						borderTop: '2px solid rgba(0, 0, 0, 0.15)',
+						fontSize: 28,
+						fontWeight: 700,
+						color: 'rgba(255, 255, 255, 0.95)',
+						borderTop: '2px solid rgba(0, 0, 0, 0.2)',
 						paddingTop: 32,
 						width: '100%',
 					}}
@@ -972,7 +977,7 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 	};
 
 	// ────────────────────────────────────────────────────────────────────────────
-	// CENA 7 (FRAMES 750 - 900 / 25.0s - 30.0s): GITHUB & CTA BRUTALISTA FLUIDO
+	// CENA 7 (FRAMES 750 - 900 / 25.0s - 30.0s): GITHUB & CTA REDESENHADO (MOBILE-FIRST)
 	// "Instale via npx skills add e deixe sua estrela no GitHub."
 	// ────────────────────────────────────────────────────────────────────────────
 	const renderScene7GitHubCTA = () => {
@@ -982,12 +987,12 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 		const sceneOpacity = ci(frame, [748, 758], [0, 1]);
 		const cameraDrift = 1.0 + ci(f, [0, 150], [0, 0.02]);
 
-		const isStarClicked = f > 24;
+		const isStarClicked = f > 20;
 		const starCount = isStarClicked ? 1482 : 1481;
 
-		// Clique do Star com mola Apple orgânica (sem tremor)
+		// Clique do Star com mola Apple orgânica
 		const starButtonScale = isStarClicked
-			? spring({ frame: Math.max(0, f - 24), fps, config: { damping: 16, mass: 0.6 } })
+			? spring({ frame: Math.max(0, f - 20), fps, config: { damping: 16, mass: 0.6 } })
 			: 1.0;
 		const finalStarScale = isStarClicked ? ci(starButtonScale, [0, 1], [0.92, 1.0]) : 1.0;
 
@@ -995,71 +1000,89 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 			<AbsoluteFill
 				style={{
 					backgroundColor: PURE_BLACK,
-					padding: '120px 48px',
+					padding: '130px 48px 120px',
 					display: 'flex',
 					flexDirection: 'column',
-					justifyContent: 'space-between',
+					justifyContent: 'center',
+					alignItems: 'center',
+					gap: 36,
 					fontFamily: fontMono,
 					opacity: sceneOpacity,
 					transform: `scale(${cameraDrift})`,
 					pointerEvents: 'none',
 				}}
 			>
-				{/* Top Callout */}
-				<div>
-					<span style={{ fontSize: 14, color: MATRIX_GREEN, letterSpacing: '0.15em' }}>
-						● ACESSO DIRETO VIA GITHUB & SKILLS
-					</span>
+				{/* Top Callout e Título Centralizado com Presença */}
+				<div style={{ width: '100%', textAlign: 'center' }}>
+					<div
+						style={{
+							display: 'inline-flex',
+							alignItems: 'center',
+							gap: 12,
+							backgroundColor: 'rgba(0, 255, 102, 0.1)',
+							border: '1px solid rgba(0, 255, 102, 0.3)',
+							borderRadius: 100,
+							padding: '10px 24px',
+							marginBottom: 18,
+						}}
+					>
+						<span style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: MATRIX_GREEN, boxShadow: `0 0 12px ${MATRIX_GREEN}` }} />
+						<span style={{ fontSize: 22, color: MATRIX_GREEN, letterSpacing: '0.12em', fontWeight: 800 }}>
+							ACESSO DIRETO VIA GITHUB & SKILLS
+						</span>
+					</div>
 					<h2
 						style={{
 							fontFamily: fontAnton,
-							fontSize: 82,
+							fontSize: 98,
 							color: PURE_WHITE,
 							textTransform: 'uppercase',
-							lineHeight: 0.96,
-							marginTop: 20,
+							lineHeight: 0.94,
+							letterSpacing: '-0.02em',
+							margin: 0,
 						}}
 					>
 						INSTALE EM <span style={{ color: FERRARI_RED }}>1 CLIQUE</span>
 					</h2>
 				</div>
 
-				{/* Card de Terminal do GitHub em Tela Cheia */}
+				{/* Card de Terminal do GitHub em Tela Cheia e Escala Mobile */}
 				<div
 					style={{
-						backgroundColor: 'rgba(255, 255, 255, 0.04)',
-						border: '2px solid rgba(255, 255, 255, 0.12)',
-						borderRadius: 20,
-						padding: '40px 32px',
+						width: '100%',
+						backgroundColor: 'rgba(255, 255, 255, 0.05)',
+						border: '2px solid rgba(255, 255, 255, 0.18)',
+						borderRadius: 24,
+						padding: '40px 36px',
 						display: 'flex',
 						flexDirection: 'column',
 						gap: 28,
-						boxShadow: '0 20px 60px rgba(0,0,0,0.5)',
+						boxShadow: '0 25px 80px rgba(0,0,0,0.7)',
 					}}
 				>
 					<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-						<div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-							<span style={{ fontSize: 36 }}>🐙</span>
+						<div style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
+							<span style={{ fontSize: 52 }}>🐙</span>
 							<div>
-								<div style={{ fontSize: 20, color: PURE_WHITE, fontWeight: 700 }}>Gabrielrtads</div>
-								<div style={{ fontSize: 16, color: 'rgba(255,255,255,0.45)' }}>/ vibe-design-studio</div>
+								<div style={{ fontSize: 32, color: PURE_WHITE, fontWeight: 800 }}>Gabrielrtads</div>
+								<div style={{ fontSize: 24, color: 'rgba(255,255,255,0.6)', fontWeight: 600 }}>/ vibe-design-studio</div>
 							</div>
 						</div>
 
 						{/* Botão Star do GitHub Reativo e Suave */}
 						<div
 							style={{
-								backgroundColor: isStarClicked ? '#E3B341' : 'rgba(255, 255, 255, 0.1)',
+								backgroundColor: isStarClicked ? '#E3B341' : 'rgba(255, 255, 255, 0.12)',
 								color: isStarClicked ? '#000000' : '#FFFFFF',
-								borderRadius: 10,
-								padding: '12px 24px',
+								borderRadius: 14,
+								padding: '16px 28px',
 								display: 'flex',
 								alignItems: 'center',
-								gap: 10,
-								fontWeight: 800,
-								fontSize: 20,
+								gap: 12,
+								fontWeight: 900,
+								fontSize: 26,
 								transform: `scale(${finalStarScale})`,
-								boxShadow: isStarClicked ? '0 0 30px rgba(227, 179, 65, 0.5)' : 'none',
+								boxShadow: isStarClicked ? '0 0 35px rgba(227, 179, 65, 0.6)' : 'none',
 							}}
 						>
 							<span>⭐ Star</span>
@@ -1067,43 +1090,62 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 						</div>
 					</div>
 
-					{/* Comando de Terminal */}
+					{/* Comando de Terminal em Escala Mobile Real */}
 					<div
 						style={{
 							backgroundColor: '#000000',
-							border: '1px solid rgba(255, 255, 255, 0.18)',
-							borderRadius: 12,
-							padding: '20px 24px',
-							fontSize: 18,
+							border: '2px solid rgba(0, 255, 102, 0.35)',
+							borderRadius: 16,
+							padding: '24px 28px',
 							color: MATRIX_GREEN,
-							wordBreak: 'break-all',
+							boxShadow: 'inset 0 0 30px rgba(0, 255, 102, 0.08)',
 						}}
 					>
-						$ npx skills add Gabrielrtads/vibe-design-studio
+						<div style={{ color: 'rgba(255, 255, 255, 0.55)', fontSize: 20, marginBottom: 8, fontWeight: 700 }}>
+							$ COPIE E EXECUTE NO TERMINAL:
+						</div>
+						<div style={{ fontSize: 32, fontWeight: 800, wordBreak: 'break-all', lineHeight: 1.35 }}>
+							npx skills add Gabrielrtads/vibe-design-studio
+						</div>
+					</div>
+
+					{/* Feature Pills */}
+					<div style={{ display: 'flex', justifyContent: 'space-between', gap: 10 }}>
+						<span style={{ fontSize: 20, color: 'rgba(255, 255, 255, 0.8)', fontWeight: 800, backgroundColor: 'rgba(255,255,255,0.08)', padding: '10px 18px', borderRadius: 8 }}>
+							⚡ 100% OFFLINE
+						</span>
+						<span style={{ fontSize: 20, color: 'rgba(255, 255, 255, 0.8)', fontWeight: 800, backgroundColor: 'rgba(255,255,255,0.08)', padding: '10px 18px', borderRadius: 8 }}>
+							MIT OPEN SOURCE
+						</span>
+						<span style={{ fontSize: 20, color: MATRIX_GREEN, fontWeight: 800, backgroundColor: 'rgba(0,255,102,0.1)', padding: '10px 18px', borderRadius: 8 }}>
+							CUSTO ZERO
+						</span>
 					</div>
 				</div>
 
 				{/* Call to Action com Presença Firme e Elegante */}
 				<div
 					style={{
+						width: '100%',
 						backgroundColor: FERRARI_RED,
-						borderRadius: 18,
+						borderRadius: 22,
 						padding: '36px 32px',
 						display: 'flex',
 						flexDirection: 'column',
 						alignItems: 'center',
 						gap: 12,
-						boxShadow: '0 0 60px rgba(255, 0, 34, 0.35)',
+						boxShadow: '0 0 60px rgba(255, 0, 34, 0.45)',
 					}}
 				>
 					<div
 						style={{
 							fontFamily: fontAnton,
-							fontSize: 48,
+							fontSize: 56,
 							color: PURE_WHITE,
 							letterSpacing: '0.04em',
 							textAlign: 'center',
 							textTransform: 'uppercase',
+							lineHeight: 1.0,
 						}}
 					>
 						COMENTE "VIBE" AQUI EMBAIXO
@@ -1111,9 +1153,10 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 					<div
 						style={{
 							fontFamily: fontPlusJakartaSans,
-							fontSize: 18,
-							color: 'rgba(255, 255, 255, 0.9)',
-							fontWeight: 600,
+							fontSize: 26,
+							color: 'rgba(255, 255, 255, 0.95)',
+							fontWeight: 700,
+							textAlign: 'center',
 						}}
 					>
 						Para receber o link direto e comando no seu Direct ⚡
@@ -1124,33 +1167,33 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 	};
 
 	// ────────────────────────────────────────────────────────────────────────────
-	// CAMADA DE ÁUDIO REFINADA (ZERO BOOMS / ZERO WHOOSHES / PURO BOM GOSTO)
+	// CAMADA DE ÁUDIO REFINADA (TRILHA SOCIAL MODERNA + THALITA ACELERADA)
 	// ────────────────────────────────────────────────────────────────────────────
 	const renderAudio = () => {
 		if (!enableSfx) return null;
 
 		return (
 			<>
-				{/* Narração da Thalita */}
+				{/* Narração da Thalita em cadência acelerada (+8%) */}
 				{audioNarracao && (
 					<Audio src={staticFile(audioNarracao)} volume={1.0} />
 				)}
 
-				{/* Trilha Lo-Fi Minimalista Tech (volume suave que permite à voz respirar) */}
-				<Audio src={staticFile('audio/trilha_lofi.mp3')} volume={0.16} />
+				{/* Trilha Sonora Moderna Estilo Rede Social (New Benz beat moderno) */}
+				<Audio src={staticFile('audio/trilha_social_moderna.mp3')} volume={0.18} />
 
 				{/* Micro-feedback háptico apenas na digitação do terminal e clique do Star */}
 				<Sequence from={185} durationInFrames={8}>
-					<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.12} />
+					<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.14} />
 				</Sequence>
 				<Sequence from={210} durationInFrames={8}>
-					<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.12} />
+					<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.14} />
 				</Sequence>
 				<Sequence from={240} durationInFrames={8}>
-					<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.12} />
+					<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.14} />
 				</Sequence>
-				<Sequence from={774} durationInFrames={8}>
-					<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.15} />
+				<Sequence from={770} durationInFrames={8}>
+					<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.18} />
 				</Sequence>
 			</>
 		);
