@@ -10,7 +10,7 @@ import {Slide05Final} from './Slide05Final';
 
 const FlowMotionRoot: React.FC = () => (
 	<AbsoluteFill style={{background: '#060709'}}>
-		<FlowMotionMaster audioNarracao="narracao.mp3" enableSfx={true} />
+		<FlowMotionMaster audioNarracao="narracao_thalita.mp3" enableSfx={true} />
 	</AbsoluteFill>
 );
 
@@ -70,7 +70,7 @@ registerRoot(() => (
 		<Composition
 			id="FlowMotionMaster"
 			component={FlowMotionRoot}
-			durationInFrames={918}
+			durationInFrames={900}
 			fps={FPS}
 			width={W}
 			height={H}
@@ -78,7 +78,7 @@ registerRoot(() => (
 		<Composition
 			id="Video"
 			component={FlowMotionRoot}
-			durationInFrames={918}
+			durationInFrames={900}
 			fps={FPS}
 			width={W}
 			height={H}

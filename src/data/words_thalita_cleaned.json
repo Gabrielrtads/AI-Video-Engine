@@ -1,0 +1,327 @@
+[
+  {
+    "text": "Cansado",
+    "start": 0.05,
+    "end": 0.39
+  },
+  {
+    "text": "de",
+    "start": 0.39,
+    "end": 0.5
+  },
+  {
+    "text": "vídeos",
+    "start": 0.5,
+    "end": 0.9
+  },
+  {
+    "text": "de",
+    "start": 0.9,
+    "end": 1.01
+  },
+  {
+    "text": "inteligência",
+    "start": 1.01,
+    "end": 1.75
+  },
+  {
+    "text": "artificial",
+    "start": 1.75,
+    "end": 2.32
+  },
+  {
+    "text": "genéricos",
+    "start": 2.32,
+    "end": 2.94
+  },
+  {
+    "text": "com",
+    "start": 2.94,
+    "end": 3.2
+  },
+  {
+    "text": "gradiente",
+    "start": 3.2,
+    "end": 3.92
+  },
+  {
+    "text": "roxo",
+    "start": 3.92,
+    "end": 4.28
+  },
+  {
+    "text": "e",
+    "start": 4.28,
+    "end": 4.32
+  },
+  {
+    "text": "robôs",
+    "start": 4.32,
+    "end": 4.72
+  },
+  {
+    "text": "sem",
+    "start": 4.72,
+    "end": 4.96
+  },
+  {
+    "text": "alma?",
+    "start": 4.96,
+    "end": 5.29
+  },
+  {
+    "text": "Conheça",
+    "start": 5.6,
+    "end": 6.26
+  },
+  {
+    "text": "o",
+    "start": 6.26,
+    "end": 6.35
+  },
+  {
+    "text": "Vibe",
+    "start": 6.35,
+    "end": 6.66
+  },
+  {
+    "text": "Design",
+    "start": 6.66,
+    "end": 7.17
+  },
+  {
+    "text": "Studio,",
+    "start": 7.17,
+    "end": 7.76
+  },
+  {
+    "text": "o",
+    "start": 7.76,
+    "end": 7.85
+  },
+  {
+    "text": "estúdio",
+    "start": 7.85,
+    "end": 8.35
+  },
+  {
+    "text": "criativo",
+    "start": 8.35,
+    "end": 8.88
+  },
+  {
+    "text": "e",
+    "start": 8.88,
+    "end": 8.94
+  },
+  {
+    "text": "headless",
+    "start": 8.94,
+    "end": 9.31
+  },
+  {
+    "text": "para",
+    "start": 9.31,
+    "end": 9.57
+  },
+  {
+    "text": "agentes",
+    "start": 9.57,
+    "end": 10.04
+  },
+  {
+    "text": "em",
+    "start": 10.04,
+    "end": 10.17
+  },
+  {
+    "text": "código",
+    "start": 10.17,
+    "end": 10.65
+  },
+  {
+    "text": "puro.",
+    "start": 10.65,
+    "end": 11.16
+  },
+  {
+    "text": "Física",
+    "start": 11.16,
+    "end": 11.65
+  },
+  {
+    "text": "de",
+    "start": 11.65,
+    "end": 11.79
+  },
+  {
+    "text": "mola",
+    "start": 11.79,
+    "end": 12.07
+  },
+  {
+    "text": "Apple,",
+    "start": 12.07,
+    "end": 12.43
+  },
+  {
+    "text": "legendas",
+    "start": 12.62,
+    "end": 13.06
+  },
+  {
+    "text": "cinéticas",
+    "start": 13.06,
+    "end": 13.63
+  },
+  {
+    "text": "sincronizadas",
+    "start": 13.63,
+    "end": 14.44
+  },
+  {
+    "text": "no",
+    "start": 14.44,
+    "end": 14.56
+  },
+  {
+    "text": "milissegundo",
+    "start": 14.56,
+    "end": 15.31
+  },
+  {
+    "text": "com",
+    "start": 15.31,
+    "end": 15.53
+  },
+  {
+    "text": "Whisper,",
+    "start": 15.53,
+    "end": 15.87
+  },
+  {
+    "text": "sound",
+    "start": 16.1,
+    "end": 16.5
+  },
+  {
+    "text": "design",
+    "start": 16.5,
+    "end": 16.98
+  },
+  {
+    "text": "dinâmico",
+    "start": 16.98,
+    "end": 17.81
+  },
+  {
+    "text": "e",
+    "start": 17.81,
+    "end": 18.04
+  },
+  {
+    "text": "masterização",
+    "start": 18.04,
+    "end": 18.66
+  },
+  {
+    "text": "profissional",
+    "start": 18.66,
+    "end": 19.29
+  },
+  {
+    "text": "EBU",
+    "start": 19.29,
+    "end": 19.52
+  },
+  {
+    "text": "R128.",
+    "start": 19.52,
+    "end": 20.61
+  },
+  {
+    "text": "Custo",
+    "start": 20.96,
+    "end": 21.42
+  },
+  {
+    "text": "zero",
+    "start": 21.42,
+    "end": 21.79
+  },
+  {
+    "text": "de",
+    "start": 21.79,
+    "end": 21.97
+  },
+  {
+    "text": "API",
+    "start": 21.97,
+    "end": 22.24
+  },
+  {
+    "text": "e",
+    "start": 22.24,
+    "end": 22.32
+  },
+  {
+    "text": "100%",
+    "start": 22.32,
+    "end": 23.31
+  },
+  {
+    "text": "open",
+    "start": 23.31,
+    "end": 23.62
+  },
+  {
+    "text": "source.",
+    "start": 23.62,
+    "end": 24.01
+  },
+  {
+    "text": "Instale",
+    "start": 24.5,
+    "end": 25.5
+  },
+  {
+    "text": "via npx",
+    "start": 25.5,
+    "end": 25.94
+  },
+  {
+    "text": "skills add",
+    "start": 25.94,
+    "end": 26.88
+  },
+  {
+    "text": "e",
+    "start": 26.88,
+    "end": 26.94
+  },
+  {
+    "text": "deixe",
+    "start": 26.94,
+    "end": 27.25
+  },
+  {
+    "text": "sua",
+    "start": 27.25,
+    "end": 27.45
+  },
+  {
+    "text": "estrela",
+    "start": 27.45,
+    "end": 27.88
+  },
+  {
+    "text": "no",
+    "start": 27.88,
+    "end": 28.01
+  },
+  {
+    "text": "GitHub.",
+    "start": 28.01,
+    "end": 28.38
+  }
+]
