@@ -597,7 +597,15 @@ export function calculateSafeZones(aspect = '9:16') {
  */
 export function generateCleanSlate(options = {}) {
   const opts = options || {};
-  const aspect = opts.aspect || opts.aspectRatio || '9:16';
+  let aspect = opts.aspect || opts.aspectRatio;
+  if (!aspect) {
+    const themeStr = (opts.theme || '') + ' ' + (opts.objective || '');
+    if (/carrossel|carousel|4:5|editorial|slides/i.test(themeStr)) {
+      aspect = '4:5';
+    } else {
+      aspect = '9:16';
+    }
+  }
 
   if (opts.width !== undefined || opts.height !== undefined) {
     const w = Number(opts.width);
@@ -632,7 +640,12 @@ export function generateCleanSlate(options = {}) {
     safeBox: { ...safe.safeBox },
     padding: { ...safe.padding },
     recycledScenes: false,
-    recycledLayout: false
+    recycledLayout: false,
+      carousel: opts.carousel || (aspect === '4:5' ? {
+        slideCount: opts.slideCount || 5,
+        visualUniformity: opts.visualUniformity || 'uniforme',
+        targetType: opts.targetType || 'motion',
+      } : null)
   };
 }
 
@@ -792,7 +805,46 @@ export async function runOnboarding(inputReader, outputWriter, options = {}) {
   if (chosenRoute === 2) {
     writer('\n🎨 Iniciando criação do zero (sem reciclagem de layouts anteriores)...\n');
     const briefing = await promptBriefingExpresso(reader, writer);
-    const cleanConfig = generateCleanSlate({ theme: briefing });
+
+    const isCarousel = /carrossel|carousel|4:5|editorial|slides/i.test(briefing);
+    let carouselProps = null;
+
+    if (isCarousel) {
+      writer('\n📋 [Protocolo Grill-Me: Carrossel Editorial 4:5 Detectado]\n');
+      writer('1. Quantidade de slides/cards (pressione Enter para padrão 5):\n> ');
+      const slideInput = await reader.nextLine();
+      let slideCount = 5;
+      if (slideInput !== null && /^\d+$/.test(slideInput.trim())) {
+        slideCount = Math.max(1, parseInt(slideInput.trim(), 10));
+      }
+
+      writer('2. Estilo visual: [1] Uniforme / Padrão contínuo, [2] Individual / Slide por slide (pressione Enter para Uniforme):\n> ');
+      const styleInput = await reader.nextLine();
+      let visualUniformity = 'uniforme';
+      if (styleInput !== null && styleInput.trim() === '2') {
+        visualUniformity = 'individual';
+      }
+
+      writer('3. Destino: [1] Animação Motion (Vídeo), [2] Imagens Estáticas (Feed) (pressione Enter para Motion):\n> ');
+      const targetInput = await reader.nextLine();
+      let targetType = 'motion';
+      if (targetInput !== null && targetInput.trim() === '2') {
+        targetType = 'estatico';
+      }
+
+      carouselProps = {
+        slideCount,
+        visualUniformity,
+        targetType,
+      };
+      writer('\n✅ Carrossel 4:5 configurado: ' + slideCount + ' slides | Estilo: ' + visualUniformity + ' | Destino: ' + targetType + '\n');
+    }
+
+    const cleanConfig = generateCleanSlate({
+      theme: briefing,
+      aspect: isCarousel ? '4:5' : '9:16',
+      carousel: carouselProps,
+    });
 
     return {
       route: 2,
@@ -807,6 +859,7 @@ export async function runOnboarding(inputReader, outputWriter, options = {}) {
         durationInFrames: cleanConfig.durationInFrames,
       },
       config: cleanConfig,
+      carousel: cleanConfig.carousel,
     };
   }
 
