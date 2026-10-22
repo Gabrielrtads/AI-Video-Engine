@@ -4,12 +4,14 @@ import {
 	Audio,
 	interpolate,
 	interpolateColors,
+	OffthreadVideo,
 	Sequence,
 	spring,
 	staticFile,
 	useCurrentFrame,
 	useVideoConfig,
 } from 'remotion';
+import { CinematicStage, AnimosSheen } from './styles_kit';
 import { loadFont as loadAnton } from '@remotion/google-fonts/Anton';
 import { loadFont as loadInstrumentSerif } from '@remotion/google-fonts/InstrumentSerif';
 import { loadFont as loadPlusJakartaSans } from '@remotion/google-fonts/PlusJakartaSans';
@@ -368,10 +370,10 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 			<AbsoluteFill
 				style={{
 					backgroundColor: '#06070A',
-					padding: '120px 48px',
+					padding: '100px 48px',
 					display: 'flex',
 					flexDirection: 'column',
-					justifyContent: 'flex-start',
+					justifyContent: 'center',
 					fontFamily: fontMono,
 					opacity: sceneOpacity,
 					transform: `scale(${cameraDrift})`,
@@ -386,7 +388,7 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 						alignItems: 'center',
 						borderBottom: '2px solid rgba(255, 255, 255, 0.1)',
 						paddingBottom: 24,
-						marginBottom: 44,
+						marginBottom: 36,
 					}}
 				>
 					<div style={{ display: 'flex', gap: 12 }}>
@@ -429,54 +431,73 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 					</div>
 				</div>
 
-				{/* Linha de Comando Interativa em Escala Mobile */}
-				<div
-					style={{
-						backgroundColor: 'rgba(255, 255, 255, 0.04)',
+				{/* Console Interativo em Perspectiva 3D Animos com Sheen de Compilação */}
+				<CinematicStage
+					preset="subtle-float"
+					elevation="raised"
+					sheen={true}
+					sheenAtSecond={2.4}
+					sheenDuration={1.2}
+					sheenIntensity={0.34}
+					borderRadius={20}
+					width="100%"
+					style={{ width: '100%' }}
+					innerStyle={{
+						width: '100%',
+						backgroundColor: 'rgba(10, 12, 16, 0.96)',
 						border: '2px solid rgba(255, 255, 255, 0.14)',
-						borderRadius: 16,
+						borderRadius: 20,
 						padding: '32px 34px',
-						fontSize: 32,
-						color: PURE_WHITE,
-						lineHeight: 1.5,
-						wordBreak: 'break-all',
+						display: 'flex',
+						flexDirection: 'column',
 					}}
 				>
-					<span style={{ color: MATRIX_GREEN, fontWeight: 800 }}>workspace $ </span>
-					<span style={{ fontWeight: 600 }}>{currentText}</span>
-					{showCursor && (
-						<span style={{ backgroundColor: MATRIX_GREEN, color: '#000', display: 'inline-block', width: 16, height: 32, verticalAlign: 'middle', marginLeft: 6 }} />
-					)}
-				</div>
-
-				{/* Logs com entrada suave e fluida */}
-				{isDoneTyping && (
 					<div
 						style={{
-							marginTop: 36,
-							display: 'flex',
-							flexDirection: 'column',
-							gap: 18,
-							fontSize: 26,
-							color: 'rgba(255, 255, 255, 0.9)',
+							fontSize: 32,
+							color: PURE_WHITE,
+							lineHeight: 1.5,
+							wordBreak: 'break-all',
 						}}
 					>
-						<div style={{ color: MATRIX_GREEN, opacity: log1Opacity, transform: `translateY(${ci(log1Opacity, [0, 1], [8, 0])}px)` }}>
-							✔ Motor Remotion + Whisper C++ injetado
-						</div>
-						<div style={{ color: MATRIX_GREEN, opacity: log2Opacity, transform: `translateY(${ci(log2Opacity, [0, 1], [8, 0])}px)` }}>
-							✔ 7 habilidades canônicas registradas
-						</div>
-						<div style={{ color: ELECTRIC_CYAN, opacity: log3Opacity, transform: `translateY(${ci(log3Opacity, [0, 1], [8, 0])}px)` }}>
-							✔ Studio compilado: localhost:3000 (0.6s)
-						</div>
+						<span style={{ color: MATRIX_GREEN, fontWeight: 800 }}>workspace $ </span>
+						<span style={{ fontWeight: 600 }}>{currentText}</span>
+						{showCursor && (
+							<span style={{ backgroundColor: MATRIX_GREEN, color: '#000', display: 'inline-block', width: 16, height: 32, verticalAlign: 'middle', marginLeft: 6 }} />
+						)}
 					</div>
-				)}
+
+					{/* Logs com entrada suave e fluida */}
+					{isDoneTyping && (
+						<div
+							style={{
+								marginTop: 28,
+								paddingTop: 24,
+								borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+								display: 'flex',
+								flexDirection: 'column',
+								gap: 16,
+								fontSize: 26,
+								color: 'rgba(255, 255, 255, 0.9)',
+							}}
+						>
+							<div style={{ color: MATRIX_GREEN, opacity: log1Opacity, transform: `translateY(${ci(log1Opacity, [0, 1], [8, 0])}px)` }}>
+								✔ Motor Remotion + Whisper C++ injetado
+							</div>
+							<div style={{ color: MATRIX_GREEN, opacity: log2Opacity, transform: `translateY(${ci(log2Opacity, [0, 1], [8, 0])}px)` }}>
+								✔ 7 habilidades canônicas registradas
+							</div>
+							<div style={{ color: ELECTRIC_CYAN, opacity: log3Opacity, transform: `translateY(${ci(log3Opacity, [0, 1], [8, 0])}px)` }}>
+								✔ Studio compilado: localhost:3000 (0.6s)
+							</div>
+						</div>
+					)}
+				</CinematicStage>
 
 				{/* Três Caixas de Métricas com Slide-up Suave */}
 				<div
 					style={{
-						marginTop: 'auto',
+						marginTop: 36,
 						display: 'grid',
 						gridTemplateColumns: 'repeat(3, 1fr)',
 						gap: 16,
@@ -1046,18 +1067,26 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 					</h2>
 				</div>
 
-				{/* Card de Terminal do GitHub em Tela Cheia e Escala Mobile */}
-				<div
-					style={{
+				{/* Card de Terminal do GitHub em Perspectiva 3D Animos com Sheen Metálico */}
+				<CinematicStage
+					preset="keynote"
+					elevation="dramatic"
+					sheen={true}
+					sheenAtSecond={0.7}
+					sheenDuration={1.2}
+					sheenIntensity={0.38}
+					borderRadius={24}
+					width="100%"
+					style={{ width: '100%' }}
+					innerStyle={{
 						width: '100%',
-						backgroundColor: 'rgba(255, 255, 255, 0.05)',
+						backgroundColor: 'rgba(18, 20, 24, 0.98)',
 						border: '2px solid rgba(255, 255, 255, 0.18)',
 						borderRadius: 24,
 						padding: '40px 36px',
 						display: 'flex',
 						flexDirection: 'column',
 						gap: 28,
-						boxShadow: '0 25px 80px rgba(0,0,0,0.7)',
 					}}
 				>
 					<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -1069,24 +1098,47 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 							</div>
 						</div>
 
-						{/* Botão Star do GitHub Reativo e Suave */}
-						<div
-							style={{
-								backgroundColor: isStarClicked ? '#E3B341' : 'rgba(255, 255, 255, 0.12)',
-								color: isStarClicked ? '#000000' : '#FFFFFF',
-								borderRadius: 14,
-								padding: '16px 28px',
-								display: 'flex',
-								alignItems: 'center',
-								gap: 12,
-								fontWeight: 900,
-								fontSize: 26,
-								transform: `scale(${finalStarScale})`,
-								boxShadow: isStarClicked ? '0 0 35px rgba(227, 179, 65, 0.6)' : 'none',
-							}}
-						>
-							<span>⭐ Star</span>
-							<span>{starCount}</span>
+						{/* Botão Star do GitHub Reativo com Efeito 3D Sparkles */}
+						<div style={{ position: 'relative' }}>
+							<div
+								style={{
+									backgroundColor: isStarClicked ? '#E3B341' : 'rgba(255, 255, 255, 0.12)',
+									color: isStarClicked ? '#000000' : '#FFFFFF',
+									borderRadius: 14,
+									padding: '16px 28px',
+									display: 'flex',
+									alignItems: 'center',
+									gap: 12,
+									fontWeight: 900,
+									fontSize: 26,
+									transform: `scale(${finalStarScale})`,
+									boxShadow: isStarClicked ? '0 0 35px rgba(227, 179, 65, 0.6)' : 'none',
+								}}
+							>
+								<span>⭐ Star</span>
+								<span>{starCount}</span>
+							</div>
+
+							{/* Sparkles 3D ProRes com transparência ao clicar na estrela */}
+							{isStarClicked && (
+								<div
+									style={{
+										position: 'absolute',
+										top: -75,
+										right: -50,
+										width: 150,
+										height: 150,
+										pointerEvents: 'none',
+										zIndex: 50,
+									}}
+								>
+									<OffthreadVideo
+										src={staticFile('assets/Sparkles.mov')}
+										transparent
+										style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+									/>
+								</div>
+							)}
 						</div>
 					</div>
 
@@ -1121,7 +1173,7 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 							CUSTO ZERO
 						</span>
 					</div>
-				</div>
+				</CinematicStage>
 
 				{/* Call to Action com Presença Firme e Elegante */}
 				<div
