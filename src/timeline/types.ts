@@ -6,7 +6,7 @@
  * Zero conversão float/ms no caminho principal de renderização.
  */
 
-export type TrackKind = 'video' | 'audio' | 'caption' | 'graphics';
+export type TrackKind = 'video' | 'audio' | 'caption' | 'graphics' | 'overlay';
 
 export interface TrackItem {
   id: string;
@@ -15,6 +15,9 @@ export interface TrackItem {
   muted?: boolean;
   locked?: boolean;
   visible?: boolean;
+  volume?: number;             // Multiplicador de volume padrão da track (0.0 a 1.0)
+  zIndex?: number;             // Ordem de empilhamento visual
+  autoDucking?: boolean;       // Se verdadeiro, reduz volume durante fala
 }
 
 export interface ClipBase {
@@ -41,17 +44,21 @@ export type CaptionClip = ClipBase & {
     endFrame: number;
   }>;
   motionPreset?: 'slam' | 'karaoke' | 'fade-up' | 'pop';
+  fontSize?: number;
+  highlightColor?: string;
+  bottomPosition?: string | number;
 };
 
 export type GraphicsClip = ClipBase & {
   kind: 'graphics';
-  componentName: string;       // ex: 'AppleKineticCards', 'CarrosselEditorial'
+  componentName: string;       // ex: 'Smartphone3DMockup', 'VectorHUDOverlay', 'AppleKineticCard3D'
   props?: Record<string, unknown>;
 };
 
 export type ClipItem = MediaClip | CaptionClip | GraphicsClip;
 
 export interface TimelineState {
+  title?: string;
   fps: number;
   width: number;
   height: number;

@@ -11,6 +11,7 @@ import {Slide05Final} from './Slide05Final';
 import {CliCrossReviewReel} from './CliCrossReviewReel';
 import {GenHqReel} from './GenHqReel';
 import {RourkeLuxuryShowcase} from './RourkeLuxuryShowcase';
+import {JsonTimelinePlayer, defaultCompiledTimeline} from './timeline/JsonTimelinePlayer';
 
 const VibeStudioPureVisualRoot: React.FC = () => (
 	<RourkeLuxuryShowcase mode="pure-visual" />
@@ -146,6 +147,29 @@ registerRoot(() => (
 			fps={30}
 			width={1080}
 			height={1920}
+		/>
+
+		{/* JSON DECLARATIVE TIMELINE COMPOSITION (DATA-DRIVEN HEADLESS VIDEO) */}
+		<Composition
+			id="JsonTimelineVideo"
+			component={JsonTimelinePlayer}
+			durationInFrames={defaultCompiledTimeline.durationInFrames}
+			fps={defaultCompiledTimeline.fps}
+			width={defaultCompiledTimeline.width}
+			height={defaultCompiledTimeline.height}
+			defaultProps={{
+				timeline: defaultCompiledTimeline,
+			}}
+			calculateMetadata={({ props }) => {
+				const p = props as { timeline?: typeof defaultCompiledTimeline };
+				const tl = p.timeline || defaultCompiledTimeline;
+				return {
+					durationInFrames: tl.durationInFrames || defaultCompiledTimeline.durationInFrames,
+					fps: tl.fps || defaultCompiledTimeline.fps,
+					width: tl.width || defaultCompiledTimeline.width,
+					height: tl.height || defaultCompiledTimeline.height,
+				};
+			}}
 		/>
 
 		{/* Editorial Carousel Compositions (Instagram 4:5 - 1080x1350, 30fps) */}
