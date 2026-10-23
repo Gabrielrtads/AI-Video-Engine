@@ -22,19 +22,19 @@ export const StudioLighting: React.FC<StudioLightingProps> = ({
 	return (
 		<>
 			{/* Luz Ambiente de Preenchimento Noturno */}
-			<ambientLight color="#242F40" intensity={1.2} />
+			<ambientLight color="#64748B" intensity={1.8} />
 
 			{/* Key Light: Luz Principal Quente Superior */}
 			<directionalLight position={[6, 9, 8]} color="#FFFFFF" intensity={keyIntensity} />
 
 			{/* Fill Light: Luz Fria Lateral de Preenchimento */}
-			<directionalLight position={[-7, -2, 5]} color={fillColor} intensity={1.4} />
+			<directionalLight position={[-7, 3, 5]} color={fillColor} intensity={2.2} />
 
 			{/* Rim Light: Contra-luz Traseira Rasante de Contorno */}
 			<directionalLight position={[0, -6, -7]} color={rimColor} intensity={3.5} />
 
 			{/* Ponto Especular para Reflexos no Metal */}
-			<pointLight position={[0, 2.5, 4.5]} color="#FFFFFF" intensity={2.2} distance={12} />
+			<pointLight position={[0, 1.5, 5.5]} color="#FFFFFF" intensity={3.8} distance={15} />
 		</>
 	);
 };
@@ -64,9 +64,9 @@ export const PBRCardMesh: React.FC<PBRCardMeshProps> = ({
 			<mesh position={[0, 0, 0]}>
 				<boxGeometry args={[4.4, 2.7, 0.08]} />
 				<meshPhysicalMaterial
-					color="#1A2230"
-					metalness={0.88}
-					roughness={0.24}
+					color="#2C3545"
+					metalness={0.70}
+					roughness={0.30}
 					clearcoat={0.85}
 					clearcoatRoughness={0.12}
 					reflectivity={0.92}
@@ -91,9 +91,9 @@ export const PBRCardMesh: React.FC<PBRCardMeshProps> = ({
 			<mesh position={[-1.3, 0.2, 0.046]}>
 				<boxGeometry args={[0.7, 0.55, 0.02]} />
 				<meshPhysicalMaterial
-					color="#E5A93C"
-					metalness={0.98}
-					roughness={0.12}
+					color="#F59E0B"
+					metalness={0.80}
+					roughness={0.20}
 					clearcoat={0.8}
 				/>
 			</mesh>

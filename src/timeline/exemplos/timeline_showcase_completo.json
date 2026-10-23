@@ -1,0 +1,192 @@
+{
+  "title": "Vibe Design Studio — Showcase Declarativo Headless",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "durationInFrames": 450,
+  "tracks": [
+    {
+      "id": "T_AUDIO",
+      "kind": "audio",
+      "name": "Trilha Sonora",
+      "volume": 0.35,
+      "zIndex": 10
+    },
+    {
+      "id": "T_HUD",
+      "kind": "graphics",
+      "name": "HUD Tático Overlay",
+      "zIndex": 20
+    },
+    {
+      "id": "T_GRAPHICS",
+      "kind": "graphics",
+      "name": "Camada Gráfica Principal",
+      "zIndex": 30
+    },
+    {
+      "id": "T_DATA",
+      "kind": "graphics",
+      "name": "Gráficos Vetoriais",
+      "zIndex": 40
+    },
+    {
+      "id": "T_CURSOR",
+      "kind": "graphics",
+      "name": "Cursor macOS Interativo",
+      "zIndex": 50
+    },
+    {
+      "id": "T_CAPTIONS",
+      "kind": "caption",
+      "name": "Legendas Cinéticas",
+      "zIndex": 60
+    }
+  ],
+  "clips": [
+    {
+      "id": "clip_audio_bg",
+      "trackId": "T_AUDIO",
+      "kind": "audio",
+      "name": "Trilha Sonora de Luxo",
+      "src": "audio/trilha_luxo.mp3",
+      "startFrame": 0,
+      "durationInFrames": 450,
+      "volume": 0.4
+    },
+    {
+      "id": "clip_hud_overlay",
+      "trackId": "T_HUD",
+      "kind": "graphics",
+      "name": "HUD Blueprint Tático",
+      "componentName": "VectorHUDOverlay",
+      "startFrame": 0,
+      "durationInFrames": 450,
+      "props": {
+        "preset": "cyber",
+        "accentColor": "#38BDF8",
+        "showGrid": true,
+        "showCrosshair": true,
+        "showScanner": true,
+        "label": "VIBE HUD // TIMELINE RUNNER",
+        "sublabel": "STATUS: ACTIVE"
+      }
+    },
+    {
+      "id": "clip_apple_card",
+      "trackId": "T_GRAPHICS",
+      "kind": "graphics",
+      "name": "Card Apple Cinético 3D",
+      "componentName": "AppleKineticCard3D",
+      "startFrame": 15,
+      "durationInFrames": 165,
+      "props": {
+        "title": "O Fim dos Vídeos Sem Alma",
+        "subtitle": "Estúdio criativo headless em Remotion + React para agentes comporem via JSON.",
+        "badge": "ZERO SLOP",
+        "metric": "100%",
+        "metricLabel": "DATA-DRIVEN MOTION",
+        "variant": "dark-glass",
+        "tiltIntensity": 1.1
+      }
+    },
+    {
+      "id": "clip_smartphone_3d",
+      "trackId": "T_GRAPHICS",
+      "kind": "graphics",
+      "name": "Mockup 3D Smartphone",
+      "componentName": "Smartphone3DMockup",
+      "startFrame": 195,
+      "durationInFrames": 180,
+      "props": {
+        "title": "Vibe Studio Mobile",
+        "urlBadge": "vibe.studio/declarative",
+        "theme": "titanium",
+        "tiltIntensity": 1.2,
+        "showGlow": true
+      }
+    },
+    {
+      "id": "clip_bezier_chart",
+      "trackId": "T_DATA",
+      "kind": "graphics",
+      "name": "Curva Vetorial de Retenção",
+      "componentName": "AnimatedBezierCurve",
+      "startFrame": 210,
+      "durationInFrames": 165,
+      "props": {
+        "width": 640,
+        "height": 340,
+        "strokeColor": "#10B981",
+        "strokeWidth": 4,
+        "fillGradient": true,
+        "drawDurationFrames": 60,
+        "points": [
+          { "x": 40, "y": 280, "label": "0s", "value": "100%" },
+          { "x": 160, "y": 220, "label": "3s", "value": "94%" },
+          { "x": 280, "y": 240, "label": "6s", "value": "91%" },
+          { "x": 420, "y": 140, "label": "9s", "value": "88%" },
+          { "x": 560, "y": 80, "label": "12s", "value": "86%" }
+        ]
+      }
+    },
+    {
+      "id": "clip_mac_cursor",
+      "trackId": "T_CURSOR",
+      "kind": "graphics",
+      "name": "Cursor macOS Interativo",
+      "componentName": "InteractiveMacCursor",
+      "startFrame": 30,
+      "durationInFrames": 380,
+      "props": {
+        "pointerType": "arrow",
+        "showRipple": true,
+        "rippleColor": "rgba(56, 189, 248, 0.8)",
+        "waypoints": [
+          { "frame": 30, "x": 300, "y": 600 },
+          { "frame": 90, "x": 540, "y": 750, "clickFrame": 90, "actionLabel": "Click // Deploy" },
+          { "frame": 180, "x": 650, "y": 1100 },
+          { "frame": 270, "x": 480, "y": 920, "clickFrame": 270, "actionLabel": "Select // Preset" },
+          { "frame": 380, "x": 780, "y": 1400 }
+        ]
+      }
+    },
+    {
+      "id": "clip_caption_1",
+      "trackId": "T_CAPTIONS",
+      "kind": "caption",
+      "name": "Legenda 1",
+      "text": "100% CÓDIGO PURO",
+      "startFrame": 30,
+      "durationInFrames": 120,
+      "fontSize": 58,
+      "highlightColor": "#FFD700",
+      "bottomPosition": "18%"
+    },
+    {
+      "id": "clip_caption_2",
+      "trackId": "T_CAPTIONS",
+      "kind": "caption",
+      "name": "Legenda 2",
+      "text": "QUALQUER AGENTE PODE CRIAR",
+      "startFrame": 195,
+      "durationInFrames": 130,
+      "fontSize": 54,
+      "highlightColor": "#00F0FF",
+      "bottomPosition": "18%"
+    },
+    {
+      "id": "clip_caption_3",
+      "trackId": "T_CAPTIONS",
+      "kind": "caption",
+      "name": "Legenda 3",
+      "text": "VIBE DESIGN STUDIO v2.0",
+      "startFrame": 340,
+      "durationInFrames": 100,
+      "fontSize": 62,
+      "highlightColor": "#10B981",
+      "bottomPosition": "18%"
+    }
+  ],
+  "selectedClipIds": []
+}

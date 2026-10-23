@@ -1,327 +1,327 @@
 [
  {
-  "text": "Você",
-  "start": 0.11,
-  "end": 0.29
- },
- {
-  "text": "já",
-  "start": 0.29,
-  "end": 0.52
- },
- {
-  "text": "calculou",
-  "start": 0.52,
-  "end": 0.92
- },
- {
-  "text": "o",
-  "start": 0.92,
-  "end": 0.97
- },
- {
-  "text": "quanto",
-  "start": 0.97,
-  "end": 1.32
- },
- {
-  "text": "gasta",
-  "start": 1.32,
-  "end": 1.66
- },
- {
-  "text": "por",
-  "start": 1.66,
-  "end": 1.77
- },
- {
-  "text": "mês",
-  "start": 1.77,
-  "end": 2.09
- },
- {
-  "text": "na",
-  "start": 2.09,
-  "end": 2.24
- },
- {
-  "text": "barbearia?",
-  "start": 2.24,
-  "end": 3.24
- },
- {
-  "text": "Pagando",
-  "start": 3.24,
-  "end": 3.76
- },
- {
-  "text": "R$",
-  "start": 3.76,
-  "end": 3.82
- },
- {
-  "text": "35,00",
-  "start": 3.82,
-  "end": 4.77
- },
- {
-  "text": "por",
-  "start": 4.77,
-  "end": 4.97
- },
- {
-  "text": "corte",
-  "start": 4.97,
-  "end": 5.3
- },
- {
-  "text": "avulso,",
-  "start": 5.3,
-  "end": 5.88
- },
- {
-  "text": "duas",
-  "start": 5.94,
-  "end": 6.24
- },
- {
-  "text": "idas",
-  "start": 6.24,
-  "end": 6.53
- },
- {
-  "text": "ao",
-  "start": 6.53,
-  "end": 6.68
- },
- {
-  "text": "mês",
-  "start": 6.68,
-  "end": 7.04
- },
- {
-  "text": "já",
-  "start": 7.04,
-  "end": 7.25
- },
- {
-  "text": "somam",
-  "start": 7.25,
-  "end": 7.66
- },
- {
-  "text": "R$",
-  "start": 7.66,
-  "end": 7.89
- },
- {
-  "text": "70,00.",
-  "start": 7.89,
-  "end": 9
- },
- {
-  "text": "No",
-  "start": 9,
-  "end": 9.17
- },
- {
-  "text": "Flow",
-  "start": 9.17,
-  "end": 9.59
- },
- {
-  "text": "Club,",
-  "start": 9.59,
-  "end": 9.85
- },
- {
-  "text": "sua",
-  "start": 10.1,
-  "end": 10.28
- },
- {
-  "text": "assinatura",
-  "start": 10.28,
-  "end": 11.14
- },
- {
-  "text": "é",
-  "start": 11.14,
-  "end": 11.35
- },
- {
-  "text": "ilimitada",
-  "start": 11.35,
-  "end": 12.08
- },
- {
-  "text": "por",
-  "start": 12.08,
-  "end": 12.34
- },
- {
-  "text": "apenas",
-  "start": 12.34,
-  "end": 12.86
- },
- {
-  "text": "R$",
-  "start": 12.86,
-  "end": 13.01
- },
- {
-  "text": "64,97.",
-  "start": 13.01,
-  "end": 14.32
- },
- {
-  "text": "Cortando",
-  "start": 14.32,
-  "end": 14.96
- },
- {
-  "text": "toda",
-  "start": 14.96,
-  "end": 15.22
- },
- {
-  "text": "semana,",
-  "start": 15.22,
-  "end": 15.82
- },
- {
-  "text": "você",
-  "start": 15.88,
-  "end": 16.2
- },
- {
-  "text": "economiza",
-  "start": 16.2,
-  "end": 16.86
- },
- {
-  "text": "mais",
-  "start": 16.86,
-  "end": 17.26
+  "text": "Cansado",
+  "start": 0.05,
+  "end": 0.39
  },
  {
   "text": "de",
-  "start": 17.26,
-  "end": 17.31
+  "start": 0.39,
+  "end": 0.5
  },
  {
-  "text": "R$",
-  "start": 17.31,
-  "end": 17.45
+  "text": "vídeos",
+  "start": 0.5,
+  "end": 0.9
  },
  {
-  "text": "75,00",
-  "start": 17.45,
-  "end": 18.5
+  "text": "de",
+  "start": 0.9,
+  "end": 1.01
  },
  {
-  "text": "todo",
-  "start": 18.5,
-  "end": 18.8
+  "text": "inteligência",
+  "start": 1.01,
+  "end": 1.75
  },
  {
-  "text": "mês.",
-  "start": 18.8,
-  "end": 19.36
+  "text": "artificial",
+  "start": 1.75,
+  "end": 2.32
  },
  {
-  "text": "Seu",
-  "start": 19.36,
-  "end": 19.55
+  "text": "genéricos",
+  "start": 2.32,
+  "end": 2.94
  },
  {
-  "text": "degradê",
-  "start": 19.55,
-  "end": 20.08
+  "text": "com",
+  "start": 2.94,
+  "end": 3.2
  },
  {
-  "text": "é",
-  "start": 20.08,
-  "end": 20.21
+  "text": "gradiente",
+  "start": 3.2,
+  "end": 3.92
  },
  {
-  "text": "sempre",
-  "start": 20.21,
-  "end": 20.63
- },
- {
-  "text": "impecável,",
-  "start": 20.63,
-  "end": 21.26
- },
- {
-  "text": "pagando",
-  "start": 21.5,
-  "end": 21.98
- },
- {
-  "text": "menos",
-  "start": 21.98,
-  "end": 22.37
- },
- {
-  "text": "da",
-  "start": 22.37,
-  "end": 22.6
- },
- {
-  "text": "metade.",
-  "start": 22.6,
-  "end": 23.24
- },
- {
-  "text": "Toque",
-  "start": 23.24,
-  "end": 23.57
- },
- {
-  "text": "no",
-  "start": 23.57,
-  "end": 23.7
- },
- {
-  "text": "link",
-  "start": 23.7,
-  "end": 23.96
- },
- {
-  "text": "da",
-  "start": 23.96,
-  "end": 24.09
- },
- {
-  "text": "bio",
-  "start": 24.09,
-  "end": 24.35
+  "text": "roxo",
+  "start": 3.92,
+  "end": 4.28
  },
  {
   "text": "e",
-  "start": 24.35,
-  "end": 24.53
+  "start": 4.28,
+  "end": 4.32
  },
  {
-  "text": "garanta",
-  "start": 24.53,
-  "end": 24.87
+  "text": "robô",
+  "start": 4.32,
+  "end": 4.72
+ },
+ {
+  "text": "sem",
+  "start": 4.72,
+  "end": 4.96
+ },
+ {
+  "text": "alma?",
+  "start": 4.96,
+  "end": 5.29
+ },
+ {
+  "text": "Conheça",
+  "start": 5.6,
+  "end": 6.26
+ },
+ {
+  "text": "o",
+  "start": 6.26,
+  "end": 6.35
+ },
+ {
+  "text": "Vibe",
+  "start": 6.35,
+  "end": 6.66
+ },
+ {
+  "text": "Design",
+  "start": 6.66,
+  "end": 7.17
+ },
+ {
+  "text": "Studio,",
+  "start": 7.17,
+  "end": 7.76
+ },
+ {
+  "text": "o",
+  "start": 7.76,
+  "end": 7.85
+ },
+ {
+  "text": "estúdio",
+  "start": 7.85,
+  "end": 8.35
+ },
+ {
+  "text": "criativo",
+  "start": 8.35,
+  "end": 8.88
+ },
+ {
+  "text": "e",
+  "start": 8.88,
+  "end": 8.94
+ },
+ {
+  "text": "adlis",
+  "start": 8.94,
+  "end": 9.31
+ },
+ {
+  "text": "para",
+  "start": 9.31,
+  "end": 9.57
+ },
+ {
+  "text": "agentes",
+  "start": 9.57,
+  "end": 10.04
+ },
+ {
+  "text": "em",
+  "start": 10.04,
+  "end": 10.17
+ },
+ {
+  "text": "código",
+  "start": 10.17,
+  "end": 10.65
+ },
+ {
+  "text": "puro.",
+  "start": 10.65,
+  "end": 11.16
+ },
+ {
+  "text": "Física",
+  "start": 11.16,
+  "end": 11.65
+ },
+ {
+  "text": "de",
+  "start": 11.65,
+  "end": 11.79
+ },
+ {
+  "text": "mola",
+  "start": 11.79,
+  "end": 12.07
+ },
+ {
+  "text": "Apple,",
+  "start": 12.07,
+  "end": 12.43
+ },
+ {
+  "text": "legenda",
+  "start": 12.62,
+  "end": 13.06
+ },
+ {
+  "text": "cinética",
+  "start": 13.06,
+  "end": 13.63
+ },
+ {
+  "text": "sincronizadas",
+  "start": 13.63,
+  "end": 14.44
+ },
+ {
+  "text": "no",
+  "start": 14.44,
+  "end": 14.56
+ },
+ {
+  "text": "milissegundo",
+  "start": 14.56,
+  "end": 15.31
+ },
+ {
+  "text": "com",
+  "start": 15.31,
+  "end": 15.53
+ },
+ {
+  "text": "Visper,",
+  "start": 15.53,
+  "end": 15.87
+ },
+ {
+  "text": "sound",
+  "start": 16.1,
+  "end": 16.5
+ },
+ {
+  "text": "design",
+  "start": 16.5,
+  "end": 16.98
+ },
+ {
+  "text": "dinâmico",
+  "start": 16.98,
+  "end": 17.81
+ },
+ {
+  "text": "e",
+  "start": 17.81,
+  "end": 18.04
+ },
+ {
+  "text": "masterização",
+  "start": 18.04,
+  "end": 18.66
+ },
+ {
+  "text": "profissional",
+  "start": 18.66,
+  "end": 19.29
+ },
+ {
+  "text": "EBU",
+  "start": 19.29,
+  "end": 19.52
+ },
+ {
+  "text": "R128.",
+  "start": 19.52,
+  "end": 20.61
+ },
+ {
+  "text": "Custo",
+  "start": 20.96,
+  "end": 21.42
+ },
+ {
+  "text": "zero",
+  "start": 21.42,
+  "end": 21.79
+ },
+ {
+  "text": "de",
+  "start": 21.79,
+  "end": 21.97
+ },
+ {
+  "text": "API",
+  "start": 21.97,
+  "end": 22.24
+ },
+ {
+  "text": "e",
+  "start": 22.24,
+  "end": 22.32
+ },
+ {
+  "text": "100%",
+  "start": 22.32,
+  "end": 23.31
+ },
+ {
+  "text": "open",
+  "start": 23.31,
+  "end": 23.62
+ },
+ {
+  "text": "source.",
+  "start": 23.62,
+  "end": 24.01
+ },
+ {
+  "text": "Instale",
+  "start": 24.5,
+  "end": 25.5
+ },
+ {
+  "text": "vNPX",
+  "start": 25.5,
+  "end": 25.94
+ },
+ {
+  "text": "SkillZed",
+  "start": 25.94,
+  "end": 26.88
+ },
+ {
+  "text": "e",
+  "start": 26.88,
+  "end": 26.94
+ },
+ {
+  "text": "deixe",
+  "start": 26.94,
+  "end": 27.25
  },
  {
   "text": "sua",
-  "start": 24.87,
-  "end": 25.07
+  "start": 27.25,
+  "end": 27.45
  },
  {
-  "text": "vaga",
-  "start": 25.07,
-  "end": 25.36
+  "text": "estrela",
+  "start": 27.45,
+  "end": 27.88
  },
  {
-  "text": "exclusiva.",
-  "start": 25.36,
-  "end": 25.93
+  "text": "no",
+  "start": 27.88,
+  "end": 28.01
+ },
+ {
+  "text": "GitHub.",
+  "start": 28.01,
+  "end": 28.38
  }
 ]

@@ -6,6 +6,8 @@ import {
   runOnboarding,
   promptBriefingExpresso,
   createQueuedLineReader,
+  inferDirectionProposal,
+  formatDirectionProposal,
   CANONICAL_ONBOARDING_PROMPT,
   CANONICAL_BRIEFING_PROMPT,
 } from '../../scripts/studio_engine.mjs';
@@ -230,6 +232,49 @@ describe('Unit: Studio Engine Interactive Onboarding & CLI Flow', () => {
         }
       );
       reader.close();
+    });
+  });
+
+  describe('inferDirectionProposal & formatDirectionProposal (Suggest & Confirm)', () => {
+    it('deve inferir estética Full Bleed Terminal para briefings de código/terminal', () => {
+      const prop = inferDirectionProposal('Vídeo de terminal em Remotion para devs');
+      assert.strictEqual(prop.layoutMode, 'full_bleed_terminal');
+      assert.strictEqual(prop.estetica, 'Full Bleed Terminal & Raw Code (Sem mockups/cards flutuantes)');
+      assert.deepStrictEqual(prop.paleta, ['#08090C', '#00FF66', '#FF0022', '#FFFFFF']);
+    });
+
+    it('deve inferir estética Fintech High-End para briefings financeiros', () => {
+      const prop = inferDirectionProposal('Showcase do app financeiro e fluxo de caixa');
+      assert.strictEqual(prop.layoutMode, 'fintech_showcase');
+      assert.ok(prop.estetica.includes('Fintech High-End'));
+    });
+
+    it('deve inferir estética Brutalismo Anti-Slop para briefings de IA genérica', () => {
+      const prop = inferDirectionProposal('O fim dos vídeos genéricos de IA e slop');
+      assert.strictEqual(prop.layoutMode, 'brutalismo_anti_slop');
+      assert.ok(prop.estetica.includes('Anti-Slop'));
+    });
+
+    it('deve formatar o card visual em 1 clique sem erros', () => {
+      const prop = inferDirectionProposal('Lançamento da nova skill de terminal');
+      const formatted = formatDirectionProposal(prop);
+      assert.ok(formatted.includes('PROPOSTA DE DIREÇÃO (1 CLIQUE)'));
+      assert.ok(formatted.includes('[1] Aprovar e Gerar Direto'));
+    });
+
+    it('deve anexar directionProposal ao resultado da Rota 2 no runOnboarding', async () => {
+      const outputBuffer = [];
+      const writer = (chunk) => outputBuffer.push(chunk);
+      const mockInput = ['2', 'Vídeo sobre automação de código no terminal'];
+
+      const result = await runOnboarding(mockInput, writer);
+
+      assert.strictEqual(result.route, 2);
+      assert.ok(result.directionProposal);
+      assert.strictEqual(result.directionProposal.layoutMode, 'full_bleed_terminal');
+
+      const fullOutput = outputBuffer.join('');
+      assert.ok(fullOutput.includes('PROPOSTA DE DIREÇÃO (1 CLIQUE)'));
     });
   });
 });

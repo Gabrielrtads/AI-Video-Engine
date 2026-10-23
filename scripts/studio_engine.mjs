@@ -652,6 +652,85 @@ export function generateCleanSlate(options = {}) {
 export const initializeCleanSlate = generateCleanSlate;
 
 // ────────────────────────────────────────────────────────────────────────────
+// PROPOSTA REVERSA DE DIREÇÃO CRIATIVA (SUGGEST & CONFIRM EM 1 CLIQUE)
+// ────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Infere a melhor direção criativa a partir do briefing bruto (sem questionário burocrático)
+ * evitando que o agente caia no template padrão genérico.
+ */
+export function inferDirectionProposal(briefing = '', options = {}) {
+  const text = String(briefing).toLowerCase();
+  const isCarousel = /carrossel|carousel|4:5|editorial|slides/i.test(text);
+
+  let gancho = 'Apresentar a verdade brutal do problema sem rodeios';
+  let estetica = 'Dark Mode Glassmorphism Minimalista';
+  let ritmo = 'Cortes secos a cada 1.8s com masterização -14 LUFS';
+  let paleta = ['#0A0B0E', '#FF0022', '#FFFFFF'];
+  let slideCount = isCarousel ? 5 : undefined;
+  let layoutMode = isCarousel ? 'carrossel_editorial' : 'full_bleed';
+
+  if (/código|terminal|developer|dev|engenh|hack|agent|cli|npm|git|estúdio/i.test(text)) {
+    gancho = 'O fim das ferramentas genéricas e o poder do código puro';
+    estetica = 'Full Bleed Terminal & Raw Code (Sem mockups/cards flutuantes)';
+    ritmo = 'Cortes secos a cada 1.2s + Takeover de tela inteira a 60 FPS';
+    paleta = ['#08090C', '#00FF66', '#FF0022', '#FFFFFF'];
+    layoutMode = 'full_bleed_terminal';
+  } else if (/finance|finan|dinheiro|invest|banco|gestão|caixa/i.test(text)) {
+    gancho = 'Você está perdendo dinheiro por falta de controle em tempo real';
+    estetica = 'Fintech High-End (Obsidian Black, Esmeralda Glow e Tipografia Suíça)';
+    ritmo = 'Transições com física de mola crítica e sound design haptic';
+    paleta = ['#050807', '#00E599', '#F4F5F7'];
+    layoutMode = 'fintech_showcase';
+  } else if (/luxo|moda|lifestyle|barber|estilo|eleganc/i.test(text)) {
+    gancho = 'A experiência que separa o amador do padrão de excelência';
+    estetica = 'Editorial Luxo Cinematográfico (Preto & Dourado / P&B Alto Contraste)';
+    ritmo = 'Ritmo hipnótico e respiração com Auto-Ducking refinado';
+    paleta = ['#09090B', '#D4AF37', '#FAFAFA'];
+    layoutMode = 'editorial_luxo';
+  } else if (/slop|genéric|ia|robô|ai/i.test(text)) {
+    gancho = 'Cansado de vídeos de inteligência artificial sem alma?';
+    estetica = 'Brutalismo Anti-Slop (Vermelho Ferrari, Tipografia Massiva e Tela Cheia)';
+    ritmo = 'Glitch sonoro, carimbo brutalista + Takeover de tela real';
+    paleta = ['#050505', '#FF0022', '#FFFFFF'];
+    layoutMode = 'brutalismo_anti_slop';
+  }
+
+  return {
+    isCarousel,
+    slideCount,
+    gancho,
+    estetica,
+    ritmo,
+    paleta,
+    layoutMode,
+  };
+}
+
+/**
+ * Formata o card visual da Proposta Reversa para o terminal em 1 clique.
+ */
+export function formatDirectionProposal(proposal) {
+  const line = '─'.repeat(75);
+  return `
+┌${line}┐
+│ 🎬 VIBE DESIGN STUDIO — PROPOSTA DE DIREÇÃO (1 CLIQUE)                      │
+│                                                                             │
+│ Analisei seu briefing e formulei esta direção não-genérica:                 │
+│                                                                             │
+│ • Gancho / Tensão: "${proposal.gancho}"
+│ • Estética Visual: ${proposal.estetica}
+│ • Ritmo & Cortes:  ${proposal.ritmo}
+│ • Paleta Básica:   ${proposal.paleta.join(', ')}
+│ • Layout Mode:     ${proposal.layoutMode}
+│                                                                             │
+│ [1] Aprovar e Gerar Direto (Padrão - Pressione Enter)                       │
+│ [2] Quero personalizar estética e formato                                   │
+└${line}┘
+`;
+}
+
+// ────────────────────────────────────────────────────────────────────────────
 // PROMPT BRIEFING EXPRESSO
 // ────────────────────────────────────────────────────────────────────────────
 
@@ -806,6 +885,10 @@ export async function runOnboarding(inputReader, outputWriter, options = {}) {
     writer('\n🎨 Iniciando criação do zero (sem reciclagem de layouts anteriores)...\n');
     const briefing = await promptBriefingExpresso(reader, writer);
 
+    // Gera e apresenta a Proposta Reversa (Suggest & Confirm) em 1 clique
+    const directionProposal = inferDirectionProposal(briefing);
+    writer(formatDirectionProposal(directionProposal));
+
     const isCarousel = /carrossel|carousel|4:5|editorial|slides/i.test(briefing);
     let carouselProps = null;
 
@@ -851,6 +934,7 @@ export async function runOnboarding(inputReader, outputWriter, options = {}) {
       cleanSlate: true,
       briefing,
       skillViewed,
+      directionProposal,
       defaults: {
         aspectRatio: cleanConfig.aspectRatio,
         width: cleanConfig.width,

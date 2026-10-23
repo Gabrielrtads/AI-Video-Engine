@@ -2,7 +2,7 @@
  * Catálogo Canônico de Ferramentas MCP do Vibe Design Studio
  * Auditoria realizada via Antigravity CLI (agy) e OpenAI Codex sobre OpenChatCut
  * 
- * 5 Ferramentas de Alto Nível projetadas para o Swarm (Claude, Gemini, Codex)
+ * 6 Ferramentas de Alto Nível projetadas para o Swarm (Claude, Gemini, Codex)
  */
 
 export interface McpToolDefinition {
@@ -163,6 +163,29 @@ export const VIBE_STUDIO_MCP_TOOLS: McpToolDefinition[] = [
         },
       },
       required: ['outputFileName'],
+    },
+  },
+  {
+    name: 'vibe_render_from_json',
+    description:
+      'Renderiza um vídeo completo a partir de um arquivo JSON declarativo da timeline, acionando o compilador Remotion, gerando o arquivo MP4 e aplicando normalização de áudio EBU R128 (-14 LUFS). Permite aos agentes produzir vídeos sem tocar no código-fonte.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        timelinePath: {
+          type: 'string',
+          description: 'Caminho do arquivo JSON da timeline (ex: "src/timeline/exemplos/timeline_showcase_completo.json").',
+        },
+        outputFileName: {
+          type: 'string',
+          description: 'Nome do arquivo MP4 de saída (ex: "out/meu_video_declarativo.mp4").',
+        },
+        masterAudio: {
+          type: 'boolean',
+          description: 'Se verdadeiro, aplica normalização EBU R128 (-14 LUFS) ao áudio final. Padrão: true.',
+        },
+      },
+      required: ['timelinePath', 'outputFileName'],
     },
   },
 ];
