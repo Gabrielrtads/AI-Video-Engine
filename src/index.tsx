@@ -9,6 +9,7 @@ import {Slide03Solucao} from './Slide03Solucao';
 import {Slide04Engenharia} from './Slide04Engenharia';
 import {Slide05Final} from './Slide05Final';
 import {CliCrossReviewReel} from './CliCrossReviewReel';
+import {GenHqReel} from './GenHqReel';
 
 const FlowMotionRoot: React.FC = () => (
 	<AbsoluteFill style={{background: '#060709'}}>
@@ -78,6 +79,16 @@ registerRoot(() => (
 		<Composition
 			id="CliCrossReviewReel"
 			component={CliCrossReviewReel}
+			durationInFrames={1600}
+			fps={30}
+			width={1080}
+			height={1920}
+		/>
+
+		{/* Rourke Heath / GenHQ Editorial Reel (Tríptico 9:16 Showcase) */}
+		<Composition
+			id="GenHqReel"
+			component={GenHqReel}
 			durationInFrames={1600}
 			fps={30}
 			width={1080}
