@@ -2,8 +2,8 @@ import React from 'react';
 import {
 	AbsoluteFill,
 	Audio,
+	Img,
 	interpolate,
-	OffthreadVideo,
 	Sequence,
 	spring,
 	staticFile,
@@ -15,6 +15,7 @@ import { GenHqHeader } from './demonstracoes/GenHqHeader';
 import { GenHqTimeline } from './demonstracoes/GenHqTimeline';
 import { AdversarialTerminal } from './demonstracoes/AdversarialTerminal';
 import { GitHubStarHero } from './demonstracoes/GitHubStarHero';
+import { AnimatedCursor } from './demonstracoes/AnimatedCursor';
 import { KineticWordCaption } from './KineticWordCaption';
 import wordsData from './data/words.json';
 
@@ -92,6 +93,31 @@ export const GenHqReel: React.FC = () => {
 		glowColor = 'rgba(245, 158, 11, 0.2)';
 	}
 
+	// Dinâmica de Câmera 3D (Ativada no Terminal e GitHub Hero, mantendo o avatar 2D para estabilidade de render)
+	const rotX = Math.sin(frame / 38) * 1.6;
+	const rotY = Math.cos(frame / 46) * 2.0;
+	const driftX = Math.sin(frame / 55) * 6;
+	const driftY = Math.cos(frame / 65) * 5;
+
+	const stageTransform =
+		frame >= 405
+			? `perspective(1200px) rotateX(${rotX}deg) rotateY(${rotY}deg) translate(${driftX}px, ${driftY}px)`
+			: `translate(${driftX * 0.5}px, ${driftY * 0.5}px)`;
+
+	// ────────────────────────────────────────────────────────────────────────────
+	// WAYPOINTS DO CURSOR ANIMADO (macOS Human Interaction)
+	// ────────────────────────────────────────────────────────────────────────────
+	// Cena C: Terminal Interativo 3 IAs (410 a 1120 frames)
+	const arenaCursorWaypoints = [
+		{ frame: 420, x: 740, y: 440 },
+		{ frame: 480, x: 380, y: 550 },
+		{ frame: 610, x: 380, y: 670, clickFrame: 630 },
+		{ frame: 800, x: 380, y: 790, clickFrame: 830 },
+		{ frame: 1040, x: 500, y: 880 },
+		{ frame: 1110, x: 800, y: 920 },
+	];
+
+
 	return (
 		<AbsoluteFill
 			style={{
@@ -107,13 +133,10 @@ export const GenHqReel: React.FC = () => {
 			}}
 		>
 			{/* ════════════════════════════════════════════════════════════════════
-			    1. ÁUDIO: NARRAÇÃO NEURAL + TRILHA SONORA DARK + SFX DE CINEMA
+			    1. ÁUDIO: SOUND DESIGN CINEMATOGRÁFICO PURO (Sem loop de música genérica)
 			    ════════════════════════════════════════════════════════════════════ */}
 			{/* Narração Principal Normalizada */}
 			<Audio src={staticFile('narracao_cli_review.mp3')} volume={1.0} />
-
-			{/* Trilha Sonora com Auto-Ducking Suave */}
-			<Audio src={staticFile('audio/trilha_luxo.mp3')} volume={0.12} />
 
 			{/* SFX: Sub-Impact no frame 0 */}
 			<Sequence from={0} durationInFrames={90}>
@@ -136,15 +159,31 @@ export const GenHqReel: React.FC = () => {
 				<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.5} />
 			</Sequence>
 
+			{/* SFX: Clique Háptico no Ataque do Codex aos 630 frames */}
+			<Sequence from={628} durationInFrames={30}>
+				<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.75} />
+			</Sequence>
+
+			{/* SFX: Clique Háptico no Árbitro Gemini aos 830 frames */}
+			<Sequence from={828} durationInFrames={30}>
+				<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.75} />
+			</Sequence>
+
 			{/* SFX: Whoosh na Entrada do Card do GitHub aos 1134 frames (37.8s) */}
 			<Sequence from={1132} durationInFrames={50}>
 				<Audio src={staticFile('audio/whoosh_zoom.mp3')} volume={0.65} />
 			</Sequence>
 
-			{/* SFX: Clique da Estrela ⭐ no frame 1162 */}
-			<Sequence from={1162} durationInFrames={60}>
+			{/* SFX: Clique da Estrela ⭐ no frame 1220 acionado pelo cursor */}
+			<Sequence from={1218} durationInFrames={60}>
+				<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.8} />
 				<Audio src={staticFile('audio/futurista_click.mp3')} volume={0.85} />
 				<Audio src={staticFile('audio/hud_rise.mp3')} volume={0.7} />
+			</Sequence>
+
+			{/* SFX: Clique no CTA SWARM aos 1330 frames acionado pelo cursor */}
+			<Sequence from={1328} durationInFrames={40}>
+				<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.8} />
 			</Sequence>
 
 			{/* SFX: Impacto Final de Fechamento no frame 1540 */}
@@ -174,7 +213,7 @@ export const GenHqReel: React.FC = () => {
 			</div>
 
 			{/* ════════════════════════════════════════════════════════════════════
-			    4. BLOCO CENTRAL: PALCO HERÓI WIDESCREEN (Card Cinematográfico)
+			    4. BLOCO CENTRAL: PALCO HERÓI WIDESCREEN 3D COM MICRO-DRIFT
 			    ════════════════════════════════════════════════════════════════════ */}
 			<div
 				style={{
@@ -190,6 +229,9 @@ export const GenHqReel: React.FC = () => {
 					display: 'flex',
 					justifyContent: 'center',
 					alignItems: 'center',
+					transform: `${stageTransform} scale(${zoomScale})`,
+					transformStyle: frame >= 405 ? 'preserve-3d' : 'flat',
+					transition: 'transform 0.08s linear',
 				}}
 			>
 				{/* ── CENA A: TALKING HEAD DO GABRIEL (0 a 405 frames) ── */}
@@ -206,13 +248,15 @@ export const GenHqReel: React.FC = () => {
 							style={{
 								width: '100%',
 								height: '100%',
-								transform: `scale(${zoomScale})`,
-								transition: 'transform 0.15s cubic-bezier(0.16, 1, 0.3, 1)',
 								position: 'relative',
 							}}
 						>
-							<OffthreadVideo
-								src={staticFile('avatar_hook_intra.mp4')}
+							<Img
+								src={staticFile(
+									`avatar_frames/frame_${String(
+										Math.min(210, Math.max(1, frame + 1))
+									).padStart(4, '0')}.jpg`
+								)}
 								style={{
 									width: '100%',
 									height: '100%',
@@ -267,56 +311,92 @@ export const GenHqReel: React.FC = () => {
 										flexDirection: 'column',
 										justifyContent: 'center',
 										alignItems: 'center',
+										gap: 20,
 										padding: 30,
-										gap: 16,
-										zIndex: 10,
+										zIndex: 30,
 									}}
 								>
+									{/* Bug 1: Crash em Produção */}
 									<div
 										style={{
-											background: 'rgba(18, 10, 12, 0.92)',
+											background: 'rgba(239, 68, 68, 0.18)',
 											border: '1.5px solid #EF4444',
 											borderRadius: 16,
 											padding: '18px 24px',
-											boxShadow: '0 25px 60px rgba(239, 68, 68, 0.4)',
-											maxWidth: 620,
-											fontFamily: fontMono,
-											fontSize: 13,
-											color: '#FCA5A5',
-											lineHeight: 1.6,
+											width: '100%',
+											maxWidth: 580,
+											boxShadow: '0 10px 40px rgba(239, 68, 68, 0.35)',
+											backdropFilter: 'blur(12px)',
 											opacity: bug1Spring,
-											transform: `translateY(${(1 - bug1Spring) * 20}px)`,
+											transform: `translateY(${(1 - bug1Spring) * 30}px) scale(${bug1Spring})`,
 										}}
 									>
-										<div style={{ color: '#EF4444', fontWeight: 800, marginBottom: 6, display: 'flex', alignItems: 'center', gap: 8 }}>
+										<div
+											style={{
+												fontFamily: fontMono,
+												fontSize: 14,
+												fontWeight: 800,
+												color: '#EF4444',
+												display: 'flex',
+												alignItems: 'center',
+												gap: 8,
+											}}
+										>
 											<span>🚨</span> [FATAL ERROR] 500 Internal Server Error
 										</div>
-										<div>TypeError: Cannot read properties of undefined (reading 'customer_id')</div>
-										<div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 11, marginTop: 4 }}>
-											at processOrder (/app/api/checkout.ts:89:14) • 03:42 AM
+										<div
+											style={{
+												fontFamily: fontMono,
+												fontSize: 12,
+												color: '#FECACA',
+												marginTop: 8,
+												lineHeight: 1.4,
+											}}
+										>
+											TypeError: Cannot read properties of undefined (reading 'customer_id')
+											<br />
+											<span style={{ color: '#9CA3AF' }}>at processOrder (/app/api/checkout.ts:89:14) • 03:42 AM</span>
 										</div>
 									</div>
 
+									{/* Bug 2: Alucinação Silenciosa */}
 									<div
 										style={{
-											background: 'rgba(18, 10, 12, 0.92)',
-											border: '1.5px solid #EF4444',
+											background: 'rgba(15, 23, 42, 0.85)',
+											border: '1.5px solid rgba(239, 68, 68, 0.5)',
 											borderRadius: 16,
 											padding: '18px 24px',
-											boxShadow: '0 25px 60px rgba(239, 68, 68, 0.4)',
-											maxWidth: 620,
-											fontFamily: fontMono,
-											fontSize: 13,
-											color: '#FCA5A5',
-											lineHeight: 1.6,
+											width: '100%',
+											maxWidth: 580,
+											boxShadow: '0 10px 30px rgba(0, 0, 0, 0.6)',
+											backdropFilter: 'blur(12px)',
 											opacity: bug2Spring,
-											transform: `translateY(${(1 - bug2Spring) * 20}px)`,
+											transform: `translateY(${(1 - bug2Spring) * 30}px) scale(${bug2Spring})`,
 										}}
 									>
-										<div style={{ color: '#EF4444', fontWeight: 800, marginBottom: 6, display: 'flex', alignItems: 'center', gap: 8 }}>
+										<div
+											style={{
+												fontFamily: fontMono,
+												fontSize: 13,
+												fontWeight: 700,
+												color: '#F87171',
+												display: 'flex',
+												alignItems: 'center',
+												gap: 8,
+											}}
+										>
 											<span>⚡</span> [ALUCINAÇÃO DETECTADA]
 										</div>
-										<div>A IA inventou parâmetros que não existem na API em produção!</div>
+										<div
+											style={{
+												fontFamily: fontMono,
+												fontSize: 12,
+												color: '#E2E8F0',
+												marginTop: 6,
+											}}
+										>
+											A IA inventou parâmetros que não existem na API em produção!
+										</div>
 									</div>
 								</div>
 							)}
@@ -324,26 +404,24 @@ export const GenHqReel: React.FC = () => {
 					</div>
 				)}
 
-				{/* ── CENA B: TERMINAL ADVERSARIAL DAS 3 IAs (405 a 1134 frames) ── */}
-				{frame >= 395 && frame < 1140 && (
+				{/* ── CENA B: ARENA ADVERSARIAL CLI (405 a 1134 frames) ── */}
+				{frame >= 395 && frame < 1145 && (
 					<div
 						style={{
 							position: 'absolute',
 							inset: 0,
-							opacity: terminalFadeIn * terminalFadeOut,
+							opacity: frame < 420 ? terminalFadeIn : terminalFadeOut,
 							display: 'flex',
 							justifyContent: 'center',
 							alignItems: 'center',
 						}}
 					>
-						<div style={{ transform: 'scale(1.05)' }}>
-							<AdversarialTerminal />
-						</div>
+						<AdversarialTerminal />
 					</div>
 				)}
 
-				{/* ── CENA C: FUNIL DE ESTRELAS NO GITHUB (1130 a 1600 frames) ── */}
-				{frame >= 1125 && (
+				{/* ── CENA C: HERO GITHUB STAR & LEAD MAGNET (1134 a 1600 frames) ── */}
+				{frame >= 1120 && (
 					<div
 						style={{
 							position: 'absolute',
@@ -420,6 +498,17 @@ export const GenHqReel: React.FC = () => {
 						</div>
 					</div>
 				)}
+
+				{/* ════════════════════════════════════════════════════════════════
+				    CURSOR ANIMADO (macOS Interacting with Terminal)
+				    ════════════════════════════════════════════════════════════════ */}
+				{frame >= 410 && frame <= 1120 && (
+					<AnimatedCursor
+						waypoints={arenaCursorWaypoints}
+						visibleStartFrame={410}
+						visibleEndFrame={1120}
+					/>
+				)}
 			</div>
 
 			{/* ════════════════════════════════════════════════════════════════════
@@ -430,14 +519,14 @@ export const GenHqReel: React.FC = () => {
 			</div>
 
 			{/* ════════════════════════════════════════════════════════════════════
-			    6. LEGENDAS CINÉTICAS (WHISPER SYNC) EM PÍLULA CENTRAL
+			    6. LEGENDAS CINÉTICAS MINIMALISTAS 1-PALAVRA (Padrão Rourke Heath)
 			    ════════════════════════════════════════════════════════════════════ */}
 			<KineticWordCaption
 				words={wordsData as any}
-				preset="gold-glow"
-				windowSize={4}
-				fontSize={28}
-				bottom={30}
+				preset="minimal-rourke"
+				windowSize={1}
+				fontSize={26}
+				bottom={45}
 			/>
 		</AbsoluteFill>
 	);
