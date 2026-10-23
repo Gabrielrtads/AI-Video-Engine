@@ -10,6 +10,15 @@ import {Slide04Engenharia} from './Slide04Engenharia';
 import {Slide05Final} from './Slide05Final';
 import {CliCrossReviewReel} from './CliCrossReviewReel';
 import {GenHqReel} from './GenHqReel';
+import {RourkeLuxuryShowcase} from './RourkeLuxuryShowcase';
+
+const VibeStudioPureVisualRoot: React.FC = () => (
+	<RourkeLuxuryShowcase mode="pure-visual" />
+);
+
+const VibeStudioVoiceoverRoot: React.FC = () => (
+	<RourkeLuxuryShowcase mode="editorial-voiceover" />
+);
 
 const FlowMotionRoot: React.FC = () => (
 	<AbsoluteFill style={{background: '#060709'}}>
@@ -119,6 +128,24 @@ registerRoot(() => (
 			fps={FPS}
 			width={W}
 			height={H}
+		/>
+
+		{/* VIBE DESIGN STUDIO SHOWCASE (PADRÃO ROURKE HEATH — 100% VISUAL) */}
+		<Composition
+			id="VibeStudioPureVisual"
+			component={VibeStudioPureVisualRoot}
+			durationInFrames={750}
+			fps={30}
+			width={1080}
+			height={1920}
+		/>
+		<Composition
+			id="VibeStudioVoiceover"
+			component={VibeStudioVoiceoverRoot}
+			durationInFrames={750}
+			fps={30}
+			width={1080}
+			height={1920}
 		/>
 
 		{/* Editorial Carousel Compositions (Instagram 4:5 - 1080x1350, 30fps) */}

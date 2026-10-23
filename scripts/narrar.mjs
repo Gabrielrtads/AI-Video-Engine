@@ -5,7 +5,7 @@
  * dispara opcionalmente a transcrição de palavras para words.json.
  * 
  * Uso:
- *   node scripts/narrar.mjs "Texto para narrar..." [--voz antonio|francisca|thalita] [--saida public/narracao.mp3] [--transcrever]
+ *   node scripts/narrar.mjs "Texto para narrar..." [--voz antonio|francisca|thalita] [--rate +15%] [--saida public/narracao.mp3] [--transcrever]
  * Exemplo:
  *   node scripts/narrar.mjs "O futuro do design não é estático. É código vivo." --transcrever
  */
@@ -77,7 +77,7 @@ export function narrarTexto(text, outputFile = 'public/narracao.mp3', options = 
 		fs.mkdirSync(outDir, { recursive: true });
 	}
 
-	console.log(`[Narrar] Gerando voz com Edge-TTS (${cmd.voice})...`);
+	console.log(`[Narrar] Gerando voz com Edge-TTS (${cmd.voice}, rate: ${rate})...`);
 	const result = spawnSync(cmd.command, cmd.args, {
 		stdio: 'inherit',
 		windowsHide: true,
@@ -116,13 +116,14 @@ export function narrarTexto(text, outputFile = 'public/narracao.mp3', options = 
 if (import.meta.url === `file://${process.argv[1]}` || process.argv[1]?.endsWith('narrar.mjs')) {
 	const args = process.argv.slice(2);
 	if (args.length === 0) {
-		console.log(`Uso: node scripts/narrar.mjs "<texto>" [--voz antonio|francisca|thalita] [--saida public/narracao.mp3] [--transcrever]`);
+		console.log(`Uso: node scripts/narrar.mjs "<texto>" [--voz antonio|francisca|thalita] [--rate +15%] [--saida public/narracao.mp3] [--transcrever]`);
 		process.exit(0);
 	}
 
 	let text = '';
 	let voice = 'antonio';
 	let output = 'public/narracao.mp3';
+	let rate = '+0%';
 	let transcrever = false;
 
 	for (let i = 0; i < args.length; i++) {
@@ -130,6 +131,8 @@ if (import.meta.url === `file://${process.argv[1]}` || process.argv[1]?.endsWith
 			voice = args[++i];
 		} else if (args[i] === '--saida' && args[i + 1]) {
 			output = args[++i];
+		} else if (args[i] === '--rate' && args[i + 1]) {
+			rate = args[++i];
 		} else if (args[i] === '--transcrever') {
 			transcrever = true;
 		} else if (!text && !args[i].startsWith('--')) {
@@ -143,7 +146,7 @@ if (import.meta.url === `file://${process.argv[1]}` || process.argv[1]?.endsWith
 	}
 
 	try {
-		narrarTexto(text, output, { voice, transcrever });
+		narrarTexto(text, output, { voice, rate, transcrever });
 	} catch (err) {
 		console.error(`[Erro Narração]`, err.message);
 		process.exit(1);

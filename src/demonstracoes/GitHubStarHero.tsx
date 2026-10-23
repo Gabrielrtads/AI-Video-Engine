@@ -36,8 +36,8 @@ export const GitHubStarHero: React.FC<GitHubStarHeroProps> = ({
 		config: { damping: 18, mass: 0.6, stiffness: 120 },
 	});
 
-	const cursorX = interpolate(cursorSpring, [0, 1], [300, 195]);
-	const cursorY = interpolate(cursorSpring, [0, 1], [350, 68]);
+	const cursorX = interpolate(cursorSpring, [0, 1], [490, 440]);
+	const cursorY = interpolate(cursorSpring, [0, 1], [180, 42]);
 
 	const isClicked = frame >= clickFrame;
 	const clickPopSpring = spring({
