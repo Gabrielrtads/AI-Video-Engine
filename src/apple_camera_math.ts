@@ -34,6 +34,8 @@ export interface CameraRigOptions {
 	driftIntensity?: number;
 	/** Quantidade percentual do push-in contínuo (padrão: 0.025, i.e. 2.5%) */
 	pushInAmount?: number;
+	/** Modo de enquadramento: 'avatar' (talking head com punch-ins) ou 'ui' (interface perfeitamente centrada) */
+	mode?: 'avatar' | 'ui';
 }
 
 export interface SceneTimestamps {
@@ -64,6 +66,7 @@ export function calculateCameraTransform(
 		enableContinuousPushIn = true,
 		driftIntensity = 1.0,
 		pushInAmount = 0.025,
+		mode = 'avatar',
 	} = options;
 
 	const { tScene1, tScene2, tScene3 } = timestamps;
@@ -75,7 +78,11 @@ export function calculateCameraTransform(
 	let baseY = -35;
 	let baseX = 0;
 
-	if (frame < fScene1) {
+	if (mode === 'ui') {
+		baseScale = 1.0;
+		baseY = 0;
+		baseX = 0;
+	} else if (frame < fScene1) {
 		baseScale = 1.14;
 		baseY = -35;
 		baseX = 0;

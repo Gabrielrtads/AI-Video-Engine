@@ -1,332 +1,672 @@
 [
  {
-  "text": "Cansado",
-  "start": 0.05,
-  "end": 0.35
+  "text": "Você",
+  "start": 0.16,
+  "end": 0.33
  },
  {
-  "text": "de",
-  "start": 0.35,
-  "end": 0.44
+  "text": "realmente",
+  "start": 0.33,
+  "end": 0.93
  },
  {
-  "text": "vídeos",
-  "start": 0.44,
-  "end": 0.81
+  "text": "confia",
+  "start": 0.93,
+  "end": 1.33
  },
  {
-  "text": "de",
-  "start": 0.81,
-  "end": 0.92
- },
- {
-  "text": "inteligência",
-  "start": 0.92,
-  "end": 1.58
- },
- {
-  "text": "artificial",
-  "start": 1.58,
-  "end": 2.1
- },
- {
-  "text": "genéricos",
-  "start": 2.1,
-  "end": 2.68
- },
- {
-  "text": "com",
-  "start": 2.68,
-  "end": 2.9
- },
- {
-  "text": "gradiente",
-  "start": 2.9,
-  "end": 3.55
- },
- {
-  "text": "roxo",
-  "start": 3.55,
-  "end": 3.83
- },
- {
-  "text": "e",
-  "start": 3.83,
-  "end": 3.9
- },
- {
-  "text": "robô",
-  "start": 3.9,
-  "end": 4.26
- },
- {
-  "text": "sem",
-  "start": 4.26,
-  "end": 4.48
- },
- {
-  "text": "alma?",
-  "start": 4.48,
-  "end": 4.76
- },
- {
-  "text": "Conheça",
-  "start": 5.04,
-  "end": 5.72
- },
- {
-  "text": "o",
-  "start": 5.72,
-  "end": 5.74
- },
- {
-  "text": "Vibe",
-  "start": 5.74,
-  "end": 6.02
- },
- {
-  "text": "Design",
-  "start": 6.02,
-  "end": 6.48
- },
- {
-  "text": "Studio,",
-  "start": 6.48,
-  "end": 7.04
- },
- {
-  "text": "o",
-  "start": 7.04,
-  "end": 7.1
- },
- {
-  "text": "estúdio",
-  "start": 7.1,
-  "end": 7.62
- },
- {
-  "text": "criativo",
-  "start": 7.62,
-  "end": 8.07
- },
- {
-  "text": "e",
-  "start": 8.07,
-  "end": 8.13
- },
- {
-  "text": "adlis",
-  "start": 8.13,
-  "end": 8.48
- },
- {
-  "text": "para",
-  "start": 8.48,
-  "end": 8.76
- },
- {
-  "text": "agentes",
-  "start": 8.76,
-  "end": 9.28
- },
- {
-  "text": "em",
-  "start": 9.28,
-  "end": 9.38
+  "text": "no",
+  "start": 1.33,
+  "end": 1.46
  },
  {
   "text": "código",
-  "start": 9.38,
-  "end": 9.86
+  "start": 1.46,
+  "end": 2.03
  },
  {
-  "text": "puro.",
-  "start": 9.86,
-  "end": 10.2
+  "text": "que",
+  "start": 2.03,
+  "end": 2.22
  },
  {
-  "text": "Física",
-  "start": 10.2,
-  "end": 10.69
- },
- {
-  "text": "de",
-  "start": 10.69,
-  "end": 10.83
- },
- {
-  "text": "mola",
-  "start": 10.83,
-  "end": 11.11
- },
- {
-  "text": "Apple,",
-  "start": 11.11,
-  "end": 11.52
- },
- {
-  "text": "legendas",
-  "start": 11.52,
-  "end": 11.98
- },
- {
-  "text": "cinéticas",
-  "start": 11.98,
-  "end": 12.48
- },
- {
-  "text": "sincronizadas",
-  "start": 12.48,
-  "end": 13.2
- },
- {
-  "text": "no",
-  "start": 13.2,
-  "end": 13.29
- },
- {
-  "text": "milissegundo",
-  "start": 13.29,
-  "end": 13.88
- },
- {
-  "text": "com",
-  "start": 13.88,
-  "end": 14.18
- },
- {
-  "text": "Visper,",
-  "start": 14.18,
-  "end": 14.76
- },
- {
-  "text": "sound",
-  "start": 14.76,
-  "end": 15.15
- },
- {
-  "text": "design",
-  "start": 15.15,
-  "end": 15.59
- },
- {
-  "text": "dinâmico",
-  "start": 15.59,
-  "end": 16.31
- },
- {
-  "text": "e",
-  "start": 16.31,
-  "end": 16.36
- },
- {
-  "text": "masterização",
-  "start": 16.36,
-  "end": 17.14
- },
- {
-  "text": "profissional",
-  "start": 17.14,
-  "end": 17.76
- },
- {
-  "text": "EBU",
-  "start": 17.76,
-  "end": 18.11
- },
- {
-  "text": "R128.",
-  "start": 18.11,
-  "end": 19.32
- },
- {
-  "text": "Custo",
-  "start": 19.32,
-  "end": 19.73
- },
- {
-  "text": "zero",
-  "start": 19.73,
-  "end": 20.05
- },
- {
-  "text": "de",
-  "start": 20.05,
-  "end": 20.22
- },
- {
-  "text": "API",
-  "start": 20.22,
-  "end": 20.46
- },
- {
-  "text": "e",
-  "start": 20.46,
-  "end": 20.54
- },
- {
-  "text": "100%",
-  "start": 20.54,
-  "end": 21.36
- },
- {
-  "text": "open",
-  "start": 21.36,
-  "end": 21.69
- },
- {
-  "text": "source.",
-  "start": 21.69,
-  "end": 22.48
- },
- {
-  "text": "Instale",
-  "start": 22.48,
-  "end": 23.22
- },
- {
-  "text": "via",
-  "start": 23.22,
-  "end": 23.54
- },
- {
-  "text": "npx",
-  "start": 23.54,
-  "end": 23.92
- },
- {
-  "text": "SkillZed",
-  "start": 23.92,
-  "end": 24.59
- },
- {
-  "text": "e",
-  "start": 24.59,
-  "end": 24.61
- },
- {
-  "text": "deixe",
-  "start": 24.61,
-  "end": 24.89
+  "text": "a",
+  "start": 2.22,
+  "end": 2.25
  },
  {
   "text": "sua",
-  "start": 24.89,
-  "end": 25.06
+  "start": 2.25,
+  "end": 2.42
  },
  {
-  "text": "estrela",
-  "start": 25.06,
-  "end": 25.45
+  "text": "inteligência",
+  "start": 2.42,
+  "end": 3.28
+ },
+ {
+  "text": "artificial",
+  "start": 3.28,
+  "end": 4.27
+ },
+ {
+  "text": "escreve?",
+  "start": 4.27,
+  "end": 4.64
+ },
+ {
+  "text": "A",
+  "start": 4.64,
+  "end": 4.79
+ },
+ {
+  "text": "maioria",
+  "start": 4.79,
+  "end": 5.14
+ },
+ {
+  "text": "dos",
+  "start": 5.14,
+  "end": 5.28
+ },
+ {
+  "text": "desenvolvedores",
+  "start": 5.28,
+  "end": 6.16
+ },
+ {
+  "text": "aceita",
+  "start": 6.16,
+  "end": 6.49
+ },
+ {
+  "text": "a",
+  "start": 6.49,
+  "end": 6.55
+ },
+ {
+  "text": "primeira",
+  "start": 6.55,
+  "end": 7.02
+ },
+ {
+  "text": "resposta",
+  "start": 7.02,
+  "end": 7.57
+ },
+ {
+  "text": "que",
+  "start": 7.57,
+  "end": 7.87
+ },
+ {
+  "text": "a",
+  "start": 7.87,
+  "end": 7.9
+ },
+ {
+  "text": "tela",
+  "start": 7.9,
+  "end": 8.25
+ },
+ {
+  "text": "cospe,",
+  "start": 8.25,
+  "end": 8.68
+ },
+ {
+  "text": "e",
+  "start": 8.72,
+  "end": 8.84
+ },
+ {
+  "text": "depois",
+  "start": 8.84,
+  "end": 9.19
+ },
+ {
+  "text": "passa",
+  "start": 9.19,
+  "end": 9.53
+ },
+ {
+  "text": "a",
+  "start": 9.53,
+  "end": 9.59
+ },
+ {
+  "text": "madrugada",
+  "start": 9.59,
+  "end": 10.18
+ },
+ {
+  "text": "inteira",
+  "start": 10.18,
+  "end": 10.65
+ },
+ {
+  "text": "caçando",
+  "start": 10.65,
+  "end": 11.2
+ },
+ {
+  "text": "bugs",
+  "start": 11.2,
+  "end": 11.48
+ },
+ {
+  "text": "invisíveis",
+  "start": 11.48,
+  "end": 12.22
+ },
+ {
+  "text": "em",
+  "start": 12.22,
+  "end": 12.33
+ },
+ {
+  "text": "produção.",
+  "start": 12.33,
+  "end": 13.32
+ },
+ {
+  "text": "Para",
+  "start": 13.32,
+  "end": 13.59
+ },
+ {
+  "text": "acabar",
+  "start": 13.59,
+  "end": 14.05
+ },
+ {
+  "text": "com",
+  "start": 14.05,
+  "end": 14.2
+ },
+ {
+  "text": "isso,",
+  "start": 14.2,
+  "end": 14.62
+ },
+ {
+  "text": "eu",
+  "start": 14.74,
+  "end": 14.75
+ },
+ {
+  "text": "criei",
+  "start": 14.75,
+  "end": 15.04
+ },
+ {
+  "text": "uma",
+  "start": 15.04,
+  "end": 15.22
+ },
+ {
+  "text": "ferramenta",
+  "start": 15.22,
+  "end": 15.86
+ },
+ {
+  "text": "de",
+  "start": 15.86,
+  "end": 15.97
+ },
+ {
+  "text": "código",
+  "start": 15.97,
+  "end": 16.36
+ },
+ {
+  "text": "aberto",
+  "start": 16.36,
+  "end": 16.77
+ },
+ {
+  "text": "chamada",
+  "start": 16.77,
+  "end": 17.38
+ },
+ {
+  "text": "CliCrossReview.",
+  "start": 17.38,
+  "end": 18.92
+ },
+ {
+  "text": "Ela",
+  "start": 18.92,
+  "end": 19.1
+ },
+ {
+  "text": "coloca",
+  "start": 19.1,
+  "end": 19.46
+ },
+ {
+  "text": "três",
+  "start": 19.46,
+  "end": 19.81
+ },
+ {
+  "text": "inteligências",
+  "start": 19.81,
+  "end": 20.62
+ },
+ {
+  "text": "artificiais",
+  "start": 20.62,
+  "end": 21.32
+ },
+ {
+  "text": "debatendo",
+  "start": 21.32,
+  "end": 22.04
+ },
+ {
+  "text": "entre",
+  "start": 22.04,
+  "end": 22.4
+ },
+ {
+  "text": "si",
+  "start": 22.4,
+  "end": 22.55
  },
  {
   "text": "no",
-  "start": 25.45,
-  "end": 25.55
+  "start": 22.55,
+  "end": 22.71
+ },
+ {
+  "text": "mesmo",
+  "start": 22.71,
+  "end": 23.08
+ },
+ {
+  "text": "terminal.",
+  "start": 23.08,
+  "end": 24.02
+ },
+ {
+  "text": "O",
+  "start": 24.02,
+  "end": 24.15
+ },
+ {
+  "text": "primeiro",
+  "start": 24.15,
+  "end": 24.72
+ },
+ {
+  "text": "modelo",
+  "start": 24.72,
+  "end": 25.23
+ },
+ {
+  "text": "programa",
+  "start": 25.23,
+  "end": 25.82
+ },
+ {
+  "text": "a",
+  "start": 25.82,
+  "end": 25.89
+ },
+ {
+  "text": "solução.",
+  "start": 25.89,
+  "end": 26.86
+ },
+ {
+  "text": "O",
+  "start": 26.93,
+  "end": 26.98
+ },
+ {
+  "text": "segundo",
+  "start": 26.98,
+  "end": 27.42
+ },
+ {
+  "text": "ataca",
+  "start": 27.42,
+  "end": 27.81
+ },
+ {
+  "text": "impiedosamente",
+  "start": 27.81,
+  "end": 28.78
+ },
+ {
+  "text": "procurando",
+  "start": 28.78,
+  "end": 29.45
+ },
+ {
+  "text": "falhas,",
+  "start": 29.45,
+  "end": 29.87
+ },
+ {
+  "text": "gargalos",
+  "start": 30.02,
+  "end": 30.57
+ },
+ {
+  "text": "e",
+  "start": 30.57,
+  "end": 30.64
+ },
+ {
+  "text": "furos",
+  "start": 30.64,
+  "end": 30.99
+ },
+ {
+  "text": "de",
+  "start": 30.99,
+  "end": 31.13
+ },
+ {
+  "text": "segurança.",
+  "start": 31.13,
+  "end": 31.84
+ },
+ {
+  "text": "E",
+  "start": 32.14,
+  "end": 32.3
+ },
+ {
+  "text": "o",
+  "start": 32.3,
+  "end": 32.35
+ },
+ {
+  "text": "árbitro",
+  "start": 32.35,
+  "end": 32.97
+ },
+ {
+  "text": "só",
+  "start": 32.97,
+  "end": 33.22
+ },
+ {
+  "text": "aprova",
+  "start": 33.22,
+  "end": 33.73
+ },
+ {
+  "text": "o",
+  "start": 33.73,
+  "end": 33.81
+ },
+ {
+  "text": "código",
+  "start": 33.81,
+  "end": 34.41
+ },
+ {
+  "text": "se",
+  "start": 34.41,
+  "end": 34.57
+ },
+ {
+  "text": "a",
+  "start": 34.57,
+  "end": 34.68
+ },
+ {
+  "text": "nota",
+  "start": 34.68,
+  "end": 35
+ },
+ {
+  "text": "de",
+  "start": 35,
+  "end": 35.17
+ },
+ {
+  "text": "confiança",
+  "start": 35.17,
+  "end": 36.02
+ },
+ {
+  "text": "passar",
+  "start": 36.02,
+  "end": 36.53
+ },
+ {
+  "text": "de",
+  "start": 36.53,
+  "end": 36.69
+ },
+ {
+  "text": "85%.",
+  "start": 36.69,
+  "end": 37.66
+ },
+ {
+  "text": "O",
+  "start": 37.66,
+  "end": 37.84
+ },
+ {
+  "text": "projeto",
+  "start": 37.84,
+  "end": 38.35
+ },
+ {
+  "text": "é",
+  "start": 38.35,
+  "end": 38.52
+ },
+ {
+  "text": "100%",
+  "start": 38.52,
+  "end": 39.38
+ },
+ {
+  "text": "gratuito",
+  "start": 39.38,
+  "end": 40.06
+ },
+ {
+  "text": "e",
+  "start": 40.06,
+  "end": 40.14
+ },
+ {
+  "text": "aberto",
+  "start": 40.14,
+  "end": 40.65
+ },
+ {
+  "text": "no",
+  "start": 40.65,
+  "end": 40.82
+ },
+ {
+  "text": "meu",
+  "start": 40.82,
+  "end": 41.08
  },
  {
   "text": "GitHub.",
-  "start": 25.55,
-  "end": 25.9
+  "start": 41.08,
+  "end": 41.94
+ },
+ {
+  "text": "Comenta",
+  "start": 41.94,
+  "end": 42.32
+ },
+ {
+  "text": "a palavra",
+  "start": 42.32,
+  "end": 42.76
+ },
+ {
+  "text": "\"SWARM\"",
+  "start": 42.87,
+  "end": 43.19
+ },
+ {
+  "text": "aqui",
+  "start": 43.34,
+  "end": 43.58
+ },
+ {
+  "text": "embaixo",
+  "start": 43.58,
+  "end": 44
+ },
+ {
+  "text": "que",
+  "start": 44,
+  "end": 44.28
+ },
+ {
+  "text": "meu",
+  "start": 44.28,
+  "end": 44.71
+ },
+ {
+  "text": "bot",
+  "start": 44.71,
+  "end": 44.84
+ },
+ {
+  "text": "te",
+  "start": 44.84,
+  "end": 45.02
+ },
+ {
+  "text": "manda",
+  "start": 45.02,
+  "end": 45.48
+ },
+ {
+  "text": "o",
+  "start": 45.48,
+  "end": 45.57
+ },
+ {
+  "text": "link",
+  "start": 45.57,
+  "end": 45.94
+ },
+ {
+  "text": "direto",
+  "start": 45.94,
+  "end": 46.48
+ },
+ {
+  "text": "no",
+  "start": 46.48,
+  "end": 47.28
+ },
+ {
+  "text": "Direct.",
+  "start": 47.28,
+  "end": 47.32
+ },
+ {
+  "text": "E",
+  "start": 47.32,
+  "end": 47.47
+ },
+ {
+  "text": "se",
+  "start": 47.47,
+  "end": 47.53
+ },
+ {
+  "text": "a",
+  "start": 47.53,
+  "end": 47.6
+ },
+ {
+  "text": "ferramenta",
+  "start": 47.6,
+  "end": 48.3
+ },
+ {
+  "text": "salvar",
+  "start": 48.3,
+  "end": 48.72
+ },
+ {
+  "text": "o",
+  "start": 48.72,
+  "end": 48.79
+ },
+ {
+  "text": "seu",
+  "start": 48.79,
+  "end": 49.01
+ },
+ {
+  "text": "dia,",
+  "start": 49.01,
+  "end": 49.2
+ },
+ {
+  "text": "deixa",
+  "start": 49.49,
+  "end": 49.68
+ },
+ {
+  "text": "uma",
+  "start": 49.68,
+  "end": 49.85
+ },
+ {
+  "text": "estrelinha",
+  "start": 49.85,
+  "end": 50.41
+ },
+ {
+  "text": "lá",
+  "start": 50.41,
+  "end": 50.6
+ },
+ {
+  "text": "no",
+  "start": 50.6,
+  "end": 50.72
+ },
+ {
+  "text": "repositório",
+  "start": 50.72,
+  "end": 51.44
+ },
+ {
+  "text": "para",
+  "start": 51.44,
+  "end": 51.66
+ },
+ {
+  "text": "apoiar",
+  "start": 51.66,
+  "end": 52.04
+ },
+ {
+  "text": "o",
+  "start": 52.04,
+  "end": 52.1
+ },
+ {
+  "text": "Open",
+  "start": 52.1,
+  "end": 52.42
+ },
+ {
+  "text": "Source.",
+  "start": 52.42,
+  "end": 52.88
  }
 ]

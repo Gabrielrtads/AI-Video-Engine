@@ -8,6 +8,7 @@ import {Slide02Diagnostico} from './Slide02Diagnostico';
 import {Slide03Solucao} from './Slide03Solucao';
 import {Slide04Engenharia} from './Slide04Engenharia';
 import {Slide05Final} from './Slide05Final';
+import {CliCrossReviewReel} from './CliCrossReviewReel';
 
 const FlowMotionRoot: React.FC = () => (
 	<AbsoluteFill style={{background: '#060709'}}>
@@ -73,6 +74,16 @@ export const dynamicTemplateRegistry: RegisteredComposition[] = [];
 
 registerRoot(() => (
 	<>
+		{/* Viral Showcase Reel (CliCrossReview & VibeSwarm) */}
+		<Composition
+			id="CliCrossReviewReel"
+			component={CliCrossReviewReel}
+			durationInFrames={1600}
+			fps={30}
+			width={1080}
+			height={1920}
+		/>
+
 		{/* Core Motion Master Compositions */}
 		<Composition
 			id="FullBleedShowcase"

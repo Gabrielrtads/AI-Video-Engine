@@ -27,6 +27,7 @@ export const AppleCameraRig: React.FC<AppleCameraRigProps> = ({
 	enableContinuousPushIn = true,
 	driftIntensity = 1.0,
 	pushInAmount = 0.025,
+	mode = 'avatar',
 	timestamps,
 	enableVignette = true,
 }) => {
@@ -62,26 +63,35 @@ export const AppleCameraRig: React.FC<AppleCameraRigProps> = ({
 			enableContinuousPushIn,
 			driftIntensity,
 			pushInAmount,
+			mode,
 		}
 	);
 
 	// Foco e desfoque seletivo de profundidade de campo durante o holograma na mão
+	const hasValidPlanetScene =
+		mode === 'avatar' &&
+		sceneTimestamps.tScene3 - sceneTimestamps.tScene2 > 1.2;
 	const isInPlanetScene =
-		t >= sceneTimestamps.tScene2 && t < sceneTimestamps.tScene3;
-	const planetSceneAlpha = interpolate(
-		t,
-		[
-			sceneTimestamps.tScene2 - 0.2,
-			sceneTimestamps.tScene2 + 0.6,
-			sceneTimestamps.tScene3 - 0.5,
-			sceneTimestamps.tScene3,
-		],
-		[0, 1, 1, 0],
-		{
-			extrapolateLeft: 'clamp',
-			extrapolateRight: 'clamp',
-		}
-	);
+		hasValidPlanetScene &&
+		t >= sceneTimestamps.tScene2 &&
+		t < sceneTimestamps.tScene3;
+
+	const planetSceneAlpha = hasValidPlanetScene
+		? interpolate(
+				t,
+				[
+					sceneTimestamps.tScene2 - 0.2,
+					sceneTimestamps.tScene2 + 0.6,
+					sceneTimestamps.tScene3 - 0.5,
+					sceneTimestamps.tScene3,
+				],
+				[0, 1, 1, 0],
+				{
+					extrapolateLeft: 'clamp',
+					extrapolateRight: 'clamp',
+				}
+		  )
+		: 0;
 
 	return (
 		<div

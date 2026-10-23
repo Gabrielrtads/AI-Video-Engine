@@ -10,11 +10,25 @@ const { fontFamily: fontPlusJakartaSans } = loadPlusJakartaSans('normal', {
 
 const fontMono = 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace';
 
-export const GitHubStarHero: React.FC = () => {
+export interface GitHubStarHeroProps {
+	repoName?: string;
+	installCommand?: string;
+	ctaWord?: string;
+	ctaSubtitle?: string;
+	initialStars?: number;
+}
+
+export const GitHubStarHero: React.FC<GitHubStarHeroProps> = ({
+	repoName = 'vibe-design-studio',
+	installCommand = '$ npx skills add Gabrielrtads/vibe-design-studio',
+	ctaWord = 'VIBE',
+	ctaSubtitle = 'Para receber o link direto e comando no seu Direct.',
+	initialStars = 1481,
+}) => {
 	const frame = useCurrentFrame();
 	const { fps } = useVideoConfig();
 
-	// Animação do cursor de mouse do Mac entrando e clicando na estrela aos 24 frames
+	// Animação do cursor de mouse do Mac entrando e clicando na estrela aos 28 frames
 	const clickFrame = 28;
 	const cursorSpring = spring({
 		frame: Math.min(frame, clickFrame),
@@ -33,7 +47,7 @@ export const GitHubStarHero: React.FC = () => {
 	});
 
 	const buttonScale = isClicked ? interpolate(clickPopSpring, [0, 1], [0.92, 1.05]) : 1.0;
-	const starNumber = isClicked ? 1482 : 1481;
+	const starNumber = isClicked ? initialStars + 1 : initialStars;
 	const rippleScale = isClicked ? interpolate(clickPopSpring, [0, 1], [0.8, 2.4]) : 0;
 	const rippleOpacity = isClicked ? interpolate(clickPopSpring, [0, 0.4, 1], [0.8, 0.4, 0]) : 0;
 
@@ -103,7 +117,7 @@ export const GitHubStarHero: React.FC = () => {
 								Gabrielrtads /
 							</div>
 							<div style={{ fontFamily: fontPlusJakartaSans, fontSize: 16, color: '#ffffff', fontWeight: 800 }}>
-								vibe-design-studio
+								{repoName}
 							</div>
 						</div>
 					</div>
@@ -193,7 +207,7 @@ export const GitHubStarHero: React.FC = () => {
 					}}
 				>
 					<span style={{ fontFamily: fontMono, fontSize: 13, color: '#f8fafc', fontWeight: 600 }}>
-						$ npx skills add Gabrielrtads/vibe-design-studio
+						{installCommand}
 					</span>
 					<div
 						style={{
@@ -225,7 +239,7 @@ export const GitHubStarHero: React.FC = () => {
 			>
 				<div>
 					<div style={{ fontFamily: fontAnton, fontSize: 22, color: '#ffffff', letterSpacing: '0.04em' }}>
-						COMENTE "VIBE" AQUI EMBAIXO
+						COMENTE "{ctaWord}" AQUI EMBAIXO
 					</div>
 					<div
 						style={{
@@ -235,7 +249,7 @@ export const GitHubStarHero: React.FC = () => {
 							marginTop: 2,
 						}}
 					>
-						Para receber o link direto e comando no seu Direct.
+						{ctaSubtitle}
 					</div>
 				</div>
 				<div
@@ -249,7 +263,7 @@ export const GitHubStarHero: React.FC = () => {
 						fontWeight: 800,
 					}}
 				>
-					VIBE ⚡
+					{ctaWord} ⚡
 				</div>
 			</div>
 		</div>
