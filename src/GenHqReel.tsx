@@ -17,6 +17,7 @@ import { AdversarialTerminal } from './demonstracoes/AdversarialTerminal';
 import { GitHubStarHero } from './demonstracoes/GitHubStarHero';
 import { AnimatedCursor } from './demonstracoes/AnimatedCursor';
 import { KineticWordCaption } from './KineticWordCaption';
+import { getCameraBeat } from './demonstracoes/CameraDirector';
 import wordsData from './data/words.json';
 
 const { fontFamily: fontPlusJakartaSans } = loadPlusJakartaSans('normal', {
@@ -30,16 +31,9 @@ export const GenHqReel: React.FC = () => {
 	const { fps, width, height } = useVideoConfig();
 
 	// ────────────────────────────────────────────────────────────────────────────
-	// TIMESTAMPS DOS ATOS NARRATIVOS (Whisper Sync)
-	// Ato 1: 0 - 140 frames (0.0s - 4.6s) -> "Você realmente confia no código..."
-	// Ato 2: 140 - 405 frames (4.6s - 13.5s) -> "A maioria dos desenvolvedores aceita..."
-	// Ato 3: 405 - 1134 frames (13.5s - 37.8s) -> "Pra acabar com isso... cli cross review... 3 IAs"
-	// Ato 4: 1134 - 1600 frames (37.8s - 53.3s) -> "100% gratuito... Comenta SWARM... Estrela ⭐"
+	// DIRETOR DE CÂMERA DINÂMICA (Transições de Impacto a Cada 2.5s - 3.0s)
 	// ────────────────────────────────────────────────────────────────────────────
-
-	// Punch-in jump cut aos 60 frames (2.0s) na virada da frase
-	const isPunchIn = frame >= 60 && frame < 140;
-	const zoomScale = isPunchIn ? 1.18 : 1.0;
+	const camera = getCameraBeat(frame, fps);
 
 	// Transições de Fade entre cenas do Palco Central
 	const hookFadeOut = interpolate(frame, [380, 405], [1, 0], {
@@ -64,15 +58,15 @@ export const GenHqReel: React.FC = () => {
 
 	// Molas para Cards de Alerta de Bugs (Ato 2)
 	const bug1Spring = spring({
-		frame: Math.max(0, frame - 150),
+		frame: Math.max(0, frame - 145),
 		fps,
-		config: { damping: 14, mass: 0.5, stiffness: 180 },
+		config: { damping: 14, mass: 0.5, stiffness: 200 },
 	});
 
 	const bug2Spring = spring({
-		frame: Math.max(0, frame - 210),
+		frame: Math.max(0, frame - 220),
 		fps,
-		config: { damping: 14, mass: 0.5, stiffness: 180 },
+		config: { damping: 14, mass: 0.5, stiffness: 200 },
 	});
 
 	// Notificação estilo iOS Direct para o Ato 4 (Lead Magnet)
@@ -86,37 +80,25 @@ export const GenHqReel: React.FC = () => {
 	// Glow dinâmico de fundo baseado no ato ativo
 	let glowColor = 'rgba(56, 189, 248, 0.12)';
 	if (frame >= 140 && frame < 405) {
-		glowColor = 'rgba(239, 68, 68, 0.15)';
+		glowColor = 'rgba(239, 68, 68, 0.18)';
 	} else if (frame >= 405 && frame < 1134) {
-		glowColor = 'rgba(56, 189, 248, 0.18)';
+		glowColor = 'rgba(56, 189, 248, 0.2)';
 	} else if (frame >= 1134) {
-		glowColor = 'rgba(245, 158, 11, 0.2)';
+		glowColor = 'rgba(245, 158, 11, 0.22)';
 	}
 
-	// Dinâmica de Câmera 3D (Ativada no Terminal e GitHub Hero, mantendo o avatar 2D para estabilidade de render)
-	const rotX = Math.sin(frame / 38) * 1.6;
-	const rotY = Math.cos(frame / 46) * 2.0;
-	const driftX = Math.sin(frame / 55) * 6;
-	const driftY = Math.cos(frame / 65) * 5;
+	// Scanner biométrico no Avatar (Beats 1 e 2: frames 0 a 140)
+	const scanLineY = interpolate(frame % 50, [0, 50], [0, 100]);
 
-	const stageTransform =
-		frame >= 405
-			? `perspective(1200px) rotateX(${rotX}deg) rotateY(${rotY}deg) translate(${driftX}px, ${driftY}px)`
-			: `translate(${driftX * 0.5}px, ${driftY * 0.5}px)`;
-
-	// ────────────────────────────────────────────────────────────────────────────
-	// WAYPOINTS DO CURSOR ANIMADO (macOS Human Interaction)
-	// ────────────────────────────────────────────────────────────────────────────
-	// Cena C: Terminal Interativo 3 IAs (410 a 1120 frames)
+	// Waypoints do cursor animado para a Arena 3 IAs (Beats 8 a 11)
 	const arenaCursorWaypoints = [
-		{ frame: 420, x: 740, y: 440 },
-		{ frame: 480, x: 380, y: 550 },
-		{ frame: 610, x: 380, y: 670, clickFrame: 630 },
-		{ frame: 800, x: 380, y: 790, clickFrame: 830 },
-		{ frame: 1040, x: 500, y: 880 },
-		{ frame: 1110, x: 800, y: 920 },
+		{ frame: 420, x: 350, y: 80 },
+		{ frame: 560, x: 350, y: 170, clickFrame: 570 },
+		{ frame: 660, x: 350, y: 290, clickFrame: 670 },
+		{ frame: 760, x: 350, y: 420, clickFrame: 770 },
+		{ frame: 880, x: 480, y: 730, clickFrame: 890 },
+		{ frame: 1060, x: 820, y: 800 },
 	];
-
 
 	return (
 		<AbsoluteFill
@@ -133,62 +115,102 @@ export const GenHqReel: React.FC = () => {
 			}}
 		>
 			{/* ════════════════════════════════════════════════════════════════════
-			    1. ÁUDIO: SOUND DESIGN CINEMATOGRÁFICO PURO (Sem loop de música genérica)
+			    1. ÁUDIO: SOUND DESIGN EM 18 BEATS DE RETENÇÃO (Zero Loop Genérico)
 			    ════════════════════════════════════════════════════════════════════ */}
 			{/* Narração Principal Normalizada */}
 			<Audio src={staticFile('narracao_cli_review.mp3')} volume={1.0} />
 
-			{/* SFX: Sub-Impact no frame 0 */}
-			<Sequence from={0} durationInFrames={90}>
-				<Audio src={staticFile('audio/sub_impact_warm.mp3')} volume={0.8} />
+			{/* Beat 1 (0): Sub-Impact Warm */}
+			<Sequence from={0} durationInFrames={60}>
+				<Audio src={staticFile('audio/sub_impact_warm.mp3')} volume={0.85} />
 			</Sequence>
 
-			{/* SFX: Whoosh no Punch-In aos 60 frames (2.0s) */}
-			<Sequence from={58} durationInFrames={40}>
+			{/* Beat 2 (60): Whoosh Punch-In aos 2.0s */}
+			<Sequence from={58} durationInFrames={35}>
+				<Audio src={staticFile('audio/whoosh_zoom.mp3')} volume={0.65} />
+			</Sequence>
+
+			{/* Beat 3 (140): Crash Bug 1 aos 4.6s */}
+			<Sequence from={140} durationInFrames={50}>
+				<Audio src={staticFile('audio/transicao_digital.mp3')} volume={0.8} />
+				<Audio src={staticFile('audio/hud_boom.mp3')} volume={0.6} />
+			</Sequence>
+
+			{/* Beat 4 (220): Bug 2 Alucinação aos 7.3s */}
+			<Sequence from={220} durationInFrames={40}>
+				<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.8} />
+			</Sequence>
+
+			{/* Beat 5 (310): Caos Madrugada aos 10.3s */}
+			<Sequence from={310} durationInFrames={50}>
+				<Audio src={staticFile('audio/hud_rise.mp3')} volume={0.65} />
+			</Sequence>
+
+			{/* Beat 6 (405): Entrada Terminal Whip-Pan aos 13.5s */}
+			<Sequence from={403} durationInFrames={50}>
+				<Audio src={staticFile('audio/whoosh_zoom.mp3')} volume={0.7} />
+				<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.6} />
+			</Sequence>
+
+			{/* Beat 7 (480): Duelo 3D aos 16.0s */}
+			<Sequence from={480} durationInFrames={40}>
+				<Audio src={staticFile('audio/futurista_click.mp3')} volume={0.75} />
+			</Sequence>
+
+			{/* Beat 8 (560): Claude Builder Focus aos 18.6s */}
+			<Sequence from={560} durationInFrames={40}>
+				<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.75} />
+			</Sequence>
+
+			{/* Beat 9 (660): Codex Red Team Attack aos 22.0s */}
+			<Sequence from={660} durationInFrames={45}>
+				<Audio src={staticFile('audio/transicao_digital.mp3')} volume={0.8} />
+			</Sequence>
+
+			{/* Beat 10 (760): Gemini Referee Lock aos 25.3s */}
+			<Sequence from={760} durationInFrames={40}>
+				<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.8} />
+			</Sequence>
+
+			{/* Beat 11 (860): Odomêtro Subindo aos 28.6s */}
+			<Sequence from={860} durationInFrames={50}>
+				<Audio src={staticFile('audio/hud_rise.mp3')} volume={0.75} />
+			</Sequence>
+
+			{/* Beat 12 (960): Stamp Slam Aprovado aos 32.0s */}
+			<Sequence from={960} durationInFrames={60}>
+				<Audio src={staticFile('audio/impacto_final.mp3')} volume={0.85} />
+			</Sequence>
+
+			{/* Beat 13 (1050): Pullout aos 35.0s */}
+			<Sequence from={1050} durationInFrames={40}>
 				<Audio src={staticFile('audio/whoosh_zoom.mp3')} volume={0.6} />
 			</Sequence>
 
-			{/* SFX: Glitch de Erro nos Bugs aos 140 frames (4.6s) */}
-			<Sequence from={140} durationInFrames={60}>
-				<Audio src={staticFile('audio/transicao_digital.mp3')} volume={0.7} />
-			</Sequence>
-
-			{/* SFX: Whoosh na Entrada do Terminal aos 405 frames (13.5s) */}
-			<Sequence from={403} durationInFrames={50}>
-				<Audio src={staticFile('audio/whoosh_zoom.mp3')} volume={0.65} />
-				<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.5} />
-			</Sequence>
-
-			{/* SFX: Clique Háptico no Ataque do Codex aos 630 frames */}
-			<Sequence from={628} durationInFrames={30}>
-				<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.75} />
-			</Sequence>
-
-			{/* SFX: Clique Háptico no Árbitro Gemini aos 830 frames */}
-			<Sequence from={828} durationInFrames={30}>
-				<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.75} />
-			</Sequence>
-
-			{/* SFX: Whoosh na Entrada do Card do GitHub aos 1134 frames (37.8s) */}
+			{/* Beat 14 (1134): GitHub Hero Entrada aos 37.8s */}
 			<Sequence from={1132} durationInFrames={50}>
-				<Audio src={staticFile('audio/whoosh_zoom.mp3')} volume={0.65} />
+				<Audio src={staticFile('audio/whoosh_zoom.mp3')} volume={0.7} />
 			</Sequence>
 
-			{/* SFX: Clique da Estrela ⭐ no frame 1220 acionado pelo cursor */}
+			{/* Beat 15 (1220): Star Click Burst aos 40.6s */}
 			<Sequence from={1218} durationInFrames={60}>
-				<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.8} />
-				<Audio src={staticFile('audio/futurista_click.mp3')} volume={0.85} />
-				<Audio src={staticFile('audio/hud_rise.mp3')} volume={0.7} />
+				<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.85} />
+				<Audio src={staticFile('audio/futurista_click.mp3')} volume={0.9} />
 			</Sequence>
 
-			{/* SFX: Clique no CTA SWARM aos 1330 frames acionado pelo cursor */}
-			<Sequence from={1328} durationInFrames={40}>
+			{/* Beat 16 (1300): Direct Push aos 43.3s */}
+			<Sequence from={1300} durationInFrames={40}>
 				<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.8} />
 			</Sequence>
 
-			{/* SFX: Impacto Final de Fechamento no frame 1540 */}
+			{/* Beat 17 (1390): CTA Pulse aos 46.3s */}
+			<Sequence from={1390} durationInFrames={40}>
+				<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.8} />
+			</Sequence>
+
+			{/* Beat 18 (1540): Fechamento Épico aos 51.3s */}
 			<Sequence from={1540} durationInFrames={60}>
-				<Audio src={staticFile('audio/impacto_final.mp3')} volume={0.8} />
+				<Audio src={staticFile('audio/impacto_final.mp3')} volume={0.85} />
 			</Sequence>
 
 			{/* ════════════════════════════════════════════════════════════════════
@@ -201,7 +223,7 @@ export const GenHqReel: React.FC = () => {
 					backgroundImage: `radial-gradient(circle at 50% 45%, ${glowColor} 0%, transparent 65%), radial-gradient(rgba(255, 255, 255, 0.08) 1.5px, transparent 1.5px)`,
 					backgroundSize: '100% 100%, 36px 36px',
 					pointerEvents: 'none',
-					transition: 'all 0.4s ease',
+					transition: 'all 0.3s ease',
 				}}
 			/>
 
@@ -213,7 +235,7 @@ export const GenHqReel: React.FC = () => {
 			</div>
 
 			{/* ════════════════════════════════════════════════════════════════════
-			    4. BLOCO CENTRAL: PALCO HERÓI WIDESCREEN 3D COM MICRO-DRIFT
+			    4. BLOCO CENTRAL: PALCO HERÓI COM DIRETOR DE CÂMERA DINÂMICO
 			    ════════════════════════════════════════════════════════════════════ */}
 			<div
 				style={{
@@ -229,9 +251,9 @@ export const GenHqReel: React.FC = () => {
 					display: 'flex',
 					justifyContent: 'center',
 					alignItems: 'center',
-					transform: `${stageTransform} scale(${zoomScale})`,
-					transformStyle: frame >= 405 ? 'preserve-3d' : 'flat',
-					transition: 'transform 0.08s linear',
+					transform: `perspective(1200px) rotateX(${camera.rotateX}deg) rotateY(${camera.rotateY}deg) translate(${camera.translateX}px, ${camera.translateY}px) scale(${camera.scale})`,
+					transformStyle: 'preserve-3d',
+					transition: 'transform 0.05s linear',
 				}}
 			>
 				{/* ── CENA A: TALKING HEAD DO GABRIEL (0 a 405 frames) ── */}
@@ -265,16 +287,22 @@ export const GenHqReel: React.FC = () => {
 								}}
 							/>
 
-							{/* Vinheta de borda para integrar com o card */}
-							<div
-								style={{
-									position: 'absolute',
-									inset: 0,
-									background:
-										'radial-gradient(circle at 50% 50%, transparent 60%, rgba(11, 12, 16, 0.85) 100%)',
-									pointerEvents: 'none',
-								}}
-							/>
+							{/* Linha de Scanner HUD Biométrico nos primeiros 140 frames */}
+							{frame < 140 && (
+								<div
+									style={{
+										position: 'absolute',
+										left: 0,
+										right: 0,
+										top: `${scanLineY}%`,
+										height: 3,
+										background: 'linear-gradient(90deg, transparent, #38BDF8, #FFE600, transparent)',
+										boxShadow: '0 0 16px #38BDF8, 0 0 24px #FFE600',
+										pointerEvents: 'none',
+										zIndex: 15,
+									}}
+								/>
+							)}
 
 							{/* Tag do Criador no Canto Inferior Esquerdo (Ato 1) */}
 							{frame < 140 && (
@@ -298,6 +326,32 @@ export const GenHqReel: React.FC = () => {
 									}}
 								>
 									<span style={{ color: '#22C55E' }}>●</span> GABRIEL TOLEDO • FOUNDER
+								</div>
+							)}
+
+							{/* Relógio Digital da Madrugada no Ato 2 (220 a 405 frames) */}
+							{frame >= 220 && (
+								<div
+									style={{
+										position: 'absolute',
+										top: 24,
+										left: 24,
+										background: 'rgba(239, 68, 68, 0.25)',
+										border: '1px solid #EF4444',
+										borderRadius: 10,
+										padding: '6px 14px',
+										display: 'flex',
+										alignItems: 'center',
+										gap: 8,
+										fontFamily: fontMono,
+										fontSize: 12,
+										fontWeight: 800,
+										color: '#EF4444',
+										boxShadow: '0 0 20px rgba(239, 68, 68, 0.4)',
+										zIndex: 35,
+									}}
+								>
+									<span>⏰</span> 03:42 AM • MADRUGADA EM PRODUÇÃO
 								</div>
 							)}
 
