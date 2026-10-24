@@ -127,8 +127,8 @@ export const CarrosselEditorial: React.FC<CarrosselEditorialProps> = ({
 					textTransform: 'uppercase',
 				}}
 			>
-				<span style={{ color: '#1e293b' }}>{headerTagLeft}</span>
-				<span style={{ color: '#64748b' }}>{headerTagRight}</span>
+				<span style={{ color: textColor }}>{headerTagLeft}</span>
+				<span style={{ color: textColor, opacity: 0.6 }}>{headerTagRight}</span>
 			</div>
 
 			{/* ══════════════ 2. CATEGORIA, TÍTULO ULTRA-CONDENSADO & SUBTÍTULO ══════════════ */}
@@ -371,7 +371,8 @@ export const CarrosselEditorial: React.FC<CarrosselEditorialProps> = ({
 					<span
 						style={{
 							fontFamily: fontBebas,
-							fontSize: 215,
+							// Encolhe a palavra do palco para ela nunca passar da borda (12 letras já estouravam)
+							fontSize: Math.min(215, Math.floor(880 / (Math.max(1, stageHighlightWord.length) * 0.43))),
 							lineHeight: 0.84,
 							letterSpacing: '0.01em',
 							color: stageTextColor,
@@ -412,8 +413,8 @@ export const CarrosselEditorial: React.FC<CarrosselEditorialProps> = ({
 					textTransform: 'uppercase',
 				}}
 			>
-				<span style={{ color: '#475569' }}>{footerAuthor}</span>
-				<span style={{ color: '#1e293b' }}>{footerAction}</span>
+				<span style={{ color: textColor, opacity: 0.65 }}>{footerAuthor}</span>
+				<span style={{ color: textColor }}>{footerAction}</span>
 			</div>
 		</AbsoluteFill>
 	);
