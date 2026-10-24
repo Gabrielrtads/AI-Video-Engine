@@ -25,7 +25,7 @@ Todo agente tem à disposição neste repositório:
    - Gera narração neural gratuita em pt-BR e dispara o Whisper para `src/data/words.json`.
 3. **Sound Design Físico & Auto-Ducking:**
    - Mídia fica só nas pastas de `docs/PASTAS.md` (`public/audio/sfx|musica|locucao`, `public/video`, `public/marcas`). Efeitos sonoros: `public/audio/sfx/` (ex.: `click_haptic.mp3`). Esses arquivos não são versionados: rode `pnpm setup:pastas` e `pnpm assets:check` antes de renderizar e nunca invente um nome de arquivo que o `assets:check` não confirme.
-   - Componente `AutoDuckingAudio.tsx` para modular a trilha sonora sob a voz. Atenção: nenhuma composição do repositório o usa hoje; ligue-o explicitamente (conferido em 23/10/2026).
+   - Componente `AutoDuckingAudio.tsx` para modular a trilha sonora sob a voz. Já ligado em `FlowMotionMaster`, `Video` (`FullBleedShowcase`) e `RourkeLuxuryShowcase` (modo voiceover); em composição nova, ligue-o explicitamente.
 4. **Masterização -14 LUFS:**
    - `npm run render:mastered` — Renderiza o Remotion e aplica normalização EBU R128 (-14 LUFS / -1 dBTP) ideal para Instagram e TikTok.
 5. **Amostrador de Paletas por IA:**

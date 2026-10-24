@@ -46,8 +46,8 @@ A common pitfall when building guardrails for AI is creating a **straitjacket**:
   ─────────────────────────────────────────────────────────────────
            🛡️ FLOOR (Deterministic Guarantee for ALL Agents)
               - Automated Safe Zones (Instagram 4:5 & TikTok 9:16)
-              - Effect-level guard (linter flags SFX above 0.45) & a Dynamic Ducking component (AutoDuckingAudio, not wired into the bundled compositions yet)
-              - EBU R128 Mastering, single-pass loudnorm (-14 LUFS / -1 dBTP; real results land within about +/-1 LUFS)
+              - Effect-level guard (linter flags SFX above 0.45) & Dynamic Ducking (AutoDuckingAudio, wired into the bundled narrated showcases)
+              - Two-Pass EBU R128 Mastering (-14 LUFS +/-0.5 / delivered file at -1 dBTP or lower, measured)
               - Millisecond Whisper Speech Synchronization (words.json)
               - Anti-Slop Linter (Blocks only fatal bugs & audio peaks > 0.45)
 ```
@@ -77,7 +77,7 @@ A common pitfall when building guardrails for AI is creating a **straitjacket**:
 | **Aesthetic Quality** | 🔴 Low (cropped stock videos) | 🟡 Neutral (depends on prompt) | 🟢 Good (pre-made templates) | **💎 High-End (Apple-Style, Glassmorphism, 3D Tilt)** |
 | **Dual Format** | ❌ 9:16 Video only | 🟡 Manual code | ❌ Separate products | **✅ 4:5 Carousels + 9:16 Reels in One Engine** |
 | **Reference Ingestion** | ❌ None | ❌ None | ❌ None | **✅ K-Means Palette & Safe Zone Extraction from Link/Print** |
-| **Physical Sound Design** | 🔴 Generic background loop | 🟡 Manual audio tags | 🟡 Preset sound effects | **✅ SFX tied to Spring Overshoot Peaks (Auto-Ducking component available, wire it per composition)** |
+| **Physical Sound Design** | 🔴 Generic background loop | 🟡 Manual audio tags | 🟡 Preset sound effects | **✅ SFX tied to Spring Overshoot Peaks + Auto-Ducking** |
 | **Audio Loudness** | 🔴 Inconsistent / Clipped | 🟡 Raw audio | 🟡 Basic compression | **✅ Native EBU R128 (-14 LUFS / -1 dBTP for Reels/TikTok)** |
 | **Agent Autonomy** | 🔴 Monolithic Python script | 🟡 Bare framework | 🔴 Closed UI (No CLI/Agents) | **🤖 Native Swarm (Claude, Codex, Gemini via CLI & Mesas)** |
 | **Creative Ceiling** | 🔴 Locked templates | 🟢 Freeform code | 🔴 Closed UI walled garden | **🚀 Unconstrained (Three.js, React 18, Custom Shaders)** |
@@ -175,7 +175,7 @@ Great video is 50% audio. Vibe Design Studio treats sound as a first-class citiz
 2. **Dynamic Auto-Ducking (`src/AutoDuckingAudio.tsx`):**
    Automatically ducks background music down to **10%** during speech and gently ramps it back up to **35%** during pauses, eliminating distracting music clashing.
 3. **EBU R128 Mastering (`scripts/masterizar_audio.mjs`):**
-   Applies professional single-pass loudness normalization (`-14 LUFS`, `LRA: 7`, `True-Peak: -1.0 dBTP`) via FFmpeg so your video sounds punchy and broadcast-ready on mobile speakers without distortion.
+   Applies professional two-pass loudness normalization (measure, then linear gain with 0.5 dB headroom for the AAC encoder) (`-14 LUFS`, `LRA: 7`, `True-Peak: -1.0 dBTP`) via FFmpeg so your video sounds punchy and broadcast-ready on mobile speakers without distortion.
 4. **1-Click Multi-TTS (`scripts/narrar.mjs`):**
    Zero-cost neural text-to-speech with studio-grade Brazilian Portuguese voices (`antonio`, `francisca`, `thalita`) plus automated Whisper word alignment.
 
