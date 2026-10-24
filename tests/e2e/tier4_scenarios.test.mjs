@@ -142,10 +142,8 @@ describe('Tier 4: Real-World Application Scenarios', () => {
 		assert.strictEqual(session.route, 4);
 		assert.strictEqual(session.briefing, 'atração de clientes para automações com IA');
 
-		// Step 2: Ingestion pipeline enforces RAM shielding (-vframes 1)
-		const pythonScript = fs.readFileSync(PATHS.amostrarPaleta, 'utf8');
-		assert.ok(pythonScript.includes("'-vframes'"), 'Strict -vframes 1 check');
-		assert.ok(pythonScript.includes("'1'"), 'Strict 1 frame limit');
+		// Step 2: a proteção de RAM (-vframes 1) é verificada por comportamento em
+		// tests/unit/amostrar_paleta_comportamento.test.mjs.
 
 		// Step 3: Verify skills catalog links to chromatic extraction
 		const skills = JSON.parse(fs.readFileSync(PATHS.catalogoHabilidades, 'utf8'));

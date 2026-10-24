@@ -370,31 +370,11 @@ describe('Tier 2: Boundary & Corner Cases (Features 1 to 11)', () => {
 	// Feature 7 Boundaries: Zero-RAM-Leak Frame Extraction
 	// =========================================================================
 	describe('Feature 7 Boundaries: Zero-RAM-Leak Frame Extraction', () => {
-		it('2.7.1: video without video stream raises descriptive error without leaking', () => {
-			// Checked in Python unit test test_load_image_raw_no_video_streams_error
-			assert.ok(fs.existsSync(PATHS.amostrarPaleta));
-		});
-
-		it('2.7.2: monochromatic frame (all pixels identical) does not cause K-Means crash', () => {
-			// Checked in Python unit test test_get_dominant_colors_monochromatic
-			assert.ok(fs.existsSync(PATHS.amostrarPaleta));
-		});
-
-		it('2.7.3: raw buffer length check protects against truncated ffmpeg pipes', () => {
-			const content = fs.readFileSync(PATHS.amostrarPaleta, 'utf8');
-			assert.ok(content.includes('len(raw.stdout) < expected_bytes'));
-		});
-
-		it('2.7.4: ffmpeg process timeout of 15 seconds prevents dangling processes', () => {
-			const content = fs.readFileSync(PATHS.amostrarPaleta, 'utf8');
-			assert.ok(content.includes('timeout=15'));
-		});
-
-		it('2.7.5: deterministic seed (seed=42) prevents infinite clustering loop', () => {
-			const content = fs.readFileSync(PATHS.amostrarPaleta, 'utf8');
-			assert.ok(content.includes('np.random.seed(42)'));
-			assert.ok(content.includes('range(12)'), 'K-Means loop capped at 12 iterations');
-		});
+		// 2.7.1 (vídeo sem stream) e 2.7.2 (quadro monocromático) só conferiam se o arquivo existia; o
+		// comportamento real é testado em tests/python (test_load_image_raw_no_video_streams_error e
+		// test_get_dominant_colors_monochromatic).
+		// 2.7.3-2.7.5 (buffer truncado, timeout, seed) viraram testes de comportamento em
+		// tests/unit/amostrar_paleta_comportamento.test.mjs.
 	});
 
 	// =========================================================================
