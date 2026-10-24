@@ -19,6 +19,7 @@ import { loadFont as loadPlusJakartaSans } from '@remotion/google-fonts/PlusJaka
 // Palavras da narração da Thalita sincronizadas via Whisper
 import RAW_WORDS from './data/words_thalita_cleaned.json';
 import RAW_WORDS_FAST from './data/words_thalita_fast.json';
+import {AutoDuckingAudio} from './AutoDuckingAudio';
 
 // As palavras precisam ser as do áudio que toca: o áudio _fast dura 26,4 s e o normal 28,8 s.
 const palavrasDoAudio = (audio: string) => (audio.endsWith('_fast.mp3') ? RAW_WORDS_FAST : RAW_WORDS);
@@ -1234,7 +1235,13 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 				)}
 
 				{/* Trilha Sonora Moderna Estilo Rede Social (New Benz beat moderno) */}
-				<Audio src={staticFile('audio/musica/trilha_social_moderna.mp3')} volume={0.18} />
+				<AutoDuckingAudio
+					src={staticFile('audio/musica/trilha_social_moderna.mp3')}
+					words={palavrasDoAudio(audioNarracao)}
+					baseVolume={0.4}
+					duckedVolume={0.18}
+					loop={false}
+				/>
 
 				{/* Micro-feedback háptico apenas na digitação do terminal e clique do Star */}
 				<Sequence from={185} durationInFrames={8}>

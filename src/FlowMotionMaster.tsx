@@ -16,6 +16,7 @@ import { loadFont as loadPlusJakartaSans } from '@remotion/google-fonts/PlusJaka
 
 // Palavras da narração da Thalita sincronizadas via Whisper
 import RAW_WORDS from './data/words_thalita_cleaned.json';
+import {AutoDuckingAudio} from './AutoDuckingAudio';
 
 // Demonstradores interativos em tempo real ("Mostrar na Prática")
 import { SlopSimulator } from './demonstracoes/SlopSimulator';
@@ -948,7 +949,13 @@ export const FlowMotionMaster: React.FC<FlowMotionMasterProps> = ({
 				)}
 
 				{/* Trilha Lo-Fi Minimalista Tech (Batida Seca e Suave) */}
-				<Audio src={staticFile('audio/musica/trilha_lofi.mp3')} volume={0.14} />
+				<AutoDuckingAudio
+					src={staticFile('audio/musica/trilha_lofi.mp3')}
+					words={RAW_WORDS}
+					baseVolume={0.35}
+					duckedVolume={0.14}
+					loop={false}
+				/>
 
 				{/* Efeitos Sonoros nas Transições de Demonstração (Persistência via Sequence) */}
 				{/* Beat 1 Whoosh Zoom */}
