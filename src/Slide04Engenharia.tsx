@@ -212,7 +212,7 @@ export const Slide04Engenharia: React.FC = () => {
 						<div style={{ display: 'flex', gap: 14, fontFamily: fontMono, fontSize: 12 }}>
 							<span style={{ color: '#34D399' }}>✔ Zero Overshoot</span>
 							<span style={{ color: '#E2E8F0' }}>✔ Inércia Natural</span>
-							<span style={{ color: '#A1A1AA' }}>✔ 60 FPS Fluido</span>
+							<span style={{ color: '#A1A1AA' }}>✔ 30 FPS Fluido</span>
 						</div>
 					</div>
 

@@ -23,7 +23,7 @@ export const GitHubStarHero: React.FC<GitHubStarHeroProps> = ({
 	installCommand = '$ npx skills add Gabrielrtads/vibe-design-studio',
 	ctaWord = 'VIBE',
 	ctaSubtitle = 'Para receber o link direto e comando no seu Direct.',
-	initialStars = 1481,
+	initialStars,
 }) => {
 	const frame = useCurrentFrame();
 	const { fps } = useVideoConfig();
@@ -47,7 +47,8 @@ export const GitHubStarHero: React.FC<GitHubStarHeroProps> = ({
 	});
 
 	const buttonScale = isClicked ? interpolate(clickPopSpring, [0, 1], [0.92, 1.05]) : 1.0;
-	const starNumber = isClicked ? initialStars + 1 : initialStars;
+	// Sem número inventado: só mostra contagem se quem chamou passar a contagem real.
+	const starNumber = initialStars === undefined ? null : isClicked ? initialStars + 1 : initialStars;
 	const rippleScale = isClicked ? interpolate(clickPopSpring, [0, 1], [0.8, 2.4]) : 0;
 	const rippleOpacity = isClicked ? interpolate(clickPopSpring, [0, 0.4, 1], [0.8, 0.4, 0]) : 0;
 
@@ -159,14 +160,16 @@ export const GitHubStarHero: React.FC<GitHubStarHeroProps> = ({
 						>
 							<span>★</span>
 							<span>Star</span>
-							<span
-								style={{
-									borderLeft: `1px solid ${isClicked ? 'rgba(0,0,0,0.2)' : 'rgba(255,255,255,0.2)'}`,
-									paddingLeft: 8,
-								}}
-							>
-								{starNumber}
-							</span>
+							{starNumber !== null && (
+								<span
+									style={{
+										borderLeft: `1px solid ${isClicked ? 'rgba(0,0,0,0.2)' : 'rgba(255,255,255,0.2)'}`,
+										paddingLeft: 8,
+									}}
+								>
+									{starNumber}
+								</span>
+							)}
 						</div>
 					</div>
 				</div>

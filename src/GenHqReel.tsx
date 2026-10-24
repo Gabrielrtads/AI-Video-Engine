@@ -492,7 +492,6 @@ export const GenHqReel: React.FC = () => {
 								installCommand="$ npx cli-cross-review --adversarial"
 								ctaWord="SWARM"
 								ctaSubtitle="Para receber o link do repositório no seu Direct!"
-								initialStars={1481}
 							/>
 						</div>
 					</div>

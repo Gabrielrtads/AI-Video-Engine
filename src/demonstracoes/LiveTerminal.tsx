@@ -72,7 +72,7 @@ export const LiveTerminal: React.FC = () => {
 						<div style={{ width: 12, height: 12, borderRadius: '50%', background: '#27c93f' }} />
 					</div>
 					<span style={{ fontFamily: fontMono, fontSize: 12, color: 'rgba(255, 255, 255, 0.5)' }}>
-						vibe-studio — headless — 60 FPS
+						vibe-studio — headless — 30 FPS
 					</span>
 					<div
 						style={{

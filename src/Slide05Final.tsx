@@ -41,14 +41,6 @@ export const Slide05Final: React.FC = () => {
 		config: { damping: 18, mass: 0.8, stiffness: 95 },
 	});
 
-	const starCountSpring = spring({
-		frame: Math.max(0, frame - 15),
-		fps,
-		config: { damping: 14, mass: 0.6, stiffness: 110 },
-	});
-
-	const starCount = Math.round(1482 * Math.min(Math.max(starCountSpring, 0), 1));
-
 	return (
 		<AbsoluteFill
 			style={{
@@ -204,7 +196,7 @@ export const Slide05Final: React.FC = () => {
 								marginTop: 2,
 							}}
 						>
-							{starCount}
+							STAR
 						</span>
 					</div>
 				</div>
