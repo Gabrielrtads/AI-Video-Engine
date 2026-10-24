@@ -35,7 +35,8 @@ const PRONTOS_DIR = DRIVE_BASE ? path.join(DRIVE_BASE, 'Edição- Vídeos Pronto
 // Diretórios locais
 const LOCAL_INPUT_DIR = path.join(ENGINE_ROOT, 'public', 'input');
 const LOCAL_OUT_DIR = path.join(ENGINE_ROOT, 'out');
-const WORDS_JSON_PATH = path.join(ENGINE_ROOT, 'src', 'data', 'words.json');
+// Gerado: vai para out/temp (src/data/words.json é dado versionado, importado por composições).
+const WORDS_JSON_PATH = path.join(ENGINE_ROOT, 'out', 'temp', 'words_bancada.json');
 
 console.log('');
 console.log('╔════════════════════════════════════════════════════════════════════╗');

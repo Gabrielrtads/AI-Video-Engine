@@ -38,6 +38,9 @@ test('test:unit e test:e2e usam glob entre aspas (igual em Windows e Linux)', ()
   assert.match(s['test:e2e'], /"tests\/adversarial\/\*\.test\.mjs"/);
 });
 
-test('requirements-dev.txt declara o numpy usado pelo amostrador de paleta', () => {
-  assert.match(read('requirements-dev.txt'), /^numpy\b/m);
+test('requirements.txt declara numpy (paleta) e edge-tts fixado (voz do 1-click); o dev aponta para ele', () => {
+  const req = read('requirements.txt');
+  assert.match(req, /^numpy\b/m);
+  assert.match(req, /^edge-tts==\d+\.\d+\.\d+$/m);
+  assert.match(read('requirements-dev.txt'), /^-r requirements\.txt$/m);
 });

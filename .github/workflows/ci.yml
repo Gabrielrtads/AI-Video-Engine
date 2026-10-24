@@ -32,13 +32,13 @@ jobs:
         with:
           python-version: '3.12'
           cache: pip
-          cache-dependency-path: requirements-dev.txt
+          cache-dependency-path: requirements.txt
 
       - name: Dependências do sistema e do Python
         run: |
           sudo apt-get update
           sudo apt-get install -y ffmpeg
-          pip install -r requirements-dev.txt
+          pip install -r requirements.txt
 
       - run: pnpm install --frozen-lockfile
 

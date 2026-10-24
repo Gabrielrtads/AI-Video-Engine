@@ -2,7 +2,7 @@
 /**
  * Narração 1-Click Multi-TTS & Pipeline de Transcrição.
  * Gera narração em áudio neural (Edge-TTS grátis ou ElevenLabs) e
- * dispara opcionalmente a transcrição de palavras para words.json.
+ * dispara opcionalmente a transcrição de palavras para out/temp/words.json.
  * 
  * Uso:
  *   node scripts/narrar.mjs "Texto para narrar..." [--voz antonio|francisca|thalita] [--rate +15%] [--saida public/narracao.mp3] [--transcrever]
@@ -90,9 +90,9 @@ export function narrarTexto(text, outputFile = 'public/narracao.mp3', options = 
 	console.log(`[Narrar] Áudio salvo em: ${cmd.output}`);
 
 	if (transcrever) {
-		console.log(`[Narrar] Disparando transcrição Whisper para src/data/words.json...`);
+		console.log(`[Narrar] Disparando transcrição Whisper para out/temp/words.json...`);
 		const transcribeScript = path.resolve('scripts/transcrever-palavras.mjs');
-		const wordsOutput = path.resolve('src/data/words.json');
+		const wordsOutput = path.resolve('out/temp/words.json');
 		const trResult = spawnSync('node', [transcribeScript, cmd.output, wordsOutput, 'pt'], {
 			stdio: 'inherit',
 			windowsHide: true,

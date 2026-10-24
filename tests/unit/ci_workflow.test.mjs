@@ -20,7 +20,7 @@ test('o workflow roda a suíte completa com lockfile congelado, ffmpeg e python'
   assert.match(ci, /pnpm install --frozen-lockfile/);
   assert.match(ci, /run:\s*pnpm test/);
   assert.match(ci, /apt-get install -y ffmpeg/);
-  assert.match(ci, /requirements-dev\.txt/);
+  assert.match(ci, /pip install -r requirements\.txt/);
   assert.match(ci, /node-version:\s*24/);
 });
 
