@@ -41,6 +41,15 @@ export function medirImagem(arquivo) {
 	return { largura, altura, desvioPadrao: Math.round(desvioPadrao * 100) / 100 };
 }
 
+/** Uma etapa que trava sem erro é pior que uma que falha: o agente fica esperando para sempre. */
+export function comVigia(promessa, ms, etapa) {
+	let temporizador;
+	const limite = new Promise((_, rejeitar) => {
+		temporizador = setTimeout(() => rejeitar(new Error(`A etapa "${etapa}" passou de ${Math.round(ms / 1000)} s sem terminar`)), ms);
+	});
+	return Promise.race([promessa, limite]).finally(() => clearTimeout(temporizador));
+}
+
 export async function gerarCarrossel({ spec, saidaDir, estiloVisual = null, silencioso = false, frame = 90 }) {
 	// Tudo que pode estar errado é conferido ANTES de gastar tempo com bundle e render
 	const validacao = validarSpec(spec);
@@ -51,17 +60,24 @@ export async function gerarCarrossel({ spec, saidaDir, estiloVisual = null, sile
 	const destino = path.resolve(saidaDir);
 	fs.mkdirSync(destino, { recursive: true });
 	const log = (...a) => { if (!silencioso) console.log(...a); };
+	const diag = (...a) => { if (process.env.VIBE_DEBUG) console.error('[carrossel]', ...a); };
+	const logLevel = process.env.VIBE_DEBUG ? 'verbose' : 'warn';
 
 	log(`[1/3] Preparando o Remotion (${propsPorSlide.length} slide(s))...`);
-	const serveUrl = await bundle({ entryPoint: path.join(RAIZ, 'src', 'index.tsx'), onProgress: () => {} });
+	diag('bundle...');
+	const serveUrl = await comVigia(bundle({ entryPoint: path.join(RAIZ, 'src', 'index.tsx'), onProgress: () => {} }), 240000, 'preparar o Remotion');
+	diag('bundle ok', serveUrl);
 
 	const slides = [];
 	for (let i = 0; i < propsPorSlide.length; i++) {
 		const nome = `slide-${String(i + 1).padStart(2, '0')}.png`;
 		log(`[2/3] Renderizando ${nome}...`);
-		const composition = await selectComposition({ serveUrl, id: 'CarrosselSlide', inputProps: propsPorSlide[i] });
+		diag(`selectComposition ${nome}...`);
+		const composition = await comVigia(selectComposition({ serveUrl, id: 'CarrosselSlide', inputProps: propsPorSlide[i], logLevel }), 180000, `abrir o navegador para ${nome}`);
+		diag(`selectComposition ${nome} ok`);
 		const saida = path.join(destino, nome);
-		await renderStill({ composition, serveUrl, output: saida, frame: Math.min(frame, composition.durationInFrames - 1), inputProps: propsPorSlide[i] });
+		await comVigia(renderStill({ composition, serveUrl, output: saida, frame: Math.min(frame, composition.durationInFrames - 1), inputProps: propsPorSlide[i], logLevel }), 180000, `renderizar ${nome}`);
+		diag(`renderStill ${nome} ok`);
 		slides.push(saida);
 	}
 
