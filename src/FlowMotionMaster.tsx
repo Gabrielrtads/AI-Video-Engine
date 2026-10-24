@@ -958,7 +958,7 @@ export const FlowMotionMaster: React.FC<FlowMotionMasterProps> = ({
 
 				{/* Beat 2 Slam Stamp do Rejeitado por Slop */}
 				<Sequence from={90}>
-					<Audio src={staticFile('audio/sfx/hud_boom.mp3')} volume={0.55} />
+					<Audio src={staticFile('audio/sfx/hud_boom.mp3')} volume={0.45} />
 				</Sequence>
 
 				{/* Beat 3 Início do Terminal Mac */}
@@ -988,7 +988,7 @@ export const FlowMotionMaster: React.FC<FlowMotionMasterProps> = ({
 
 				{/* Beat 8 Clique na Estrela do GitHub & Clímax */}
 				<Sequence from={754}>
-					<Audio src={staticFile('audio/sfx/impacto_final.mp3')} volume={0.65} />
+					<Audio src={staticFile('audio/sfx/impacto_final.mp3')} volume={0.45} />
 				</Sequence>
 			</>
 		);

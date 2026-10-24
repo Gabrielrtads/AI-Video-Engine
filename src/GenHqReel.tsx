@@ -122,95 +122,95 @@ export const GenHqReel: React.FC = () => {
 
 			{/* Beat 1 (0): Sub-Impact Warm */}
 			<Sequence from={0} durationInFrames={60}>
-				<Audio src={staticFile('audio/sfx/sub_impact_warm.mp3')} volume={0.85} />
+				<Audio src={staticFile('audio/sfx/sub_impact_warm.mp3')} volume={0.45} />
 			</Sequence>
 
 			{/* Beat 2 (60): Whoosh Punch-In aos 2.0s */}
 			<Sequence from={58} durationInFrames={35}>
-				<Audio src={staticFile('audio/sfx/whoosh_zoom.mp3')} volume={0.65} />
+				<Audio src={staticFile('audio/sfx/whoosh_zoom.mp3')} volume={0.45} />
 			</Sequence>
 
 			{/* Beat 3 (140): Crash Bug 1 aos 4.6s */}
 			<Sequence from={140} durationInFrames={50}>
-				<Audio src={staticFile('audio/sfx/transicao_digital.mp3')} volume={0.8} />
-				<Audio src={staticFile('audio/sfx/hud_boom.mp3')} volume={0.6} />
+				<Audio src={staticFile('audio/sfx/transicao_digital.mp3')} volume={0.45} />
+				<Audio src={staticFile('audio/sfx/hud_boom.mp3')} volume={0.45} />
 			</Sequence>
 
 			{/* Beat 4 (220): Bug 2 Alucinação aos 7.3s */}
 			<Sequence from={220} durationInFrames={40}>
-				<Audio src={staticFile('audio/sfx/click_haptic.mp3')} volume={0.8} />
+				<Audio src={staticFile('audio/sfx/click_haptic.mp3')} volume={0.45} />
 			</Sequence>
 
 			{/* Beat 5 (310): Caos Madrugada aos 10.3s */}
 			<Sequence from={310} durationInFrames={50}>
-				<Audio src={staticFile('audio/sfx/hud_rise.mp3')} volume={0.65} />
+				<Audio src={staticFile('audio/sfx/hud_rise.mp3')} volume={0.45} />
 			</Sequence>
 
 			{/* Beat 6 (405): Entrada Terminal Whip-Pan aos 13.5s */}
 			<Sequence from={403} durationInFrames={50}>
-				<Audio src={staticFile('audio/sfx/whoosh_zoom.mp3')} volume={0.7} />
-				<Audio src={staticFile('audio/sfx/click_haptic.mp3')} volume={0.6} />
+				<Audio src={staticFile('audio/sfx/whoosh_zoom.mp3')} volume={0.45} />
+				<Audio src={staticFile('audio/sfx/click_haptic.mp3')} volume={0.45} />
 			</Sequence>
 
 			{/* Beat 7 (480): Duelo 3D aos 16.0s */}
 			<Sequence from={480} durationInFrames={40}>
-				<Audio src={staticFile('audio/sfx/futurista_click.mp3')} volume={0.75} />
+				<Audio src={staticFile('audio/sfx/futurista_click.mp3')} volume={0.45} />
 			</Sequence>
 
 			{/* Beat 8 (560): Claude Builder Focus aos 18.6s */}
 			<Sequence from={560} durationInFrames={40}>
-				<Audio src={staticFile('audio/sfx/click_haptic.mp3')} volume={0.75} />
+				<Audio src={staticFile('audio/sfx/click_haptic.mp3')} volume={0.45} />
 			</Sequence>
 
 			{/* Beat 9 (660): Codex Red Team Attack aos 22.0s */}
 			<Sequence from={660} durationInFrames={45}>
-				<Audio src={staticFile('audio/sfx/transicao_digital.mp3')} volume={0.8} />
+				<Audio src={staticFile('audio/sfx/transicao_digital.mp3')} volume={0.45} />
 			</Sequence>
 
 			{/* Beat 10 (760): Gemini Referee Lock aos 25.3s */}
 			<Sequence from={760} durationInFrames={40}>
-				<Audio src={staticFile('audio/sfx/click_haptic.mp3')} volume={0.8} />
+				<Audio src={staticFile('audio/sfx/click_haptic.mp3')} volume={0.45} />
 			</Sequence>
 
 			{/* Beat 11 (860): Odomêtro Subindo aos 28.6s */}
 			<Sequence from={860} durationInFrames={50}>
-				<Audio src={staticFile('audio/sfx/hud_rise.mp3')} volume={0.75} />
+				<Audio src={staticFile('audio/sfx/hud_rise.mp3')} volume={0.45} />
 			</Sequence>
 
 			{/* Beat 12 (960): Stamp Slam Aprovado aos 32.0s */}
 			<Sequence from={960} durationInFrames={60}>
-				<Audio src={staticFile('audio/sfx/impacto_final.mp3')} volume={0.85} />
+				<Audio src={staticFile('audio/sfx/impacto_final.mp3')} volume={0.45} />
 			</Sequence>
 
 			{/* Beat 13 (1050): Pullout aos 35.0s */}
 			<Sequence from={1050} durationInFrames={40}>
-				<Audio src={staticFile('audio/sfx/whoosh_zoom.mp3')} volume={0.6} />
+				<Audio src={staticFile('audio/sfx/whoosh_zoom.mp3')} volume={0.45} />
 			</Sequence>
 
 			{/* Beat 14 (1134): GitHub Hero Entrada aos 37.8s */}
 			<Sequence from={1132} durationInFrames={50}>
-				<Audio src={staticFile('audio/sfx/whoosh_zoom.mp3')} volume={0.7} />
+				<Audio src={staticFile('audio/sfx/whoosh_zoom.mp3')} volume={0.45} />
 			</Sequence>
 
 			{/* Beat 15 (1220): Star Click Burst aos 40.6s */}
 			<Sequence from={1218} durationInFrames={60}>
-				<Audio src={staticFile('audio/sfx/click_haptic.mp3')} volume={0.85} />
-				<Audio src={staticFile('audio/sfx/futurista_click.mp3')} volume={0.9} />
+				<Audio src={staticFile('audio/sfx/click_haptic.mp3')} volume={0.45} />
+				<Audio src={staticFile('audio/sfx/futurista_click.mp3')} volume={0.45} />
 			</Sequence>
 
 			{/* Beat 16 (1300): Direct Push aos 43.3s */}
 			<Sequence from={1300} durationInFrames={40}>
-				<Audio src={staticFile('audio/sfx/click_haptic.mp3')} volume={0.8} />
+				<Audio src={staticFile('audio/sfx/click_haptic.mp3')} volume={0.45} />
 			</Sequence>
 
 			{/* Beat 17 (1390): CTA Pulse aos 46.3s */}
 			<Sequence from={1390} durationInFrames={40}>
-				<Audio src={staticFile('audio/sfx/click_haptic.mp3')} volume={0.8} />
+				<Audio src={staticFile('audio/sfx/click_haptic.mp3')} volume={0.45} />
 			</Sequence>
 
 			{/* Beat 18 (1540): Fechamento Épico aos 51.3s */}
 			<Sequence from={1540} durationInFrames={60}>
-				<Audio src={staticFile('audio/sfx/impacto_final.mp3')} volume={0.85} />
+				<Audio src={staticFile('audio/sfx/impacto_final.mp3')} volume={0.45} />
 			</Sequence>
 
 			{/* ════════════════════════════════════════════════════════════════════

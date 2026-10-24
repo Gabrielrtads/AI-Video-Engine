@@ -79,19 +79,25 @@ if (!foundSlogan) {
 }
 
 // Teste 5: Trava de Volume de Áudio (Anti-Estouro / Foley Limpo)
-const volumeMatches = content.match(/volume:\s*([0-9.]+)/g);
-let loudAudio = false;
-if (volumeMatches) {
-	for (const m of volumeMatches) {
-		const val = parseFloat(m.replace(/volume:\s*/, ''));
-		if (val > 0.45) {
-			console.warn(`⚠️ ALERTA [Áudio Estourado]: Detectado volume de efeito sonoro excessivo (${val} > 0.45). Risco de AI Slop sonoro.`);
-			warnings++;
-			loudAudio = true;
-		}
+// Os efeitos de public/audio/sfx têm pico próximo de 0 dBFS: acima de 0,45 eles passam por cima da voz.
+// A regra olha (a) <Audio> de efeito em JSX, com volume antes ou depois do src, e (b) objetos { volume: N }.
+// Narração e trilha ficam fora (têm níveis próprios). Vários efeitos altos contam como UM alerta.
+const LIMITE_VOLUME_EFEITO = 0.45;
+const efeitosAltos = [];
+for (const tag of content.matchAll(/<Audio\b[\s\S]*?\/>/g)) {
+	const efeito = tag[0].match(/audio\/sfx\/([^'"`)\s]+)/);
+	const volume = tag[0].match(/volume=\{\s*([0-9.]+)\s*\}/);
+	if (efeito && volume && parseFloat(volume[1]) > LIMITE_VOLUME_EFEITO) {
+		efeitosAltos.push(`${efeito[1]} (${volume[1]})`);
 	}
 }
-if (!loudAudio) {
+for (const m of content.matchAll(/volume:\s*([0-9.]+)/g)) {
+	if (parseFloat(m[1]) > LIMITE_VOLUME_EFEITO) efeitosAltos.push(`objeto { volume: ${m[1]} }`);
+}
+if (efeitosAltos.length > 0) {
+	console.warn(`⚠️ ALERTA [Áudio Estourado]: ${efeitosAltos.length} efeito(s) acima de 0,45 (risco de cobrir a voz): ${efeitosAltos.join(', ')}`);
+	warnings++;
+} else {
 	console.log('✅ Audio Pass: Efeitos sonoros contidos e balanceados (<= 0.45).');
 	passes++;
 }

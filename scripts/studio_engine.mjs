@@ -336,6 +336,9 @@ export function formatSkillsCatalog(skillsJsonPath = null) {
     }
     const raw = fs.readFileSync(resolved, 'utf8');
     skills = JSON.parse(raw);
+    if (!Array.isArray(skills)) {
+      throw new TypeError(`O catálogo de habilidades deve ser uma lista (array JSON), mas ${resolved} contém ${skills === null ? 'null' : typeof skills}.`);
+    }
     sourcePath = resolved;
   } else {
     // Busca caminhos padrão com tolerância a execução local ou monorepo
