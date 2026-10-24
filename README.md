@@ -211,7 +211,10 @@ node scripts/studio_engine.mjs
 git clone https://github.com/Gabrielrtads/vibe-design-studio.git
 cd vibe-design-studio
 pnpm install
+pnpm setup:pastas   # creates the local folders (audio, input, out/...) - see docs/PASTAS.md
 ```
+
+> Keep the project in a short path (e.g. `C:ds`): on Windows, paths over 260 characters break the Remotion binary.
 
 ### 2. Generate Narration with 1-Click (Free Neural Voice)
 
