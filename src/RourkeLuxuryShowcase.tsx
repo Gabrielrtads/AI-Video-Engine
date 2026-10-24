@@ -624,7 +624,6 @@ export const RourkeLuxuryShowcase: React.FC<RourkeLuxuryShowcaseProps> = ({ mode
 								installCommand="$ npx skills add Gabrielrtads/vibe-design-studio"
 								ctaWord="VIBE"
 								ctaSubtitle="Para receber o repositório completo e comandos no seu Direct."
-								initialStars={1481}
 							/>
 						</div>
 					</div>

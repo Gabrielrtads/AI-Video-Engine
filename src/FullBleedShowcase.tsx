@@ -578,7 +578,7 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 				<div>
 					<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
 						<span style={{ fontSize: 22, color: MATRIX_GREEN, letterSpacing: '0.12em', fontWeight: 800 }}>
-							● APPLE SPRING ENGINE (60 FPS)
+							● APPLE SPRING ENGINE (30 FPS)
 						</span>
 						<span style={{ fontSize: 20, color: 'rgba(255, 255, 255, 0.55)', fontWeight: 600 }}>
 							CRITICAL DAMPING
@@ -1009,7 +1009,6 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 		const cameraDrift = 1.0 + ci(f, [0, 150], [0, 0.02]);
 
 		const isStarClicked = f > 20;
-		const starCount = isStarClicked ? 1482 : 1481;
 
 		// Clique do Star com mola Apple orgânica
 		const starButtonScale = isStarClicked
@@ -1116,7 +1115,6 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 								}}
 							>
 								<span>⭐ Star</span>
-								<span>{starCount}</span>
 							</div>
 
 							{/* Sparkles 3D ProRes com transparência ao clicar na estrela */}

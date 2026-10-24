@@ -229,7 +229,7 @@ export const Slide03Solucao: React.FC = () => {
 								Remotion + React 18 Puro
 							</span>
 							<span style={{ fontFamily: fontPlusJakartaSans, fontSize: 15, color: '#94A3B8', lineHeight: 1.4 }}>
-								Zero interfaces web lentas. Cada segundo é um componente React programável em 4K e 60 FPS com vetores nativos.
+								Zero interfaces web lentas. Cada segundo é um componente React programável em 4K e 30 FPS com vetores nativos.
 							</span>
 						</div>
 					</div>

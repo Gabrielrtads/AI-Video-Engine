@@ -71,7 +71,7 @@ export const AppleSpringDemo: React.FC = () => {
 					<span></span> APPLE SPRING ENGINE
 				</div>
 				<span style={{ fontFamily: fontMono, fontSize: 11, color: '#10B981', fontWeight: 700 }}>
-					● LIVE PHYSICS (60 FPS)
+					● LIVE PHYSICS (30 FPS)
 				</span>
 			</div>
 
