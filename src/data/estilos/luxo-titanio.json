@@ -1,0 +1,13 @@
+{
+  "id": "luxo-titanio",
+  "nome": "Luxo titanio",
+  "clima": "grafite escuro, dourado discreto, calma de produto premium",
+  "fundo": "#0E0E10",
+  "fundo2": "#1A1A1F",
+  "texto": "#F5F5F4",
+  "acento": "#D4AF37",
+  "captionVariant": "dark-glass",
+  "hud": false,
+  "planeta": "saturn-gold",
+  "cartao": "gold-titanium"
+}

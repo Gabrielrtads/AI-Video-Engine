@@ -1,0 +1,13 @@
+{
+  "id": "brutalista-vermelho",
+  "nome": "Brutalista vermelho",
+  "clima": "preto absoluto, branco seco e um vermelho que grita",
+  "fundo": "#0A0A0A",
+  "fundo2": "#171717",
+  "texto": "#FFFFFF",
+  "acento": "#FF2D3F",
+  "captionVariant": "red-alert",
+  "hud": false,
+  "planeta": "mars-crimson",
+  "cartao": "dark-glass"
+}

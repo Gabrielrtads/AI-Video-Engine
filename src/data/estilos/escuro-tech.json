@@ -1,0 +1,13 @@
+{
+  "id": "escuro-tech",
+  "nome": "Escuro tech",
+  "clima": "terminal azul sobre quase preto, preciso e frio",
+  "fundo": "#05070D",
+  "fundo2": "#0B1220",
+  "texto": "#F8FAFC",
+  "acento": "#38BDF8",
+  "captionVariant": "cyber-cyan",
+  "hud": true,
+  "planeta": "cyber-blue",
+  "cartao": "dark-glass"
+}

@@ -5,7 +5,8 @@
  *   pnpm vibe ajuda
  *   pnpm vibe doctor [--json]
  *   pnpm vibe componentes [--json]
- *   pnpm vibe roteiro "texto do roteiro" [--vertical] [--voz thalita] [--cenas plano.json] [--saida out/videos/x.mp4]
+ *   pnpm vibe roteiro "texto do roteiro" [--vertical] [--voz thalita] [--estilo escuro-tech] [--cenas plano.json] [--saida out/videos/x.mp4]
+ *   pnpm vibe estilos [--json]
  *   pnpm vibe reel-gravacao <gravacao.mp4> [--roteiro "texto"] [--formato 9:16] [--saida out/videos/reel.mp4]
  *   pnpm vibe cortar-silencio <entrada> <saida> [--simular]
  *   pnpm vibe verificar <video> [--formato 9:16] [--json] [--folha pasta]
@@ -59,6 +60,17 @@ export const COMANDOS = {
 		},
 	},
 	roteiro: { descricao: 'Reel a partir de um roteiro: voz, legenda alinhada ao texto, uma cena por frase, render e masterização.', executar: (args) => delegar('pipeline_script_to_video.mjs', args) },
+	estilos: {
+		descricao: 'Lista os pacotes de estilo (cores, legenda, clima) para usar com --estilo no comando roteiro.',
+		executar: async (_args, json) => {
+			process.removeAllListeners('warning');
+			const { listarEstilos } = await import('./estilos.mjs');
+			const lista = listarEstilos();
+			if (json) console.log(JSON.stringify(lista, null, 2));
+			else for (const e of lista) console.log(`${e.id.padEnd(22)} ${e.nome} — ${e.clima}`);
+			return 0;
+		},
+	},
 	'reel-gravacao': { descricao: 'Reel com a SUA gravação: corta silêncio, legenda Hormozi, masteriza e verifica (--roteiro usa o seu texto na legenda).', executar: (args) => delegar('reel_gravacao.mjs', args) },
 	'cortar-silencio': { descricao: 'Remove pausas longas de uma gravação (use --simular para só ver o que seria cortado).', executar: (args) => delegar('cortar_silencio.mjs', args) },
 	verificar: { descricao: 'Portão de qualidade do vídeo pronto: formato, fps, -14 LUFS, pico, imagem parada.', executar: (args) => delegar('verificar_video.mjs', args) },
@@ -83,11 +95,13 @@ function imprimirAjuda() {
 
 async function main() {
 	const r = rotear(process.argv.slice(2));
+	// process.exitCode (não process.exit): sair no meio de uma escrita em pipe trunca a saída (Linux) ou derruba o libuv (Windows).
 	if (r.comando === 'desconhecido') {
 		console.error(`Comando desconhecido: ${r.pedido}. Rode: pnpm vibe ajuda`);
-		process.exit(2);
+		process.exitCode = 2;
+		return;
 	}
-	process.exit(await COMANDOS[r.comando].executar(r.args, r.json));
+	process.exitCode = await COMANDOS[r.comando].executar(r.args, r.json);
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) main();

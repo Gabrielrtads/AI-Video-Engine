@@ -23,7 +23,8 @@ export type HormoziVariant =
   | 'red-alert'
   | 'cyber-cyan'
   | 'dark-glass'
-  | 'white-punch';
+  | 'white-punch'
+  | 'ink-punch';
 
 /**
  * Dicionário Semântico Canônico de Emojis Contextuais (PT-BR e EN)

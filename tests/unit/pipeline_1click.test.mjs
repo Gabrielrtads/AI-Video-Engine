@@ -173,7 +173,10 @@ describe('Vibe Design Studio — 1-Click Script-to-Video Pipeline Unit Tests', (
       const componentsEd = payloadEditorial.clips
         .filter((c) => c.kind === 'graphics')
         .map((c) => c.componentName);
-      assert.ok(componentsEd.includes('AppleKineticCard3D'), 'Editorial deve ter AppleKineticCard3D');
+      const heroEd = payloadEditorial.clips.find((c) => c.trackId === 'T_HERO');
+      assert.equal(heroEd.componentName, 'FraseDestaque', 'Editorial abre com a frase em cartão');
+      assert.equal(heroEd.props.variant, 'cartao');
+      assert.equal(heroEd.props.texto, 'Elegância e minimalismo suíço');
       assert.ok(componentsEd.includes('HormoziKineticCaption'), 'Editorial deve ter legendas');
 
       const payloadKeynote = build1ClickTimelinePayload({
@@ -187,7 +190,10 @@ describe('Vibe Design Studio — 1-Click Script-to-Video Pipeline Unit Tests', (
       const componentsKey = payloadKeynote.clips
         .filter((c) => c.kind === 'graphics')
         .map((c) => c.componentName);
-      assert.ok(componentsKey.includes('AppleKineticCard3D'), 'Keynote deve ter AppleKineticCard3D');
+      const heroKey = payloadKeynote.clips.find((c) => c.trackId === 'T_HERO');
+      assert.equal(heroKey.componentName, 'FraseDestaque', 'Keynote abre com a frase em cartão');
+      assert.equal(heroKey.props.variant, 'cartao');
+      assert.ok(componentsKey.includes('HormoziKineticCaption'), 'Keynote deve ter legendas');
     });
   });
 });

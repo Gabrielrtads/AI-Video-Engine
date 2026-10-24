@@ -4,6 +4,9 @@
  */
 
 export const VIBE_CANONICAL_COMPONENTS = [
+  'FundoEstilo',
+  'FraseDestaque',
+  'NumeroDestaque',
   'Smartphone3DMockup',
   'VectorHUDOverlay',
   'AppleKineticCard3D',
@@ -48,6 +51,24 @@ export interface ComponentMetadata {
 }
 
 export const VIBE_COMPONENT_METADATA: Record<VibeCanonicalComponentName, ComponentMetadata> = {
+  FundoEstilo: {
+    name: 'FundoEstilo',
+    category: 'primitive',
+    description: 'Fundo do pacote de estilo: gradiente suave com vinheta (props: fundo, fundo2).',
+    defaultProps: { fundo: '#05070D', fundo2: '#0B1220' },
+  },
+  FraseDestaque: {
+    name: 'FraseDestaque',
+    category: 'primitive',
+    description: 'Frase da cena em tipografia grande, palavra por palavra (variant: afirmacao, pergunta, cta ou cartao).',
+    defaultProps: { texto: '', variant: 'afirmacao', corTexto: '#F8FAFC', corAcento: '#38BDF8' },
+  },
+  NumeroDestaque: {
+    name: 'NumeroDestaque',
+    category: 'primitive',
+    description: 'Número que conta até o valor, com prefixo, sufixo e rótulo (ex.: 70%, R$ 127,97, 3x).',
+    defaultProps: { valor: 0, decimais: 0, prefixo: '', sufixo: '', rotulo: '', corTexto: '#F8FAFC', corAcento: '#38BDF8' },
+  },
   Smartphone3DMockup: {
     name: 'Smartphone3DMockup',
     category: 'primitive',

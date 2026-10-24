@@ -244,7 +244,11 @@ npm run render:mastered
 
 ```bash
 # One sentence = one scene. Captions show YOUR script text (Whisper only lends the timing).
-node scripts/pipeline_script_to_video.mjs "Your script here. Second sentence." --vertical --voz thalita --saida out/videos/meu_video.mp4
+# Each sentence becomes a scene whose visual follows its content: a question gets a big hook,
+# a number counts up, the last sentence with an action verb becomes the call to action; no two
+# neighbouring scenes repeat. The whole video wears one style pack (colors, caption look, HUD).
+pnpm vibe estilos                      # lists the style packs (escuro-tech, editorial-creme, luxo-titanio, ...)
+pnpm vibe roteiro "Your script here. Second sentence?" --vertical --voz thalita --estilo editorial-creme --saida out/videos/meu_video.mp4
 
 # Let an agent pick the visual of specific scenes (components from src/timeline/componentCatalog.ts)
 echo '[{"cena": 2, "componente": "OrbitalPlanet3D"}]' > plano.json

@@ -49,6 +49,20 @@ asyncio.run(main())
 	};
 }
 
+/** Repete uma operação que depende da rede (Edge-TTS) antes de desistir; devolve o último resultado. */
+export function executarComTentativas(operacao, { tentativas = 3, esperaMs = 1500, aoRepetir = () => {} } = {}) {
+	let resultado;
+	for (let n = 1; n <= tentativas; n++) {
+		resultado = operacao();
+		if (resultado && resultado.status === 0) return resultado;
+		if (n < tentativas) {
+			aoRepetir(n + 1);
+			if (esperaMs > 0) Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, esperaMs);
+		}
+	}
+	return resultado;
+}
+
 export function narrarTexto(text, outputFile = 'public/narracao.mp3', options = {}) {
 	const {
 		voice = 'antonio',
@@ -78,10 +92,10 @@ export function narrarTexto(text, outputFile = 'public/narracao.mp3', options = 
 	}
 
 	console.log(`[Narrar] Gerando voz com Edge-TTS (${cmd.voice}, rate: ${rate})...`);
-	const result = spawnSync(cmd.command, cmd.args, {
-		stdio: 'inherit',
-		windowsHide: true,
-	});
+	const result = executarComTentativas(
+		() => spawnSync(cmd.command, cmd.args, { stdio: 'inherit', windowsHide: true }),
+		{ tentativas: 3, esperaMs: 1500, aoRepetir: (n) => console.log(`[Narrar] A voz falhou (rede?); tentativa ${n} de 3...`) },
+	);
 
 	if (result.status !== 0) {
 		throw new Error(`Falha ao gerar narração com código ${result.status}`);

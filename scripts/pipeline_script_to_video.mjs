@@ -19,6 +19,7 @@
  *   --voz antonio|francisca|thalita   (default: antonio)
  *   --rate +0%                        (default: +0%)
  *   --saida out/meu_video.mp4         (default: out/video_1click_mastered.mp4)
+ *   --estilo <id>                     (opcional: pacote de estilo; veja `pnpm vibe estilos`)
  *   --cenas plano.json                (opcional: o agente escolhe o visual de cenas específicas; ver src/timeline/scenePlan.ts)
  *   --sync-dir <pasta>                (opcional: copia o vídeo final para esta pasta; ou defina VIBE_SYNC_DIR)
  */
@@ -36,6 +37,8 @@ import {
   resolveAspectRatioMetrics,
 } from '../src/timeline/pipeline1ClickMath.ts';
 import { alignScriptToTimestamps } from '../src/timeline/scriptAlignment.ts';
+import { carregarEstilo } from './estilos.mjs';
+import { verificarVideo } from './verificar_video.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -51,7 +54,11 @@ export async function runScriptToVideoPipeline(text, options = {}) {
     outputFile = 'out/video_1click_mastered.mp4',
     syncDir = process.env.VIBE_SYNC_DIR || null,
     cenasFile = null,
+    estiloId = null,
   } = options;
+
+  // Pacote de estilo (cores, legenda, HUD); recusa id inexistente antes de gastar tempo com voz e render
+  const estilo = estiloId ? carregarEstilo(estiloId) : undefined;
 
   // Plano de cenas do agente: [{ "cena": 2, "componente": "OrbitalPlanet3D", "props": {...} }]
   const planoDeCenas = cenasFile ? JSON.parse(fs.readFileSync(path.resolve(cenasFile), 'utf8')) : undefined;
@@ -151,6 +158,7 @@ export async function runScriptToVideoPipeline(text, options = {}) {
     fps: 30,
     showEmojis: true,
     planoDeCenas,
+    estilo,
   });
 
   const timelineJsonPath = path.join(tempDir, 'timeline_1click.json');
@@ -211,6 +219,15 @@ export async function runScriptToVideoPipeline(text, options = {}) {
     }
   }
 
+  // Portão de qualidade: formato, 30 fps, -14 LUFS, pico, imagem parada e variedade entre as cenas
+  try {
+    const v = verificarVideo(resolvedOut, { formato: metrics.standardRatio, timeline: timelineJsonPath });
+    console.log(`\n${v.ok ? '✅ Verificação aprovada' : '⚠️ Verificação reprovou'}:`);
+    for (const c of v.checagens) console.log(`   ${c.ok ? '✓' : '✗'} ${c.id}: ${c.mensagem}`);
+  } catch (vErr) {
+    console.warn(`[Aviso verificação] ${vErr.message}`);
+  }
+
   // Higiene de RAM pós-render
   try {
     const cleanScript = path.resolve(PROJECT_ROOT, 'scripts/automation/desligar_motor_video.py');
@@ -269,6 +286,7 @@ Opções:
   let outputFile = 'out/video_1click_mastered.mp4';
   let syncDir = process.env.VIBE_SYNC_DIR || null;
   let cenasFile = null;
+  let estiloId = null;
 
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
@@ -294,6 +312,8 @@ Opções:
       aspect = '1:1';
     } else if (arg === '--saida' && args[i + 1]) {
       outputFile = args[++i];
+    } else if (arg === '--estilo' && args[i + 1]) {
+      estiloId = args[++i];
     } else if (arg === '--cenas' && args[i + 1]) {
       cenasFile = args[++i];
     } else if (arg === '--sync-dir' && args[i + 1]) {
@@ -323,6 +343,7 @@ Opções:
     outputFile,
     syncDir,
     cenasFile,
+    estiloId,
   }).catch((err) => {
     console.error(`\n❌ [Erro Pipeline 1-Click]`, err.message);
     process.exit(1);

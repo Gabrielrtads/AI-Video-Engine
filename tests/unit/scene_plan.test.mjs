@@ -67,7 +67,14 @@ test('timeline 1-click usa as cenas do roteiro e nenhum texto de demonstração'
   const payload = build1ClickTimelinePayload({ text: texto, audioDurationSeconds: 5, words: palavras, preset: 'hormozi', aspectRatio: '9:16' });
   const herois = payload.clips.filter((c) => c.trackId === 'T_HERO');
   assert.equal(herois.length, 3, 'um visual por frase');
-  assert.deepEqual(herois.map((c) => c.props.title), ['Você perde clientes', 'Barbearia cheia é sistema', 'Comece hoje']);
+  // Conteúdo manda: a 1ª frase usa a assinatura do preset (celular com a frase), a última é chamada para ação
+  assert.equal(herois[0].componentName, 'Smartphone3DMockup');
+  assert.equal(herois[0].props.title, 'Você perde clientes');
+  assert.equal(herois[2].componentName, 'FraseDestaque');
+  assert.equal(herois[2].props.variant, 'cta');
+  assert.equal(herois[2].props.texto, 'Comece hoje');
+  assert.notEqual(herois[1].componentName, herois[0].componentName, 'cenas seguidas não repetem o visual');
+  assert.ok(payload.clips.some((c) => c.componentName === 'FundoEstilo'), 'o fundo do estilo precisa estar na timeline');
   const dump = JSON.stringify(payload);
   assert.ok(!dump.includes('Vibe Studio Mobile'), 'texto de demonstração vazou');
   assert.ok(!dump.includes('vibe.studio/preview'), 'url de demonstração vazou');

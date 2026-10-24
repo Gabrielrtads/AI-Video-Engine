@@ -10,6 +10,9 @@ import {
   RetentionProgressBar,
   HormoziPunchZoom,
   OrbitalPlanet3D,
+  FundoEstilo,
+  FraseDestaque,
+  NumeroDestaque,
   VoxPaperStage,
   NewspaperCutout,
   VoxHighlighter,
@@ -43,6 +46,11 @@ export const VIBE_COMPONENT_REGISTRY: Record<string, React.FC<any>> = {
   InteractiveMacCursor,
   AudioVisualizerBars,
   OrbitalPlanet3D,
+
+  // Kit roteiro manda (fundo do estilo, frase e número em destaque)
+  FundoEstilo,
+  FraseDestaque,
+  NumeroDestaque,
 
   // Técnicas de Retenção & Tipografia Hormozi
   HormoziKineticCaption,

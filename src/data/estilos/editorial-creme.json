@@ -1,0 +1,13 @@
+{
+  "id": "editorial-creme",
+  "nome": "Editorial creme",
+  "clima": "papel creme de revista, tinta preta e um vermelho sobrio",
+  "fundo": "#F4EFE6",
+  "fundo2": "#E8E0D0",
+  "texto": "#1C1917",
+  "acento": "#B91C1C",
+  "captionVariant": "ink-punch",
+  "hud": false,
+  "planeta": "saturn-gold",
+  "cartao": "white-frosted"
+}
