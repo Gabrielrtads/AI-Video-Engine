@@ -8,11 +8,14 @@
  * Checagens: formato (resolução), fps, áudio presente, loudness (-14 LUFS ±1), pico (≤ -1 dBFS) e
  * quadros congelados (nenhum trecho parado por mais de 1,5 s). Sai com código 1 se algo reprovar.
  * `--folha <pasta>` também grava uma folha de contato (6 quadros) para você olhar.
+ * `--timeline <arquivo.json>` (a timeline do render) liga a checagem de variedade entre as cenas.
  */
 import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
+
+import { avaliarVariedade } from '../src/timeline/gosto.ts';
 
 export const FORMATOS = {
 	'9:16': { largura: 1080, altura: 1920 },
@@ -44,8 +47,16 @@ export function parseFreezeDetect(stderr, duracaoTotal = 0) {
 	return { trechos: duracoes.length, maiorSegundos: duracoes.length ? Math.max(...duracoes) : 0, totalSegundos: Math.round(total * 1000) / 1000 };
 }
 
-/** Aplica as regras às medidas. `medidas` vem de medirVideo(). */
-export function avaliar(medidas, { formato = '9:16' } = {}) {
+/** Chaves de variedade dos visuais de cena (faixa T_HERO, em ordem): componente, mais a variante da FraseDestaque. */
+export function chavesDeVariedade(clips) {
+	return clips
+		.filter((c) => c.trackId === 'T_HERO')
+		.sort((a, b) => a.startFrame - b.startFrame)
+		.map((c) => (c.componentName === 'FraseDestaque' ? `FraseDestaque:${c.props?.variant}` : c.componentName));
+}
+
+/** Aplica as regras às medidas. `medidas` vem de medirVideo(). `chavesVisuais` (opcional) liga a checagem de variedade. */
+export function avaliar(medidas, { formato = '9:16', chavesVisuais = null } = {}) {
 	const esperado = FORMATOS[formato];
 	if (!esperado) throw new Error(`Formato desconhecido: ${formato} (use ${Object.keys(FORMATOS).join(', ')})`);
 	const checagens = [];
@@ -68,6 +79,11 @@ export function avaliar(medidas, { formato = '9:16' } = {}) {
 
 	const parado = medidas.congelado.maiorSegundos > LIMITES.congeladoMaxSegundos;
 	add('congelado', !parado, medidas.congelado.maiorSegundos, `<= ${LIMITES.congeladoMaxSegundos} s parado`, parado ? `Imagem parada por ${medidas.congelado.maiorSegundos}s seguidos (${medidas.congelado.trechos} trecho(s)): falta movimento.` : 'Sem trechos congelados longos.');
+
+	if (chavesVisuais) {
+		const v = avaliarVariedade(chavesVisuais);
+		add('variedade', v.ok, v.distintos, 'sem repetir em sequência e ≥ 3 visuais com 4+ cenas', v.ok ? `${v.distintos} visual(is) distinto(s) em ${chavesVisuais.length} cena(s).` : `Visuais repetem ou faltam: ${v.problemas.join('; ')}.`);
+	}
 
 	return { ok: checagens.every((c) => c.ok), formato, checagens };
 }
@@ -106,7 +122,12 @@ export function medirVideo(arquivo) {
 export function verificarVideo(arquivo, opcoes = {}) {
 	if (!fs.existsSync(arquivo)) throw new Error(`Vídeo não encontrado: ${arquivo}`);
 	const medidas = medirVideo(arquivo);
-	return { arquivo: path.resolve(arquivo), medidas, ...avaliar(medidas, opcoes) };
+	let chavesVisuais = opcoes.chavesVisuais ?? null;
+	if (!chavesVisuais && opcoes.timeline) {
+		const bruto = JSON.parse(fs.readFileSync(opcoes.timeline, 'utf8'));
+		chavesVisuais = chavesDeVariedade((bruto.timeline ?? bruto).clips);
+	}
+	return { arquivo: path.resolve(arquivo), medidas, ...avaliar(medidas, { ...opcoes, chavesVisuais }) };
 }
 
 /** Folha de contato com 6 quadros (um por vez, -vframes 1) para olhar o resultado. */
@@ -137,13 +158,14 @@ function main() {
 	if (json) args.splice(args.indexOf('--json'), 1);
 	const formato = opt('--formato', '9:16');
 	const pastaFolha = opt('--folha', null);
+	const timeline = opt('--timeline', null);
 	const [video] = args;
 	if (!video) {
 		console.error('Uso: node scripts/verificar_video.mjs <video> [--formato 9:16|4:5|16:9|1:1] [--json] [--folha pasta]');
 		process.exit(2);
 	}
 	try {
-		const r = verificarVideo(video, { formato });
+		const r = verificarVideo(video, { formato, timeline });
 		if (pastaFolha) r.folha = gerarFolha(video, pastaFolha, r.medidas.duracao);
 		if (json) console.log(JSON.stringify(r, null, 2));
 		else {

@@ -1,0 +1,13 @@
+{
+  "id": "cash-verde",
+  "nome": "Cash verde",
+  "clima": "verde profundo de dinheiro e resultado, energia de venda",
+  "fundo": "#04120B",
+  "fundo2": "#0A1F14",
+  "texto": "#ECFDF5",
+  "acento": "#22C55E",
+  "captionVariant": "cash-green",
+  "hud": false,
+  "planeta": "neon-emerald",
+  "cartao": "dark-glass"
+}

@@ -1,0 +1,13 @@
+{
+  "id": "limpo-claro",
+  "nome": "Limpo claro",
+  "clima": "branco arejado, tipografia grande e um azul confiavel",
+  "fundo": "#FAFAFA",
+  "fundo2": "#F0F2F5",
+  "texto": "#0A0A0A",
+  "acento": "#2563EB",
+  "captionVariant": "ink-punch",
+  "hud": false,
+  "planeta": "cyber-blue",
+  "cartao": "white-frosted"
+}

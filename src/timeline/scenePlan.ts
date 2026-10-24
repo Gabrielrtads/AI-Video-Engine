@@ -8,14 +8,14 @@
  * Sem dependência de Remotion: roda no Node puro (testes) e no pipeline 1-click.
  */
 import { isCanonicalComponent } from './componentCatalog.ts';
+import { escolherReceitas, receitaParaVisual } from './sceneVisuals.ts';
+import type { EstiloVisual } from './sceneVisuals.ts';
+import { keyPhrase } from './textoCena.ts';
+import type { Scene } from './textoCena.ts';
 import type { TimedWord } from './scriptAlignment.ts';
 
-export interface Scene {
-	indice: number; // 1, 2, 3...
-	texto: string;
-	startFrame: number;
-	durationInFrames: number;
-}
+export { keyPhrase };
+export type { Scene };
 
 export interface ScenePlanItem {
 	cena: number; // 1-based
@@ -28,6 +28,8 @@ export interface SceneSpec extends Scene {
 	props: Record<string, unknown>;
 	/** true quando é o visual padrão do preset (o plano do agente não mexeu nessa cena). */
 	padrao: boolean;
+	/** Chave de variedade (componente, mais a variante quando o mesmo componente tem várias). */
+	chave: string;
 }
 
 const FIM_DE_FRASE = /[.!?…]["'”’)\]]*$/;
@@ -74,25 +76,8 @@ export function planScenes(words: TimedWord[], fps: number, totalFrames: number,
 	return brutas.map((b, i) => ({ indice: i + 1, texto: b.texto, startFrame: b.startFrame, durationInFrames: duracao(brutas, i) }));
 }
 
-/** Frase-chave curta da cena (até 5 palavras, sem pontuação final) para títulos de cartões. */
-export function keyPhrase(texto: string, maxPalavras = 5): string {
-	const palavras = texto.trim().split(/\s+/).slice(0, maxPalavras).join(' ');
-	return palavras.replace(/[.!?…,;:]+$/u, '');
-}
-
-/** Visual padrão de cada cena: nenhum texto de demonstração, só o conteúdo do roteiro. */
-export function defaultSceneVisual(preset: string, scene: Scene): { componentName: string; props: Record<string, unknown> } {
-	if (preset === 'editorial' || preset === 'keynote') {
-		return { componentName: 'AppleKineticCard3D', props: { title: keyPhrase(scene.texto), badge: '', variant: 'dark-glass' } };
-	}
-	if (preset === 'hormozi') {
-		return { componentName: 'Smartphone3DMockup', props: { title: keyPhrase(scene.texto), description: '', urlBadge: '' } };
-	}
-	return { componentName: 'AnimatedBezierCurve', props: { strokeColor: '#38BDF8', fillGradient: true } };
-}
-
 /** Aplica o plano do agente por cima do visual padrão; recusa cena inexistente e componente inventado. */
-export function resolveScenePlan(scenes: Scene[], plano: ScenePlanItem[] = [], preset = 'hormozi'): SceneSpec[] {
+export function resolveScenePlan(scenes: Scene[], plano: ScenePlanItem[] = [], preset = 'hormozi', estilo?: Partial<EstiloVisual>): SceneSpec[] {
 	const porCena = new Map<number, ScenePlanItem>();
 	for (const item of plano) {
 		if (!Number.isInteger(item.cena) || item.cena < 1 || item.cena > scenes.length) {
@@ -103,9 +88,10 @@ export function resolveScenePlan(scenes: Scene[], plano: ScenePlanItem[] = [], p
 		}
 		porCena.set(item.cena, item);
 	}
-	return scenes.map((scene) => {
+	const receitas = escolherReceitas(scenes, preset);
+	return scenes.map((scene, i) => {
 		const escolhido = porCena.get(scene.indice);
-		if (escolhido) return { ...scene, componentName: escolhido.componente, props: escolhido.props ?? {}, padrao: false };
-		return { ...scene, ...defaultSceneVisual(preset, scene), padrao: true };
+		if (escolhido) return { ...scene, componentName: escolhido.componente, props: escolhido.props ?? {}, padrao: false, chave: escolhido.componente };
+		return { ...scene, ...receitaParaVisual(receitas[i], scene, estilo), padrao: true };
 	});
 }

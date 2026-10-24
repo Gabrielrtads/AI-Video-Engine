@@ -85,6 +85,14 @@ const VARIANT_CONFIGS: Record<
     inactiveText: 'rgba(255, 255, 255, 0.65)',
     underlineColor: '#FFFFFF',
   },
+  // Para fundos claros: palavra ativa em caixa preta, resto em tinta escura (branco sobre creme não lê bem)
+  'ink-punch': {
+    activeText: '#FFFFFF',
+    activeBg: '#111111',
+    activeGlow: 'rgba(17, 17, 17, 0.35)',
+    inactiveText: '#111111',
+    underlineColor: '#111111',
+  },
   'white-punch': {
     activeText: '#FFE500',
     activeBg: 'transparent',

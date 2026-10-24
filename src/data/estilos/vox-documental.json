@@ -1,0 +1,13 @@
+{
+  "id": "vox-documental",
+  "nome": "Vox documental",
+  "clima": "papel de jornal, marca-texto e carimbo vermelho",
+  "fundo": "#E9E4D8",
+  "fundo2": "#DDD6C4",
+  "texto": "#111111",
+  "acento": "#C2310F",
+  "captionVariant": "ink-punch",
+  "hud": false,
+  "planeta": "mars-crimson",
+  "cartao": "white-frosted"
+}

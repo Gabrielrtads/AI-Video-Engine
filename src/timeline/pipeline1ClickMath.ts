@@ -7,6 +7,7 @@
 import type { WordItem } from './hormoziMath.ts';
 import { planScenes, resolveScenePlan } from './scenePlan.ts';
 import type { ScenePlanItem } from './scenePlan.ts';
+import type { EstiloPacote } from './gosto.ts';
 import type { TimelineState, TrackItem, ClipItem } from './types.ts';
 
 export type AspectRatio =
@@ -50,7 +51,24 @@ export interface Pipeline1ClickOptions {
   showEmojis?: boolean;
   /** Plano do agente: escolhe o visual de cenas específicas (ver scenePlan.ts). */
   planoDeCenas?: ScenePlanItem[];
+  /** Pacote de estilo (cores, legenda, HUD). Sem ele, usa o estilo padrão escuro-tech. */
+  estilo?: EstiloPacote;
 }
+
+/** Estilo padrão: o mesmo de src/data/estilos/escuro-tech.json. */
+export const ESTILO_PADRAO: EstiloPacote = {
+  id: 'escuro-tech',
+  nome: 'Escuro tech',
+  clima: 'terminal azul sobre quase preto',
+  fundo: '#05070D',
+  fundo2: '#0B1220',
+  texto: '#F8FAFC',
+  acento: '#38BDF8',
+  captionVariant: 'cyber-cyan',
+  hud: true,
+  planeta: 'cyber-blue',
+  cartao: 'dark-glass',
+};
 
 /**
  * Resolve as dimensões de tela, safe zones e escalas visuais para qualquer proporção de vídeo
@@ -279,10 +297,14 @@ export function build1ClickTimelinePayload(options: Pipeline1ClickOptions): Time
     audioDurationSeconds,
     audioFile = 'public/narracao.mp3',
     preset = 'hormozi',
-    variant = 'classic-yellow',
+    variant: variantOpcao = 'classic-yellow',
     fps = 30,
     showEmojis = true,
   } = options;
+
+  // Com pacote de estilo, a legenda e as cores vêm dele; sem pacote, vale a variante pedida (como antes)
+  const estilo = options.estilo ?? ESTILO_PADRAO;
+  const variant = options.estilo ? estilo.captionVariant : variantOpcao;
 
   // Resolve dimensões e métricas de diagramação
   const metrics = resolveAspectRatioMetrics(options.aspectRatio, options.width, options.height);
@@ -298,6 +320,7 @@ export function build1ClickTimelinePayload(options: Pipeline1ClickOptions): Time
   // Estrutura de Faixas (Tracks)
   const tracks: TrackItem[] = [
     { id: 'T_AUDIO', kind: 'audio', name: 'Voiceover Audio', volume: 1.0, zIndex: 0 },
+    { id: 'T_FUNDO', kind: 'graphics', name: 'Fundo do estilo', zIndex: 2 },
     { id: 'T_BG', kind: 'graphics', name: 'Background FX', zIndex: 10 },
     { id: 'T_HERO', kind: 'graphics', name: 'Hero Motion Element', zIndex: 20 },
     { id: 'T_RETENTION', kind: 'graphics', name: 'Retention Progress', zIndex: 80 },
@@ -317,21 +340,33 @@ export function build1ClickTimelinePayload(options: Pipeline1ClickOptions): Time
     volume: 1.0,
   });
 
+  clips.push({
+    id: 'clip_fundo',
+    trackId: 'T_FUNDO',
+    kind: 'graphics',
+    componentName: 'FundoEstilo',
+    startFrame: 0,
+    durationInFrames: totalFrames,
+    props: { fundo: estilo.fundo, fundo2: estilo.fundo2 },
+  });
+
   if (preset === 'hormozi') {
     // 2. HUD Sci-fi de Fundo (adapta dinamicamente ao aspecto)
-    clips.push({
-      id: 'clip_bg_hud',
-      trackId: 'T_BG',
-      kind: 'graphics',
-      componentName: 'VectorHUDOverlay',
-      startFrame: 0,
-      durationInFrames: totalFrames,
-      props: {
-        preset: 'cyber',
-        accentColor: '#38BDF8',
-        showGrid: true,
-      },
-    });
+    if (estilo.hud) {
+      clips.push({
+        id: 'clip_bg_hud',
+        trackId: 'T_BG',
+        kind: 'graphics',
+        componentName: 'VectorHUDOverlay',
+        startFrame: 0,
+        durationInFrames: totalFrames,
+        props: {
+          preset: 'cyber',
+          accentColor: estilo.acento,
+          showGrid: true,
+        },
+      });
+    }
 
     // 3. Mockup 3D Central com dimensões proporcionais
     // 4. Barra de Retenção Contínua no Topo
@@ -345,7 +380,7 @@ export function build1ClickTimelinePayload(options: Pipeline1ClickOptions): Time
       props: {
         position: 'top',
         height: metrics.standardRatio === '16:9' ? 6 : 10,
-        gradient: ['#FFE500', '#FF003C'],
+        gradient: options.estilo ? [estilo.acento, estilo.texto] : ['#FFE500', '#FF003C'],
         showGlow: true,
       },
     });
@@ -396,7 +431,7 @@ export function build1ClickTimelinePayload(options: Pipeline1ClickOptions): Time
       durationInFrames: totalFrames,
       props: {
         words,
-        variant: 'dark-glass',
+        variant: options.estilo ? estilo.captionVariant : 'dark-glass',
         highlightStyle: 'pill',
         motionIntensity: 'subtle',
         windowSize: 2,
@@ -432,7 +467,7 @@ export function build1ClickTimelinePayload(options: Pipeline1ClickOptions): Time
       durationInFrames: totalFrames,
       props: {
         words,
-        variant: 'cyber-cyan',
+        variant: options.estilo ? estilo.captionVariant : 'cyber-cyan',
         highlightStyle: 'text-only',
         motionIntensity: 'standard',
         windowSize: 1,
@@ -446,10 +481,12 @@ export function build1ClickTimelinePayload(options: Pipeline1ClickOptions): Time
 
   // Visual de cada frase do roteiro (nenhum texto de demonstração): padrão do preset ou o plano do agente
   const cenas = planScenes(words, fps, totalFrames);
-  for (const spec of resolveScenePlan(cenas, options.planoDeCenas, preset)) {
+  for (const spec of resolveScenePlan(cenas, options.planoDeCenas, preset, estilo)) {
     const geometria: Record<string, unknown> = {};
     if (spec.padrao && spec.componentName === 'Smartphone3DMockup') Object.assign(geometria, { width: metrics.mockupWidth, height: metrics.mockupHeight, theme: 'titanium', tiltIntensity: 0.5 });
     if (spec.padrao && spec.componentName === 'AppleKineticCard3D') Object.assign(geometria, { width: metrics.cardWidth, height: metrics.cardHeight });
+    if (spec.padrao && spec.componentName === 'OrbitalPlanet3D') Object.assign(geometria, { size: Math.round(Math.min(metrics.width, metrics.height) * 0.4) });
+    if (spec.padrao && spec.componentName === 'AnimatedBezierCurve') Object.assign(geometria, { width: Math.round(metrics.width * 0.84), height: Math.round(metrics.height * 0.3) });
     clips.push({
       id: `clip_hero_${spec.indice}`,
       trackId: 'T_HERO',

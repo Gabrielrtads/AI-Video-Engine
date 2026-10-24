@@ -21,6 +21,10 @@ export type { InteractiveMacCursorProps, MacCursorWaypoint } from './Interactive
 export { AudioVisualizerBars } from './AudioVisualizerBars';
 export type { AudioVisualizerBarsProps } from './AudioVisualizerBars';
 
+// Kit "roteiro manda": fundo do estilo, frase e número em destaque
+export { FundoEstilo, FraseDestaque, NumeroDestaque } from './roteiro/RoteiroKit';
+export type { FundoEstiloProps, FraseDestaqueProps, NumeroDestaqueProps } from './roteiro/RoteiroKit';
+
 // Elementos Planetários e Espaciais 3D
 export { OrbitalPlanet3D } from './OrbitalPlanet3D';
 export type { OrbitalPlanet3DProps } from './OrbitalPlanet3D';
