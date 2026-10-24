@@ -1,102 +1,77 @@
 ---
 name: vibe-design-studio
-description: Headless Motion Studio & Self-Evolving Video Knowledge Engine for AI Agents (Antigravity, Claude Code, Cursor, Codex). Combines Remotion, Spring Physics, Word-by-Word Whisper sync, Static Anti-Slop Linter, Automated Frame Review (Contact Sheet + Scorecard >= 8/10), and a Reference Absorption Learning Loop.
+description: Headless motion studio for AI agents (Remotion). One command, `pnpm vibe`, produces reels from a script, reels from the user's own recording (silence cut, Hormozi captions, -14 LUFS), static 4:5 carousels as PNG and narration-free motion graphics, and refuses to call a result done until it is measured. Use it when the user asks for a reel, TikTok, Short, carousel, motion graphics or video captions.
 ---
 
-# 🎨🎬 Vibe Design Studio: Headless Motion & Creative Studio for AI Agents
+# Vibe Design Studio, for agents
 
-Transform voice narrations and briefings into agency-tier kinetic motion videos without "AI Slop".
+The studio is a **taste prosthesis**: good taste lives in the code (style packs, scene recipes, quality gates), not in
+the model that calls it. You do not design from scratch. You **choose from closed catalogs and fill in text and
+numbers**; the studio does layout, timing, colors, audio and checks. A small model and a large model get the same floor.
 
-## 🛑 What is "AI Slop" in Video?
+## Rules (never break)
 
-When instructed to generate video code (e.g. Remotion), LLMs naturally default to amateur patterns:
-1. Centered uppercase text (`UPPERCASE`) with no spatial hierarchy.
-2. Generic linear easing (`opacity: 0 -> 1`) with zero physical inertia.
-3. Harsh audio foley (sound effects > 0.45 volume drowning the speaker).
-4. Generic purple/blue background gradients with zero noise or texture.
-5. Blind declarations of "done" without visual inspection.
+1. Do not write TSX or timeline JSON by hand. Do not invent component names, style names, files or props: ask the
+   studio (`pnpm vibe componentes`, `pnpm vibe estilos`, `pnpm vibe motion modelos`).
+2. Never say it is done from reading code. Done = `pnpm vibe verificar` approved **and** you opened the contact sheet
+   (the `folha` PNG every command writes) and it looks right: text legible, nothing cropped, scenes differ.
+3. A rejected spec is not an obstacle: the error message says what to change. Change the spec, not the studio.
+4. Reply to the user in their language. Keep the briefing short: format, who it is for, the text.
 
-**Vibe Design Studio kills this through deterministic code constraints, automated visual feedback loops, and continuous reference learning.**
+## Step 0: environment (once)
 
----
+`pnpm install`, then `pnpm vibe doctor`. Fix everything it shows in red before producing (it says what to install).
+`pnpm vibe pastas` creates the local media folders (media never goes to Git).
 
-## 🪜 Architectural Philosophy: Floor, Not a Ceiling
+## Quick path: which command?
 
-Vibe Design Studio is designed as a **guaranteed floor**, never an artistic ceiling:
-- **For Economical Models (Gemini Flash, Haiku):** Guarantees pre-validated templates, safe zones (4:5 and 9:16), two-pass loudness mastering (-14 LUFS +/-0.5, peak at -1 dBTP or lower), and anti-slop checks so the output never looks amateur.
-- **For Creative Powerhouses (Claude Opus 5.5 MAX / Sonnet):** Acts as an unconstrained launchpad. Creative models are encouraged to bypass basic templates using route **`[2] Criar do Zero`**, orchestrating bespoke 3D perspectives, `@react-three/fiber` scenes, GLSL shaders, and nuanced motion typography.
+| The user wants | Command |
+|---|---|
+| A reel/TikTok/Short **from a script** (the studio makes the voice) | `pnpm vibe roteiro "script text" --vertical --voz thalita --estilo escuro-tech` |
+| A reel from **their own recording** (cuts silence, captions, -14 LUFS) | `pnpm vibe reel-gravacao take.mp4 --roteiro "what they said"` |
+| A **static carousel** (PNG for the feed, 4:5) | `pnpm vibe carrossel spec.json --estilo-visual editorial-creme` |
+| **Motion graphics without narration** (title, brand card, numbers) | `pnpm vibe motion exemplo <modelo> > spec.json`, edit texts, `pnpm vibe motion spec.json` |
+| Only **cut the silence** of a recording | `pnpm vibe cortar-silencio in.mp4 out.mp4` (add `--simular` to preview) |
+| **Check** any finished video | `pnpm vibe verificar out/videos/x.mp4 --formato 9:16 --folha out/folha` (add `--sem-audio` for motion) |
+| See styles, components, models | `pnpm vibe estilos`, `pnpm vibe componentes`, `pnpm vibe motion modelos` |
 
----
+Run `pnpm vibe ajuda` for the list. Every command writes under `out/` and prints the result and the contact sheet path.
 
-## 🏗️ Architecture
+### Reel from a script
+- Style: pick one id from `pnpm vibe estilos` (dark tech, cream editorial, luxury titanium, ...). It sets colors, captions and mood for the whole video.
+- Scenes: by default each sentence becomes one scene and the visual follows its content (a number becomes a counter, a question a hook, the last call to action a CTA card; neighbors never repeat). To direct a scene yourself, pass `--cenas plan.json` (see `src/timeline/scenePlan.ts`).
+- Audio is mastered to -14 LUFS in two passes; do not touch levels.
 
-```
-Vibe Design Studio/
-├── .github/
-│   └── ISSUE_TEMPLATE/
-│       └── visual-reference.yml       # Community reference submission form
-├── schemas/
-│   └── reference-manifest.schema.json # JSON schema for references
-├── references/
-│   ├── inbox/                         # Pending submissions
-│   ├── accepted/                      # Approved reference manifests
-│   └── evidence/                      # Keyframe stills & contact sheets
-├── scripts/
-│   ├── references/
-│   │   ├── absorver_referencia.mjs    # Reference intake & scaffolding
-│   │   └── promover_aprendizado.mjs   # Promotion gate (Score >= 8.0, Conf >= 85%)
-│   ├── lint-motion-slop.mjs           # Static AST / regex linter blocking slop patterns
-│   ├── auto_revisar_frames.mjs        # Keyframe still extraction + Contact Sheet + Scorecard (>= 8/10)
-│   ├── produzir_video_bancada.mjs     # 1-Click production orchestrator
-│   └── transcrever-palavras.mjs       # Millisecond word-level timestamps via Whisper
-├── src/
-│   ├── FlowMotionMaster.tsx           # Benchmark production composition (Apple-tier motion)
-│   ├── AppleCameraRig.tsx             # Organic camera drift & inertia
-│   ├── AppleKineticCards.tsx          # 3D perspective floating glass cards
-│   ├── KineticWordCaption.tsx         # Word-by-word highlighted captions
-│   ├── kit.tsx                        # Shared spring math, measured eases & typography
-│   └── index.tsx                      # Remotion root entry
-```
+### Reel from the user's recording
+`--roteiro` is the exact text spoken: captions use YOUR text and Whisper only gives the timing, so words are never mis-transcribed.
+Without Whisper installed, `--roteiro` is required and the timing is estimated.
 
----
+### Carousel (ask the user first, never assume)
+Ask: **how many slides** (2 to 10), **uniform style or each slide directed**, and **static feed images or slides to animate later**.
+Then write `spec.json`: `nome`, `estilo` (`uniforme|individual`), `destino` (`estatico|animado`), `autor`, `marca`, `slides[]`
+(`categoria`, `titulo` 1 to 3 lines of at most 24 characters, `destaque` as its own accent line after the title, `subtitulo`,
+`palco.destaque` up to 14 characters). Full rules are in the header of `scripts/carrossel.mjs`. Static slides are not
+monotone by luck: vary the titles and the stage phrases, one idea per slide.
 
-## ⚡ Quickstart
+### Motion graphics
+Three closed models: `titulo-cinetico` (1 to 4 phrases), `cartao-de-marca` (brand, slogan, badge), `dataviz` (numbers that count and a real series
+curve). Copy the example, edit only the texts and numbers, run it. Fixed values (colors, timing) are not yours to change.
 
-### 1. Install Dependencies
-```bash
-pnpm install
-```
+## Taste loop (before delivering)
 
-### 2. Audit Code against AI Slop
-```bash
-node scripts/lint-motion-slop.mjs src/FlowMotionMaster.tsx
-```
+Open the contact sheet and answer honestly: Is every text readable on its background? Is anything cut by the screen edge?
+Do the scenes look different from each other? Is there any text the user did not write (demo text)? If something is off,
+change the **spec or the style id** and run again. If the studio cannot express what the user asked, say so plainly
+instead of faking it.
 
-### 3. Run Automated Frame Review
-```bash
-node scripts/auto_revisar_frames.mjs FlowMotionMaster --stills 6
-```
-Generates:
-- `out/contact-sheet.jpg`: Visual grid of keyframe stills.
-- `out/review_scorecard.json`: Automated evaluation of contrast, density, and dead frames with target score $\ge 8.0/10$.
+## Creative models (Opus-class): the escape hatch
 
-### 4. Absorb a New Reference (Learning Loop)
-```bash
-node scripts/references/absorver_referencia.mjs --url "https://instagram.com/reel/..." --title "3D Card Tilt" --author "@creator"
-```
+Closed catalogs are a floor, not a ceiling. If, and only if, the idea cannot be expressed with the commands above, you may
+compose a new scene with the components listed by `pnpm vibe componentes` in a timeline file and render it with
+`node scripts/render_from_json.mjs timeline.json out/x.mp4 --master`. The result still has to pass `pnpm vibe verificar`, and you must tell the user that you left the closed path.
 
----
+## Limits you must tell the user about
 
-## 🌐 Headless API & OpenRouter Feeding
-
-The studio is 100% headless and can be driven by any external API (OpenRouter, OpenAI, Anthropic):
-- **Dynamic Props:** Pass JSON props directly to Remotion via `--props='{"title":"...", "cards":[...]}'`.
-- **Automated Voice + Sync:** Trigger `node scripts/narrar.mjs "<script>" --transcrever` followed by `npm run render:mastered`.
-
----
-
-## 🤖 Swarm / Multi-Agent Role Division
-
-- **Gemini / Infrastructure Agents:** TTS generation (`scripts/narrar.mjs`), Whisper millisecond alignment (`words.json`), Chromium headless rendering, and audio mastering (-14 LUFS EBU R128).
-- **Claude / Creative Agents (Diretor de Arte - Opus 5.5 MAX):** Choreography of `spring()` curves, CSS 3D perspectives, typographic kerning, Three.js shaders, and visual storytelling under **"Criar do Zero"** without template constraints.
-- **Codex / Robustness Agents:** Pure mathematical logic (`auto_ducking_math.ts`), Bézier curves, boundary input sanitization, and adversarial stress test suites.
+- Remotion needs a company license above 3 employees (see README).
+- Local media (music, voices, client photos) is never versioned; keep names ASCII and the project path short (Windows limit).
+- Whisper and the TTS voice need to be installed/online; `pnpm vibe doctor` shows what is missing.
