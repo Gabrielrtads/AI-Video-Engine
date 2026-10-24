@@ -18,6 +18,10 @@ import { loadFont as loadPlusJakartaSans } from '@remotion/google-fonts/PlusJaka
 
 // Palavras da narração da Thalita sincronizadas via Whisper
 import RAW_WORDS from './data/words_thalita_cleaned.json';
+import RAW_WORDS_FAST from './data/words_thalita_fast.json';
+
+// As palavras precisam ser as do áudio que toca: o áudio _fast dura 26,4 s e o normal 28,8 s.
+const palavrasDoAudio = (audio: string) => (audio.endsWith('_fast.mp3') ? RAW_WORDS_FAST : RAW_WORDS);
 
 // Fontes canônicas
 const { fontFamily: fontAnton } = loadAnton();
@@ -61,8 +65,8 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 
 	// Palavra ativa do Whisper
 	const activeWord = useMemo(() => {
-		return RAW_WORDS.find((w) => t >= w.start && t <= w.end);
-	}, [t]);
+		return palavrasDoAudio(audioNarracao).find((w) => t >= w.start && t <= w.end);
+	}, [t, audioNarracao]);
 
 	// ────────────────────────────────────────────────────────────────────────────
 	// CENA 1 (FRAMES 0 - 90 / 0.0s - 3.0s): HOOK BRUTALISTA FLUIDO
