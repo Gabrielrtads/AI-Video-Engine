@@ -36,7 +36,8 @@
     "test:py": "node scripts/run_py_tests.mjs",
     "test": "pnpm run check && pnpm run test:unit && pnpm run test:e2e && pnpm run test:py",
     "setup:pastas": "node scripts/preparar_pastas.mjs",
-    "assets:check": "node scripts/check_assets.mjs"
+    "assets:check": "node scripts/check_assets.mjs",
+    "cortar:silencio": "node scripts/cortar_silencio.mjs"
   },
   "dependencies": {
     "@react-three/fiber": "8.17.10",
