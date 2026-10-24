@@ -1,0 +1,22 @@
+name: diag-carrossel (temporário)
+
+on:
+  pull_request:
+
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: pnpm/action-setup@v6.1.0
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - run: pnpm install --frozen-lockfile
+      - name: Só o e2e do carrossel, com diagnóstico
+        env:
+          VIBE_DEBUG: '1'
+        run: timeout 300 node --test --test-reporter=spec tests/e2e/carrossel_png.test.mjs 2>&1 | tail -150
