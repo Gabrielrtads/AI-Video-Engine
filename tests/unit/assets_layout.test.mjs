@@ -68,3 +68,10 @@ test('findMissing lista só o que não existe em public/', () => {
     fs.rmSync(dir, { recursive: true, force: true });
   }
 });
+
+test('o Git só rastreia .gitkeep dentro de public/ (mídia e dados soltos ficam fora)', { skip: !fs.existsSync(path.join(root, '.git')) && 'sem .git (zip/tarball)' }, async () => {
+  const { spawnSync } = await import('node:child_process');
+  const r = spawnSync('git', ['ls-files', 'public'], { cwd: root, encoding: 'utf8' });
+  const soltos = r.stdout.split('\n').filter((l) => l && !l.endsWith('.gitkeep'));
+  assert.deepEqual(soltos, [], `arquivos versionados soltos em public/: ${soltos.join(', ')}`);
+});
