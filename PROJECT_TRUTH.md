@@ -46,7 +46,7 @@ projects/vibe-design-studio/
 ## 6. Filosofia Arquitetural: Piso, Não Teto (Floor, Not a Ceiling)
 O Vibe Design Studio foi concebido para elevar a linha de base de agentes econômicos sem jamais limitar a excelência estética de modelos criativos de topo (como Claude Opus 5.5 MAX / Sonnet):
 - **O Piso (Chão Inegociável):** Fornece infraestrutura técnica pronta para que nenhum modelo precise reinventar a roda ou cometer erros amadores:
-  - Áudio EBU R128 (-14 LUFS / -1 dBTP, um passe de `loudnorm`) e componente de Auto-Ducking (ainda não ligado nas composições).
+  - Áudio EBU R128 (-14 LUFS ±0,5 / -1 dBTP, dois passes de `loudnorm`) e Auto-Ducking ligado nas composições narradas.
   - Alinhamento de milissegundos via Whisper (`words.json`).
   - Safe zones restritas para Instagram e TikTok.
   - Linter Anti-Slop (`lint-motion-slop.mjs`): barra apenas vícios destrutivos (foley estridente > 0.45, ausência de curvas de física, texto sem hierarquia e slogans clichês), nunca a inovação estética.

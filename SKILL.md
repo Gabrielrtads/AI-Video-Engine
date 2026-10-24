@@ -23,7 +23,7 @@ When instructed to generate video code (e.g. Remotion), LLMs naturally default t
 ## 🪜 Architectural Philosophy: Floor, Not a Ceiling
 
 Vibe Design Studio is designed as a **guaranteed floor**, never an artistic ceiling:
-- **For Economical Models (Gemini Flash, Haiku):** Guarantees pre-validated templates, safe zones (4:5 and 9:16), single-pass loudness mastering (-14 LUFS, within about +/-1 LUFS), and anti-slop checks so the output never looks amateur.
+- **For Economical Models (Gemini Flash, Haiku):** Guarantees pre-validated templates, safe zones (4:5 and 9:16), two-pass loudness mastering (-14 LUFS +/-0.5, peak at -1 dBTP or lower), and anti-slop checks so the output never looks amateur.
 - **For Creative Powerhouses (Claude Opus 5.5 MAX / Sonnet):** Acts as an unconstrained launchpad. Creative models are encouraged to bypass basic templates using route **`[2] Criar do Zero`**, orchestrating bespoke 3D perspectives, `@react-three/fiber` scenes, GLSL shaders, and nuanced motion typography.
 
 ---
