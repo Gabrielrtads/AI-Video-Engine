@@ -250,6 +250,7 @@ node scripts/pipeline_script_to_video.mjs "Your script here. Second sentence." -
 echo '[{"cena": 2, "componente": "OrbitalPlanet3D"}]' > plano.json
 node scripts/pipeline_script_to_video.mjs "..." --cenas plano.json
 
+pnpm vibe reel-gravacao minha_gravacao.mp4 --roteiro "o que eu falei"   # YOUR recording: cuts silence, Hormozi captions, -14 LUFS, verified
 pnpm cortar:silencio in.mp4 out.mp4 --simular   # cut dead air from a recording (drop --simular to write the file)
 pnpm verificar:video out/videos/meu_video.mp4 --formato 9:16 --folha out/stills   # quality gate: format, fps, -14 LUFS, peak, frozen frames
 ```
