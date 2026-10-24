@@ -6,6 +6,7 @@
  *   pnpm vibe doctor [--json]
  *   pnpm vibe componentes [--json]
  *   pnpm vibe roteiro "texto do roteiro" [--vertical] [--voz thalita] [--cenas plano.json] [--saida out/videos/x.mp4]
+ *   pnpm vibe reel-gravacao <gravacao.mp4> [--roteiro "texto"] [--formato 9:16] [--saida out/videos/reel.mp4]
  *   pnpm vibe cortar-silencio <entrada> <saida> [--simular]
  *   pnpm vibe verificar <video> [--formato 9:16] [--json] [--folha pasta]
  *   pnpm vibe pastas [--verificar]
@@ -58,6 +59,7 @@ export const COMANDOS = {
 		},
 	},
 	roteiro: { descricao: 'Reel a partir de um roteiro: voz, legenda alinhada ao texto, uma cena por frase, render e masterização.', executar: (args) => delegar('pipeline_script_to_video.mjs', args) },
+	'reel-gravacao': { descricao: 'Reel com a SUA gravação: corta silêncio, legenda Hormozi, masteriza e verifica (--roteiro usa o seu texto na legenda).', executar: (args) => delegar('reel_gravacao.mjs', args) },
 	'cortar-silencio': { descricao: 'Remove pausas longas de uma gravação (use --simular para só ver o que seria cortado).', executar: (args) => delegar('cortar_silencio.mjs', args) },
 	verificar: { descricao: 'Portão de qualidade do vídeo pronto: formato, fps, -14 LUFS, pico, imagem parada.', executar: (args) => delegar('verificar_video.mjs', args) },
 	pastas: { descricao: 'Cria (ou confere com --verificar) as pastas locais do estúdio.', executar: (args) => delegar('preparar_pastas.mjs', args) },
