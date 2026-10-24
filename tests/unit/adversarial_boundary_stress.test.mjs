@@ -66,7 +66,7 @@ describe('Adversarial & Boundary Stress Test Suite (Milestone 1 Challenger 2)', 
     });
 
     it('1.4: formatSkillsCatalog behavior when JSON is a valid Non-Array (object, string, number, null)', () => {
-      // Objects, numbers, booleans, and null throw TypeError: skills is not iterable
+      // Qualquer JSON que não seja uma lista é recusado com um erro claro (antes: 'is not iterable' ou, para string, habilidades-fantasma)
       const iterableThrowCases = [
         { name: 'Object with skills key', content: JSON.stringify({ skills: [] }) },
         { name: 'Numeric literal', content: JSON.stringify(42) },
@@ -80,22 +80,23 @@ describe('Adversarial & Boundary Stress Test Suite (Milestone 1 Challenger 2)', 
           fs.writeFileSync(tempFile, tc.content, 'utf8');
           assert.throws(
             () => formatSkillsCatalog(tempFile),
-            (err) => err instanceof TypeError && /is not iterable/i.test(err.message),
-            `Expected TypeError (is not iterable) for ${tc.name}`
+            (err) => err instanceof TypeError && /deve ser uma lista/i.test(err.message),
+            `Expected TypeError (deve ser uma lista) for ${tc.name}`
           );
         } finally {
           if (fs.existsSync(tempFile)) fs.unlinkSync(tempFile);
         }
       }
 
-      // Edge case finding: String literal is iterable in JS, so it iterates over characters as phantom skills
+      // Uma string é iterável em JS e antes gerava uma 'habilidade' por caractere ("• undefined"): agora é recusada
       const stringFile = path.join(os.tmpdir(), `string_skills_${Date.now()}.json`);
       try {
         fs.writeFileSync(stringFile, JSON.stringify("not an array"), 'utf8');
-        const res = formatSkillsCatalog(stringFile);
-        // It does not throw, but produces "not an array".length (12) phantom skills with undefined names
-        assert.strictEqual(res.totalSkills, 12);
-        assert.ok(res.formattedText.includes('• undefined'));
+        assert.throws(
+          () => formatSkillsCatalog(stringFile),
+          (err) => err instanceof TypeError && /deve ser uma lista/i.test(err.message),
+          'string no lugar da lista deve ser recusada, sem habilidades-fantasma',
+        );
       } finally {
         if (fs.existsSync(stringFile)) fs.unlinkSync(stringFile);
       }
