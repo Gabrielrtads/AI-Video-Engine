@@ -82,6 +82,8 @@ export const VIBE_COMPONENT_REGISTRY: Record<string, React.FC<any>> = {
   RourkeLuxuryShowcase,
 };
 
+export const COMPONENTES_DE_BLOCO = new Set(['AnimatedBezierCurve']);
+
 export interface RenderRegisteredComponentProps {
   componentName: string;
   props?: Record<string, unknown>;
@@ -112,6 +114,18 @@ export const RenderRegisteredComponent: React.FC<RenderRegisteredComponentProps>
         }}
       >
         [Aviso: Componente &quot;{componentName}&quot; não encontrado no VIBE_COMPONENT_REGISTRY]
+      </div>
+    );
+  }
+
+  // Componentes de bloco (tamanho fixo em px) não se centralizam sozinhos: sem isto ficam colados no topo
+  if (COMPONENTES_DE_BLOCO.has(componentName)) {
+    const { escala, ...resto } = props as Record<string, unknown> & { escala?: number };
+    return (
+      <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ transform: `scale(${escala ?? 1})` }}>
+          <Component {...resto} />
+        </div>
       </div>
     );
   }

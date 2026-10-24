@@ -102,3 +102,13 @@ test('integração: vídeo masterizado e em movimento passa; os defeituosos repr
     fs.rmSync(dir, { recursive: true, force: true });
   }
 });
+
+test('semAudio: motion sem narração passa sem áudio, mas continua reprovando formato e imagem parada', () => {
+  const mudo = { ...bom, temAudio: false, lufs: null, picoDb: null };
+  assert.equal(avaliar(mudo, { formato: '9:16' }).ok, false, 'sem a opção, vídeo mudo reprova');
+  const r = avaliar(mudo, { formato: '9:16', semAudio: true });
+  assert.equal(r.ok, true);
+  assert.match(r.checagens.find((c) => c.id === 'audio').mensagem, /sem áudio, como pedido/i);
+  assert.equal(avaliar({ ...mudo, largura: 1920, altura: 1080 }, { formato: '9:16', semAudio: true }).ok, false);
+  assert.equal(avaliar({ ...mudo, congelado: { trechos: 1, maiorSegundos: 4, totalSegundos: 4 } }, { formato: '9:16', semAudio: true }).ok, false);
+});

@@ -8,6 +8,7 @@ import type { WordItem } from './hormoziMath.ts';
 import { planScenes, resolveScenePlan } from './scenePlan.ts';
 import type { ScenePlanItem } from './scenePlan.ts';
 import type { EstiloPacote } from './gosto.ts';
+import { FORMA_DECORATIVA, pontosDeCurva } from './curvaMath.ts';
 import type { TimelineState, TrackItem, ClipItem } from './types.ts';
 
 export type AspectRatio =
@@ -486,7 +487,13 @@ export function build1ClickTimelinePayload(options: Pipeline1ClickOptions): Time
     if (spec.padrao && spec.componentName === 'Smartphone3DMockup') Object.assign(geometria, { width: metrics.mockupWidth, height: metrics.mockupHeight, theme: 'titanium', tiltIntensity: 0.5 });
     if (spec.padrao && spec.componentName === 'AppleKineticCard3D') Object.assign(geometria, { width: metrics.cardWidth, height: metrics.cardHeight });
     if (spec.padrao && spec.componentName === 'OrbitalPlanet3D') Object.assign(geometria, { size: Math.round(Math.min(metrics.width, metrics.height) * 0.4) });
-    if (spec.padrao && spec.componentName === 'AnimatedBezierCurve') Object.assign(geometria, { width: Math.round(metrics.width * 0.84), height: Math.round(metrics.height * 0.3) });
+    if (spec.componentName === 'AnimatedBezierCurve') {
+      // O componente desenha em pixels e traz pontos de demonstração ("$12k..."): sempre passamos pontos da área real, sem números
+      const largura = Number(spec.props.width ?? Math.round(metrics.width * 0.84));
+      const altura = Number(spec.props.height ?? Math.round(metrics.height * 0.3));
+      Object.assign(geometria, { width: largura, height: altura });
+      if (!spec.props.points) geometria.points = pontosDeCurva(FORMA_DECORATIVA, largura, altura);
+    }
     clips.push({
       id: `clip_hero_${spec.indice}`,
       trackId: 'T_HERO',

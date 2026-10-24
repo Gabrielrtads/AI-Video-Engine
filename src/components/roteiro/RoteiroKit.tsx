@@ -31,15 +31,23 @@ export interface FundoEstiloProps {
 	fundo2?: string;
 }
 
-export const FundoEstilo: React.FC<FundoEstiloProps> = ({ fundo = '#05070D', fundo2 = '#0B1220' }) => (
-	<AbsoluteFill
-		style={{
-			background: `radial-gradient(120% 90% at 50% 38%, ${fundo2} 0%, ${fundo} 78%)`,
-		}}
-	>
-		<AbsoluteFill style={{ background: 'radial-gradient(140% 100% at 50% 50%, transparent 55%, rgba(0,0,0,0.28) 100%)' }} />
-	</AbsoluteFill>
-);
+export const FundoEstilo: React.FC<FundoEstiloProps> = ({ fundo = '#05070D', fundo2 = '#0B1220' }) => {
+	// O brilho central passeia devagar: um fundo 100% parado faz cenas de texto virarem imagem congelada
+	const frame = useCurrentFrame();
+	const { fps } = useVideoConfig();
+	const t = frame / fps;
+	const cx = 50 + 14 * Math.sin(t * 0.7);
+	const cy = 38 + 9 * Math.cos(t * 0.5);
+	return (
+		<AbsoluteFill
+			style={{
+				background: `radial-gradient(120% 90% at ${cx.toFixed(2)}% ${cy.toFixed(2)}%, ${fundo2} 0%, ${fundo} 78%)`,
+			}}
+		>
+			<AbsoluteFill style={{ background: 'radial-gradient(140% 100% at 50% 50%, transparent 55%, rgba(0,0,0,0.28) 100%)' }} />
+		</AbsoluteFill>
+	);
+};
 
 // ────────────────────────────────────────────────────────────────────────────
 // FraseDestaque: a frase da cena em tipografia grande, palavra por palavra

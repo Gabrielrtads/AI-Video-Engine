@@ -8,6 +8,7 @@
  *   pnpm vibe roteiro "texto do roteiro" [--vertical] [--voz thalita] [--estilo escuro-tech] [--cenas plano.json] [--saida out/videos/x.mp4]
  *   pnpm vibe estilos [--json]
  *   pnpm vibe carrossel <spec.json> [--saida out/carrosseis/x] [--estilo-visual editorial-creme]
+ *   pnpm vibe motion modelos | exemplo <modelo> | <spec.json> [--saida out/videos/x.mp4]
  *   pnpm vibe reel-gravacao <gravacao.mp4> [--roteiro "texto"] [--formato 9:16] [--saida out/videos/reel.mp4]
  *   pnpm vibe cortar-silencio <entrada> <saida> [--simular]
  *   pnpm vibe verificar <video> [--formato 9:16] [--json] [--folha pasta]
@@ -73,6 +74,7 @@ export const COMANDOS = {
 		},
 	},
 	carrossel: { descricao: 'Carrossel estático 4:5: um spec JSON vira slides PNG (1080x1350) mais uma folha de contato para conferir.', executar: (args) => delegar('carrossel.mjs', args) },
+	motion: { descricao: 'Motion graphics SEM narração por modelos fechados (titulo-cinetico, cartao-de-marca, dataviz): copie um exemplo, troque os textos, renderiza e verifica.', executar: (args) => delegar('motion.mjs', args) },
 	'reel-gravacao': { descricao: 'Reel com a SUA gravação: corta silêncio, legenda Hormozi, masteriza e verifica (--roteiro usa o seu texto na legenda).', executar: (args) => delegar('reel_gravacao.mjs', args) },
 	'cortar-silencio': { descricao: 'Remove pausas longas de uma gravação (use --simular para só ver o que seria cortado).', executar: (args) => delegar('cortar_silencio.mjs', args) },
 	verificar: { descricao: 'Portão de qualidade do vídeo pronto: formato, fps, -14 LUFS, pico, imagem parada.', executar: (args) => delegar('verificar_video.mjs', args) },
