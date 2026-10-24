@@ -228,6 +228,20 @@ node scripts/narrar.mjs "O futuro do design não é estático. É código vivo e
 npm run render:mastered
 ```
 
+### 4. Script drives the video (1-click, scenes, captions)
+
+```bash
+# One sentence = one scene. Captions show YOUR script text (Whisper only lends the timing).
+node scripts/pipeline_script_to_video.mjs "Your script here. Second sentence." --vertical --voz thalita --saida out/videos/meu_video.mp4
+
+# Let an agent pick the visual of specific scenes (components from src/timeline/componentCatalog.ts)
+echo '[{"cena": 2, "componente": "OrbitalPlanet3D"}]' > plano.json
+node scripts/pipeline_script_to_video.mjs "..." --cenas plano.json
+
+pnpm cortar:silencio in.mp4 out.mp4 --simular   # cut dead air from a recording (drop --simular to write the file)
+pnpm verificar:video out/videos/meu_video.mp4 --formato 9:16 --folha out/stills   # quality gate: format, fps, -14 LUFS, peak, frozen frames
+```
+
 ### 4. Run Full Test Suite
 
 ```bash

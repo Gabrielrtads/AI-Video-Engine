@@ -19,6 +19,7 @@
  *   --voz antonio|francisca|thalita   (default: antonio)
  *   --rate +0%                        (default: +0%)
  *   --saida out/meu_video.mp4         (default: out/video_1click_mastered.mp4)
+ *   --cenas plano.json                (opcional: o agente escolhe o visual de cenas específicas; ver src/timeline/scenePlan.ts)
  *   --sync-dir <pasta>                (opcional: copia o vídeo final para esta pasta; ou defina VIBE_SYNC_DIR)
  */
 
@@ -49,7 +50,11 @@ export async function runScriptToVideoPipeline(text, options = {}) {
     aspect = '9:16',
     outputFile = 'out/video_1click_mastered.mp4',
     syncDir = process.env.VIBE_SYNC_DIR || null,
+    cenasFile = null,
   } = options;
+
+  // Plano de cenas do agente: [{ "cena": 2, "componente": "OrbitalPlanet3D", "props": {...} }]
+  const planoDeCenas = cenasFile ? JSON.parse(fs.readFileSync(path.resolve(cenasFile), 'utf8')) : undefined;
 
   if (!text || !text.trim()) {
     throw new Error('Texto para narração não pode ser vazio.');
@@ -145,6 +150,7 @@ export async function runScriptToVideoPipeline(text, options = {}) {
     aspectRatio: metrics.standardRatio,
     fps: 30,
     showEmojis: true,
+    planoDeCenas,
   });
 
   const timelineJsonPath = path.join(tempDir, 'timeline_1click.json');
@@ -262,6 +268,7 @@ Opções:
   let aspect = '9:16';
   let outputFile = 'out/video_1click_mastered.mp4';
   let syncDir = process.env.VIBE_SYNC_DIR || null;
+  let cenasFile = null;
 
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
@@ -287,6 +294,8 @@ Opções:
       aspect = '1:1';
     } else if (arg === '--saida' && args[i + 1]) {
       outputFile = args[++i];
+    } else if (arg === '--cenas' && args[i + 1]) {
+      cenasFile = args[++i];
     } else if (arg === '--sync-dir' && args[i + 1]) {
       syncDir = args[++i];
     } else if (arg === '--sem-gdrive') {
@@ -313,6 +322,7 @@ Opções:
     aspect,
     outputFile,
     syncDir,
+    cenasFile,
   }).catch((err) => {
     console.error(`\n❌ [Erro Pipeline 1-Click]`, err.message);
     process.exit(1);

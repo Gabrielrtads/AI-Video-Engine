@@ -3,6 +3,8 @@ import { interpolate, spring, useCurrentFrame, useVideoConfig } from 'remotion';
 
 export interface Smartphone3DMockupProps {
   title?: string;
+  /** Texto sob o título; '' esconde (o padrão é só um texto de demonstração). */
+  description?: string;
   urlBadge?: string;
   screenContent?: React.ReactNode;
   children?: React.ReactNode;
@@ -17,6 +19,7 @@ export interface Smartphone3DMockupProps {
 
 export const Smartphone3DMockup: React.FC<Smartphone3DMockupProps> = ({
   title = 'Vibe Studio Mobile',
+  description = 'Mockup 3D procedural nativo com suporte a children e perspectiva CSS.',
   urlBadge = 'vibe.studio/preview',
   screenContent,
   children,
@@ -252,10 +255,14 @@ export const Smartphone3DMockup: React.FC<Smartphone3DMockupProps> = ({
             >
               <div
                 style={{
-                  fontSize: 20,
+                  // Sem descrição, o título é o conteúdo da cena: precisa ser lido no celular
+                  fontSize: description === '' ? Math.round(width * 0.085) : 20,
                   fontWeight: 700,
                   marginBottom: 8,
                   letterSpacing: '-0.02em',
+                  lineHeight: 1.15,
+                  padding: description === '' ? '0 24px' : 0,
+                  textAlign: description === '' ? 'center' : undefined,
                 }}
               >
                 {title}
@@ -267,7 +274,7 @@ export const Smartphone3DMockup: React.FC<Smartphone3DMockupProps> = ({
                   lineHeight: 1.4,
                 }}
               >
-                Mockup 3D procedural nativo com suporte a children e perspectiva CSS.
+                {description}
               </div>
             </div>
           )}
