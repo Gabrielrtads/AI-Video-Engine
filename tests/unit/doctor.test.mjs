@@ -96,3 +96,21 @@ test('integração: o doctor roda de verdade e devolve checagens estruturadas', 
   }
   assert.ok(r.checagens.find((c) => c.id === 'node' && c.ok), 'este próprio teste roda em Node >= 24');
 });
+
+test('doctor manda o agente só para comandos do caminho único (pnpm vibe ...), nunca para scripts soltos', async () => {
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const path = await import('node:path');
+  const raiz = fs.mkdtempSync(path.join(os.tmpdir(), 'vds-doctor-'));
+  try {
+    const falso = () => ({ status: 1, stdout: '', stderr: 'não existe' });
+    const r = rodarDoctor({ executar: falso, raiz });
+    const sugestoes = r.checagens.map((c) => c.corrigir).filter(Boolean);
+    const pastas = r.checagens.find((c) => c.id === 'pastas');
+    assert.equal(pastas.ok, false, 'sem pastas na raiz de teste');
+    assert.match(pastas.corrigir, /pnpm vibe pastas/);
+    for (const s of sugestoes) assert.ok(!/pnpm setup:|node scripts\//.test(s), `sugestão fora do caminho único: ${s}`);
+  } finally {
+    fs.rmSync(raiz, { recursive: true, force: true });
+  }
+});

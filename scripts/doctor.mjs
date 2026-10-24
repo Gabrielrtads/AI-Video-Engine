@@ -84,7 +84,7 @@ export function rodarDoctor({ executar = executarPadrao, raiz = RAIZ, plataforma
 	add({ id: 'dependencias', ok: depsOk, nivel: 'erro', mensagem: depsOk ? 'Dependências do projeto instaladas' : 'Dependências do projeto não instaladas', corrigir: depsOk ? undefined : 'Rode: pnpm install --frozen-lockfile' });
 
 	const { faltando } = verificarPastas(raiz);
-	add({ id: 'pastas', ok: faltando.length === 0, nivel: 'aviso', mensagem: faltando.length === 0 ? 'Pastas do estúdio criadas' : `Faltam ${faltando.length} pasta(s): ${faltando.join(', ')}`, corrigir: faltando.length === 0 ? undefined : 'Rode: pnpm setup:pastas' });
+	add({ id: 'pastas', ok: faltando.length === 0, nivel: 'aviso', mensagem: faltando.length === 0 ? 'Pastas do estúdio criadas' : `Faltam ${faltando.length} pasta(s): ${faltando.join(', ')}`, corrigir: faltando.length === 0 ? undefined : 'Rode: pnpm vibe pastas' });
 
 	const whisperDir = process.env.WHISPER_DIR || path.join(os.homedir(), '.whisper-cpp');
 	const whisperOk = fs.existsSync(whisperDir);

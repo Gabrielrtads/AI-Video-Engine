@@ -10,7 +10,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 
-import { CENARIOS, montarArgsAgy, avaliarCarrossel, avaliarMotion, placar, detectarCota, lerBrief } from '../../scripts/aceitacao_lib.mjs';
+import { CENARIOS, montarArgsAgy, exigirIsolamento, avaliarCarrossel, avaliarMotion, placar, detectarCota, lerBrief } from '../../scripts/aceitacao_lib.mjs';
 
 const tmp = () => fs.mkdtempSync(path.join(os.tmpdir(), 'vds-acc-'));
 const ff = (...args) => assert.equal(spawnSync('ffmpeg', ['-y', '-v', 'error', ...args]).status, 0);
@@ -31,7 +31,8 @@ test('montarArgsAgy: modo não interativo, modelo, tempo limite e saída JSON', 
   assert.ok(a.includes('--mode') && a[a.indexOf('--mode') + 1] === 'accept-edits');
   assert.ok(a.includes('--output-format') && a[a.indexOf('--output-format') + 1] === 'json');
   assert.ok(a.includes('--print-timeout'));
-  assert.ok(!a.includes('--dangerously-skip-permissions'), 'sem pular permissões');
+  assert.ok(!a.includes('--dangerously-skip-permissions'), 'por padrão não pula permissões');
+  assert.ok(montarArgsAgy({ modelo: 'm', prompt: 'p', pularPermissoes: true }).includes('--dangerously-skip-permissions'), 'só pula quando pedido');
 });
 
 test('detectarCota reconhece limite de uso na saída do agente', () => {
@@ -97,4 +98,12 @@ test('placar: passou/falhou por modelo e cenário, com taxa', () => {
   assert.equal(p.a.passou, 1);
   assert.equal(p.a.total, 2);
   assert.equal(p.b.taxa, 1);
+});
+
+test('pular permissões exige confirmação explícita do ambiente e só aceita o repositório confiável', () => {
+  const confiavel = 'https://github.com/Gabrielrtads/vibe-design-studio.git';
+  assert.doesNotThrow(() => exigirIsolamento({ pularPermissoes: false, repo: 'qualquer-coisa', env: {} }));
+  assert.throws(() => exigirIsolamento({ pularPermissoes: true, repo: confiavel, env: {} }), /ACEITACAO_ISOLADA/);
+  assert.throws(() => exigirIsolamento({ pularPermissoes: true, repo: 'https://exemplo.com/x.git', env: { ACEITACAO_ISOLADA: '1' } }), /repositório/i);
+  assert.doesNotThrow(() => exigirIsolamento({ pularPermissoes: true, repo: confiavel, env: { ACEITACAO_ISOLADA: '1' } }));
 });

@@ -20,7 +20,7 @@ para qualquer modelo, do mais barato ao mais capaz; a escotilha para modelos cri
 
 - **GitHub:** `https://github.com/Gabrielrtads/vibe-design-studio.git`, branch `main`.
 - Qualquer agente pode criar vídeos, carrosséis e templates abrindo uma mesa de trabalho (ver as regras gerais do workspace).
-- Mídia pesada ou com direitos autorais nunca vai para o Git; veja `docs/PASTAS.md` e rode `pnpm setup:pastas`.
+- Mídia pesada ou com direitos autorais nunca vai para o Git; veja `docs/PASTAS.md` e rode `pnpm vibe pastas`.
 
 ## Ferramentas por trás do `pnpm vibe` (use só se o comando não bastar)
 
