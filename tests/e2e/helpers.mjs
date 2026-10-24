@@ -6,6 +6,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
+import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -16,6 +17,27 @@ export const SCRIPTS_DIR = path.join(ENGINE_ROOT, 'scripts');
 export const SRC_DIR = path.join(ENGINE_ROOT, 'src');
 export const TEMPLATES_DIR = path.join(SRC_DIR, 'templates');
 export const HABILIDADES_DIR = path.join(SRC_DIR, 'habilidades');
+
+/** Creates a generated JPEG or PNG fixture inside out/ for isolated tests. */
+export function makeFixtureImage(ext, { width = 640, height = 360 } = {}) {
+	const normalizedExt = String(ext).replace(/^\./, '').toLowerCase();
+	if (!['jpg', 'png'].includes(normalizedExt)) {
+		throw new TypeError(`Unsupported fixture image extension: ${ext}`);
+	}
+	if (!Number.isInteger(width) || width < 1 || !Number.isInteger(height) || height < 1) {
+		throw new TypeError('Fixture image width and height must be positive integers');
+	}
+
+	const outDir = path.join(ENGINE_ROOT, 'out');
+	fs.mkdirSync(outDir, { recursive: true });
+	const dir = fs.mkdtempSync(path.join(outDir, '.fixtures-'));
+	const file = path.join(dir, `testsrc2.${normalizedExt}`);
+	execFileSync('ffmpeg', [
+		'-y', '-f', 'lavfi', '-i', `testsrc2=size=${width}x${height}:rate=1`,
+		'-vframes', '1', file,
+	], { stdio: 'pipe' });
+	return { dir, file };
+}
 
 export const PATHS = {
 	engineRoot: ENGINE_ROOT,

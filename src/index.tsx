@@ -11,7 +11,10 @@ import {Slide05Final} from './Slide05Final';
 import {CliCrossReviewReel} from './CliCrossReviewReel';
 import {GenHqReel} from './GenHqReel';
 import {RourkeLuxuryShowcase} from './RourkeLuxuryShowcase';
+import {VoxShowcase} from './demonstracoes/VoxShowcase';
 import {JsonTimelinePlayer, defaultCompiledTimeline} from './timeline/JsonTimelinePlayer';
+import {HormoziShowcase} from './demonstracoes/HormoziShowcase';
+import {UmPedidoCadaEstiloShowcase} from './demonstracoes/UmPedidoCadaEstiloShowcase';
 
 const VibeStudioPureVisualRoot: React.FC = () => (
 	<RourkeLuxuryShowcase mode="pure-visual" />
@@ -85,6 +88,26 @@ export const dynamicTemplateRegistry: RegisteredComposition[] = [];
 
 registerRoot(() => (
 	<>
+		{/* Um Pedido Pra Cada Estilo Showcase (4 Estilos EditIA: 12s, 360 frames) */}
+		<Composition
+			id="UmPedidoCadaEstiloShowcase"
+			component={UmPedidoCadaEstiloShowcase}
+			durationInFrames={360}
+			fps={30}
+			width={1080}
+			height={1920}
+		/>
+
+		{/* Hormozi Retention & Typography Showcase */}
+		<Composition
+			id="HormoziShowcase"
+			component={HormoziShowcase}
+			durationInFrames={270}
+			fps={30}
+			width={1080}
+			height={1920}
+		/>
+
 		{/* Viral Showcase Reel (CliCrossReview & VibeSwarm) */}
 		<Composition
 			id="CliCrossReviewReel"
@@ -144,6 +167,16 @@ registerRoot(() => (
 			id="VibeStudioVoiceover"
 			component={VibeStudioVoiceoverRoot}
 			durationInFrames={750}
+			fps={30}
+			width={1080}
+			height={1920}
+		/>
+
+		{/* ESTILO VOX SHOWCASE (JORNALISMO VISUAL & CARTOGRAFIA 2.5D) */}
+		<Composition
+			id="VoxShowcase"
+			component={VoxShowcase}
+			durationInFrames={180}
 			fps={30}
 			width={1080}
 			height={1920}

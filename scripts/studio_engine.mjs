@@ -298,6 +298,7 @@ const CANONICAL_SKILL_MAP = {
   spring_physics_curves: 3,
   apple_camera_rig: 3,
   sound_impact_engine: 3,
+  vox_documentary_motion: 3,
 };
 
 /**
@@ -659,8 +660,85 @@ export const initializeCleanSlate = generateCleanSlate;
  * Infere a melhor direção criativa a partir do briefing bruto (sem questionário burocrático)
  * evitando que o agente caia no template padrão genérico.
  */
+export const ONE_SENTENCE_STYLE_ROUTES = [
+  {
+    id: "gancho_grande_topo",
+    layoutMode: "gancho_grande_topo",
+    canonicalCommand: "Abre com um gancho forte na tela",
+    gancho: "EU GRAVEI ESSE VÍDEO UMA VEZ SÓ (Gancho em 3 linhas no topo)",
+    estetica: "Gancho Tipográfico 3 Linhas no Topo (Acendimento Progressivo #FFFFFF/#8E849E + Sublinhado Ondulado de Erro #FF3B5C)",
+    ritmo: "Impacto imediato 0.0s–3.0s com oclusão Z atrás da cabeça e onda corretiva SVG",
+    paleta: ["#120D18", "#FFFFFF", "#8E849E", "#FF3B5C"],
+    regex: /abre com um gancho|gancho forte na tela|primeira frase em letra grande|gancho grande no topo|gancho na tela|letra grande no alto/i,
+  },
+  {
+    id: "capa_revista_editorial",
+    layoutMode: "capa_revista_editorial",
+    canonicalCommand: "Deixa com cara de capa de revista",
+    gancho: "O vídeo inteiro editado por uma frase vira capa de revista",
+    estetica: "Capa de Revista Editorial GQ/Vogue (Verde Editorial Inglês #1A3C2A, Masthead Serifa 210px atrás da cabeça, Moldura Champanhe 48px e Código de Barras)",
+    ritmo: "Alternância fundo real emoldurado ↔ fundo sólido #1A3C2A nos picos de impacto",
+    paleta: ["#1A3C2A", "#F4F1EA", "#D4CEB8"],
+    regex: /cara de capa de revista|capa de revista|estilo revista|vira capa|revista editorial/i,
+  },
+  {
+    id: "orbita_split_screen",
+    layoutMode: "orbita_split_screen",
+    canonicalCommand: "Divide a tela: o vídeo em cima e eu reagindo embaixo",
+    gancho: "Olha o mural de cards que a IA montou em volta de mim",
+    estetica: "Split-Screen 50/50 (Y=960px) + Mural de Cards Flutuantes em Órbita no Topo + Legenda Cravada na Costura Central com Destaque #FF6B2B",
+    ritmo: "Reação dupla simultânea com entrada elástica de cards orbitais",
+    paleta: ["#0A0A0A", "#FFFFFF", "#FF6B2B", "#141413"],
+    regex: /divide a tela|tela dividida|vídeo em cima e eu reagindo embaixo|reagindo embaixo|em órbita|orbita ao meu redor|em volta de mim|mural de frases/i,
+  },
+  {
+    id: "onda_audio_corte",
+    layoutMode: "onda_audio_corte",
+    canonicalCommand: "Explica essa parte com uma animação",
+    gancho: "Você manda o bruto com pausa e gaguejada e a IA fatia tudo",
+    estetica: "Dark UI Motion Explicativo (#0A0806, Monitor de Waveform com Setas Manuscritas Vermelhas #FF4D4D apontando erro/gaguejada/pausa e Scanner Laranja #FF6B2B)",
+    ritmo: "Diagnóstico visual da onda bruta -> Varredura a laser suprimindo silêncios",
+    paleta: ["#0A0806", "#FF6B2B", "#FF4D4D", "#D6D3CD"],
+    regex: /explica essa parte com uma anima|onda do áudio|onda de áudio|corta as pausas|tira as pausas|última tomada|melhor tomada|waveform|bruto\.mov/i,
+  },
+  {
+    id: "palavra_impacto_atras",
+    layoutMode: "palavra_impacto_atras",
+    canonicalCommand: "Põe a frase forte atrás de mim",
+    gancho: "A frase forte entra gigante atrás de você sem cobrir o rosto",
+    estetica: "Tipografia Monumental Ocluída por Rotoscopia (Texto gigante Z=1 atrás da cabeça Z=2)",
+    ritmo: "Entrada cinética sincronizada com palavras de autoridade",
+    paleta: ["#0D0F12", "#FFFFFF", "#FF6B2B"],
+    regex: /frase forte atrás de mim|palavra de impacto atrás|texto grande atrás de mim|atrás da cabeça/i,
+  },
+];
+
+export function matchStyleCommand(briefing = "") {
+  const clean = String(briefing || "").trim();
+  if (!clean) return null;
+  for (const route of ONE_SENTENCE_STYLE_ROUTES) {
+    if (route.regex.test(clean)) {
+      return route;
+    }
+  }
+  return null;
+}
+
 export function inferDirectionProposal(briefing = '', options = {}) {
   const text = String(briefing).toLowerCase();
+  const matchedCommand = matchStyleCommand(briefing);
+  if (matchedCommand) {
+    return {
+      isCarousel: false,
+      slideCount: undefined,
+      gancho: matchedCommand.gancho,
+      estetica: matchedCommand.estetica,
+      ritmo: matchedCommand.ritmo,
+      paleta: matchedCommand.paleta,
+      layoutMode: matchedCommand.layoutMode,
+      matchedStyleCommand: matchedCommand.canonicalCommand,
+    };
+  }
   const isCarousel = /carrossel|carousel|4:5|editorial|slides/i.test(text);
 
   let gancho = 'Apresentar a verdade brutal do problema sem rodeios';
@@ -676,7 +754,13 @@ export function inferDirectionProposal(briefing = '', options = {}) {
     ritmo = 'Cortes secos a cada 1.2s + Takeover de tela inteira a 60 FPS';
     paleta = ['#08090C', '#00FF66', '#FF0022', '#FFFFFF'];
     layoutMode = 'full_bleed_terminal';
-  } else if (/finance|finan|dinheiro|invest|banco|gestão|caixa/i.test(text)) {
+  } else if (/vox|jornal|notícia|história|reportagem|documentário|geopolítica|investig|curiosidade|dados|política|guerra|fronteira|mapa|passado/i.test(text)) {
+    gancho = 'A história que os registros oficiais tentaram esconder';
+    estetica = 'Jornalismo Visual Documental VOX (Mapas Vintage, Recortes de Jornal, Marca-texto e Zero Neon)';
+    ritmo = 'Cadência documental explicativa a 30 FPS com mesa 2.5D e sound design analógico';
+    paleta = ['#F4F1EA', '#141413', '#D9381E', '#FFDE2E'];
+    layoutMode = 'vox_documentario';
+  } else if (/finance|finan|dinheiro|investir|investimento|investimentos|\binvest\b|banco|gestão|caixa/i.test(text)) {
     gancho = 'Você está perdendo dinheiro por falta de controle em tempo real';
     estetica = 'Fintech High-End (Obsidian Black, Esmeralda Glow e Tipografia Suíça)';
     ritmo = 'Transições com física de mola crítica e sound design haptic';
@@ -688,6 +772,7 @@ export function inferDirectionProposal(briefing = '', options = {}) {
     ritmo = 'Ritmo hipnótico e respiração com Auto-Ducking refinado';
     paleta = ['#09090B', '#D4AF37', '#FAFAFA'];
     layoutMode = 'editorial_luxo';
+
   } else if (/slop|genéric|ia|robô|ai/i.test(text)) {
     gancho = 'Cansado de vídeos de inteligência artificial sem alma?';
     estetica = 'Brutalismo Anti-Slop (Vermelho Ferrari, Tipografia Massiva e Tela Cheia)';

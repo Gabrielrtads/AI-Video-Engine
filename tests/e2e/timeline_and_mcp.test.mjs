@@ -115,8 +115,8 @@ describe('Vibe Design Studio: Timeline Math & MCP Tools', () => {
   });
 
   describe('Catálogo de Ferramentas MCP (Vibe Studio MCP Tools)', () => {
-    it('deve expor exatamente as 5 ferramentas canônicas recomendadas pela auditoria', () => {
-      assert.equal(VIBE_STUDIO_MCP_TOOLS.length, 5);
+    it('deve expor exatamente as 6 ferramentas canônicas recomendadas pela auditoria', () => {
+      assert.equal(VIBE_STUDIO_MCP_TOOLS.length, 6);
       const names = VIBE_STUDIO_MCP_TOOLS.map((t) => t.name);
       assert.deepEqual(names, [
         'vibe_project_setup',
@@ -124,6 +124,7 @@ describe('Vibe Design Studio: Timeline Math & MCP Tools', () => {
         'vibe_compose_timeline',
         'vibe_style_captions',
         'vibe_export_video',
+        'vibe_render_from_json',
       ]);
     });
 

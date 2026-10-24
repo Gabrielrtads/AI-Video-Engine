@@ -6,6 +6,20 @@ import {
   AnimatedBezierCurve,
   InteractiveMacCursor,
   AudioVisualizerBars,
+  HormoziKineticCaption,
+  RetentionProgressBar,
+  HormoziPunchZoom,
+  OrbitalPlanet3D,
+  VoxPaperStage,
+  NewspaperCutout,
+  VoxHighlighter,
+  HandDrawnMark,
+  VoxAnimatedMap,
+  VoxEditorialTypography,
+  BigHookTopBanner,
+  OrbitSplitScreenStage,
+  MagazineCoverStage,
+  AudioWaveformCutStage,
 } from '../components';
 import { FlowMotionMaster } from '../FlowMotionMaster';
 import { CarrosselEditorial } from '../CarrosselEditorial';
@@ -28,6 +42,26 @@ export const VIBE_COMPONENT_REGISTRY: Record<string, React.FC<any>> = {
   AnimatedBezierCurve,
   InteractiveMacCursor,
   AudioVisualizerBars,
+  OrbitalPlanet3D,
+
+  // Técnicas de Retenção & Tipografia Hormozi
+  HormoziKineticCaption,
+  RetentionProgressBar,
+  HormoziPunchZoom,
+
+  // Estilo VOX Documentário 2.5D
+  VoxPaperStage,
+  NewspaperCutout,
+  VoxHighlighter,
+  HandDrawnMark,
+  VoxAnimatedMap,
+  VoxEditorialTypography,
+
+  // Estilos Edit.IA Absorvidos (Um Pedido Pra Cada Estilo)
+  BigHookTopBanner,
+  OrbitSplitScreenStage,
+  MagazineCoverStage,
+  AudioWaveformCutStage,
 
   // Templates e Showcases Canônicos
   FlowMotionMaster,
@@ -58,27 +92,18 @@ export const RenderRegisteredComponent: React.FC<RenderRegisteredComponentProps>
           width: '100%',
           height: '100%',
           display: 'flex',
-          flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: 'rgba(239, 68, 68, 0.1)',
-          border: '2px dashed #EF4444',
-          borderRadius: 16,
+          border: '2px dashed rgba(239, 68, 68, 0.5)',
+          backgroundColor: 'rgba(239, 68, 68, 0.08)',
           color: '#EF4444',
-          fontFamily: 'Inter, monospace, sans-serif',
+          fontFamily: 'monospace',
+          fontSize: 16,
           padding: 24,
-          textAlign: 'center',
+          borderRadius: 12,
         }}
       >
-        <div style={{ fontSize: 24, fontWeight: 800, marginBottom: 8 }}>
-          ⚠️ Componente Não Registrado
-        </div>
-        <div style={{ fontSize: 16, color: '#FFFFFF', marginBottom: 4 }}>
-          Nome: <code style={{ color: '#FCA5A5' }}>{componentName}</code>
-        </div>
-        <div style={{ fontSize: 12, color: 'rgba(255, 255, 255, 0.6)' }}>
-          Disponíveis: {Object.keys(VIBE_COMPONENT_REGISTRY).join(', ')}
-        </div>
+        [Aviso: Componente &quot;{componentName}&quot; não encontrado no VIBE_COMPONENT_REGISTRY]
       </div>
     );
   }

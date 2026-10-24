@@ -7,7 +7,15 @@ export interface WordItem {
 	end: number; // tempo de término em segundos
 }
 
-export type CaptionPreset = 'gold-glow' | 'cyber-green' | 'apple-clean' | 'neon-crimson' | 'minimal-rourke';
+export type CaptionPreset =
+	| 'gold-glow'
+	| 'cyber-green'
+	| 'apple-clean'
+	| 'neon-crimson'
+	| 'minimal-rourke'
+	| 'hormozi-yellow'
+	| 'hormozi-cash'
+	| 'hormozi-alert';
 
 export interface KineticWordCaptionProps {
 	/** Array de palavras transcritas milissegundo a milissegundo (formato words.json do Whisper) */
@@ -75,6 +83,30 @@ const PRESET_CONFIGS: Record<
 		inactive: 'rgba(255, 255, 255, 0.25)',
 		bg: 'rgba(12, 14, 20, 0.88)',
 		border: '1.2px solid rgba(255, 255, 255, 0.16)',
+		font: FONT_SANS,
+	},
+	'hormozi-yellow': {
+		active: '#000000',
+		glow: 'rgba(255, 229, 0, 0.85)',
+		inactive: 'rgba(255, 255, 255, 0.6)',
+		bg: '#FFE500',
+		border: '2px solid #000000',
+		font: FONT_SANS,
+	},
+	'hormozi-cash': {
+		active: '#000000',
+		glow: 'rgba(0, 255, 102, 0.85)',
+		inactive: 'rgba(255, 255, 255, 0.6)',
+		bg: '#00FF66',
+		border: '2px solid #000000',
+		font: FONT_SANS,
+	},
+	'hormozi-alert': {
+		active: '#FFFFFF',
+		glow: 'rgba(255, 0, 60, 0.85)',
+		inactive: 'rgba(255, 255, 255, 0.6)',
+		bg: '#FF003C',
+		border: '2px solid #FFFFFF',
 		font: FONT_SANS,
 	},
 };

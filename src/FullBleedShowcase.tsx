@@ -485,7 +485,7 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 								✔ Motor Remotion + Whisper C++ injetado
 							</div>
 							<div style={{ color: MATRIX_GREEN, opacity: log2Opacity, transform: `translateY(${ci(log2Opacity, [0, 1], [8, 0])}px)` }}>
-								✔ 7 habilidades canônicas registradas
+								✔ 8 habilidades canônicas registradas
 							</div>
 							<div style={{ color: ELECTRIC_CYAN, opacity: log3Opacity, transform: `translateY(${ci(log3Opacity, [0, 1], [8, 0])}px)` }}>
 								✔ Studio compilado: localhost:3000 (0.6s)

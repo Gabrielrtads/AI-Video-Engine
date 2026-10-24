@@ -128,7 +128,7 @@ export const LiveTerminal: React.FC = () => {
 							</div>
 							<div style={{ color: '#10B981', display: 'flex', gap: 8 }}>
 								<span>✔</span>
-								<span>7 habilidades canônicas registradas no enxame</span>
+								<span>8 habilidades canônicas registradas no enxame</span>
 							</div>
 							<div style={{ color: '#38BDF8', display: 'flex', gap: 8 }}>
 								<span>✔</span>

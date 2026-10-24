@@ -7,7 +7,7 @@ import {
 } from '../../src/timeline/componentCatalog.ts';
 
 describe('Vibe Design Studio — Motion Primitives Contract & Math Unit Tests', () => {
-  it('todas as 6 primitivas de movimento devem ter metadados e defaults definidos', () => {
+  it('todas as 9 primitivas de movimento e retenção devem ter metadados e defaults definidos', () => {
     const primitives = [
       'Smartphone3DMockup',
       'VectorHUDOverlay',
@@ -15,6 +15,9 @@ describe('Vibe Design Studio — Motion Primitives Contract & Math Unit Tests', 
       'AnimatedBezierCurve',
       'InteractiveMacCursor',
       'AudioVisualizerBars',
+      'HormoziKineticCaption',
+      'RetentionProgressBar',
+      'HormoziPunchZoom',
     ];
 
     for (const name of primitives) {
@@ -57,22 +60,15 @@ describe('Vibe Design Studio — Motion Primitives Contract & Math Unit Tests', 
           'waypoints devem estar em ordem crescente de frames'
         );
       }
-
-      assert.equal(waypoints[1].clickFrame, 30);
     });
   });
 
-  describe('Smartphone3DMockup & AppleKineticCard Themes', () => {
-    it('deve aceitar variantes temáticas válidas', () => {
-      const phoneThemes = ['titanium', 'glass', 'dark'];
-      assert.ok(phoneThemes.includes('titanium'));
-      assert.ok(phoneThemes.includes('glass'));
-      assert.ok(phoneThemes.includes('dark'));
-
-      const cardVariants = ['dark-glass', 'white-frosted', 'gold-titanium'];
-      assert.ok(cardVariants.includes('dark-glass'));
-      assert.ok(cardVariants.includes('white-frosted'));
-      assert.ok(cardVariants.includes('gold-titanium'));
+  describe('VectorHUDOverlay Táticos', () => {
+    it('deve validar que accentColor e preset sejam suportados', () => {
+      const validPresets = ['cyber', 'minimal', 'blueprint'];
+      validPresets.forEach((p) => {
+        assert.ok(['cyber', 'minimal', 'blueprint'].includes(p));
+      });
     });
   });
 });

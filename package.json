@@ -23,12 +23,18 @@
     "render:mastered": "remotion render Video out/video.mp4 --codec=h264 --crf=16 && node scripts/masterizar_audio.mjs out/video.mp4 out/video_mastered.mp4",
     "masterizar": "node scripts/masterizar_audio.mjs",
     "narrar": "node scripts/narrar.mjs",
+    "criar:1click": "node scripts/pipeline_script_to_video.mjs",
+    "criar:1click:horizontal": "node scripts/pipeline_script_to_video.mjs --aspect=16:9",
+    "criar:1click:feed": "node scripts/pipeline_script_to_video.mjs --aspect=4:5",
     "lint:slop": "node scripts/lint-motion-slop.mjs",
     "review:frames": "node scripts/auto_revisar_frames.mjs",
     "bancada": "node scripts/produzir_video_bancada.mjs",
     "palavras": "node scripts/transcrever-palavras.mjs public/narracao.mp3 src/data/words.json pt",
     "check": "tsc -p .",
-    "test:unit": "node --test tests/unit/**/*.test.mjs"
+    "test:unit": "node --test \"tests/unit/**/*.test.mjs\"",
+    "test:e2e": "node --test \"tests/e2e/*.test.mjs\" \"tests/adversarial/*.test.mjs\"",
+    "test:py": "node scripts/run_py_tests.mjs",
+    "test": "pnpm run check && pnpm run test:unit && pnpm run test:e2e && pnpm run test:py"
   },
   "dependencies": {
     "@react-three/fiber": "8.17.10",
@@ -50,9 +56,8 @@
     "@types/three": "0.169.0",
     "typescript": "5.6.3"
   },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild"
-    ]
+  "packageManager": "pnpm@11.22.0",
+  "engines": {
+    "node": ">=24"
   }
 }
