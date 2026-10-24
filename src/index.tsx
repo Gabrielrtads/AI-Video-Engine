@@ -128,15 +128,7 @@ registerRoot(() => (
 			height={1920}
 		/>
 
-		{/* Core Motion Master Compositions */}
-		<Composition
-			id="FullBleedShowcase"
-			component={FullBleedRoot}
-			durationInFrames={900}
-			fps={FPS}
-			width={W}
-			height={H}
-		/>
+		{/* Core Motion Master Compositions (Video = vídeo principal de showcase, usado pelos scripts de render) */}
 		<Composition
 			id="Video"
 			component={FullBleedRoot}
@@ -206,14 +198,6 @@ registerRoot(() => (
 		/>
 
 		{/* Editorial Carousel Compositions (Instagram 4:5 - 1080x1350, 30fps) */}
-		<Composition
-			id="Slide01Capa"
-			component={Slide01Capa}
-			durationInFrames={120}
-			fps={30}
-			width={1080}
-			height={1350}
-		/>
 		<Composition
 			id="Slide02Diagnostico"
 			component={Slide02Diagnostico}
