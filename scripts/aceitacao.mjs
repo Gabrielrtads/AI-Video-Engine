@@ -8,7 +8,7 @@
  *   node scripts/aceitacao.mjs --placar [pasta-de-resultados]
  *
  * `--pular-permissoes`: o agy em modo não interativo nega todo comando de shell; esta flag liga o
- * --dangerously-skip-permissions dele. Use só aqui, no clone descartável em C:dsacc, e sabendo que o agente
+ * --dangerously-skip-permissions dele. Use só aqui, no clone descartável em C:\vdsacc, e sabendo que o agente
  * pode executar qualquer comando na máquina. Por isso exige ACEITACAO_ISOLADA=1 no ambiente e o repositório oficial.
  *
  * Cenários: carrossel, motion, roteiro. O agente roda pela CLI `agy` (veja `agy models`). Cada execução fica em
