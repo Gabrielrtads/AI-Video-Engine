@@ -386,8 +386,11 @@ describe('Tier 1: Feature Coverage (Features 1 to 11)', () => {
 		});
 	});
 
-	// =========================================================================
-	// Feature 7: Zero-RAM-Leak Frame Extraction (R2, Criteria)
+	// Feature 7 (Zero-RAM-Leak Frame Extraction): os testes que procuravam strings no código do
+	// amostrar_paleta.py foram trocados por testes de comportamento em
+	// tests/unit/amostrar_paleta_comportamento.test.mjs (espião de subprocess, bytes truncados,
+	// determinismo e console cp1252).
+
 	// =========================================================================
 	describe('Feature 7: Zero-RAM-Leak Frame Extraction', () => {
 		it('7.1: amostrar_paleta.py source strictly contains -vframes 1 argument', () => {
