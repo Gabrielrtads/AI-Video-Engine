@@ -1076,6 +1076,12 @@ const isDirectExecution = process.argv[1] && (
 if (isDirectExecution) {
   const reader = createQueuedLineReader(process.stdin);
   const writer = (msg) => process.stdout.write(typeof msg === 'string' ? msg : String(msg));
+  // process.exit() logo após stdout.write TRUNCA a saída quando stdout é um pipe no Linux/macOS (a escrita é
+  // assíncrona): o teste dos 100 prompts via pipe só recebia ~70. Define o código e deixa o Node esvaziar o buffer.
+  const encerrar = (codigo) => {
+    process.exitCode = codigo;
+    process.stdin.destroy();
+  };
 
   runOnboarding(reader, writer)
     .then((result) => {
@@ -1083,11 +1089,11 @@ if (isDirectExecution) {
       writer('✅ ONBOARDING CONCLUÍDO COM SUCESSO!\n');
       writer(JSON.stringify(result, null, 2) + '\n');
       reader.close();
-      process.exit(0);
+      encerrar(0);
     })
     .catch((err) => {
       writer(`\n❌ ERRO NO STUDIO ENGINE: ${err.message}\n`);
       reader.close();
-      process.exit(1);
+      encerrar(1);
     });
 }
