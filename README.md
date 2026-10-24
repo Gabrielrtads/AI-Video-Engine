@@ -205,16 +205,28 @@ node scripts/studio_engine.mjs
 
 ## 🚀 Quickstart
 
+### 0. Prerequisites
+
+The studio runs on your machine, so install these first (`pnpm vibe doctor` checks them and prints the fix for anything missing):
+
+- **Node.js 24+** and **pnpm** (`npm install -g pnpm`)
+- **FFmpeg** with libx264 and libmp3lame (`winget install Gyan.FFmpeg`, `brew install ffmpeg` or `apt install ffmpeg`)
+- **Python 3.10+** and its packages: `pip install -r requirements.txt` (numpy for palettes, edge-tts for the free neural voice)
+- Internet on the first run: Remotion downloads its headless Chromium, and whisper.cpp installs itself on the first transcription (on Linux/macOS it needs `make` and a C++ compiler)
+- On Windows keep the project in a **short path** (for example `C:\vds`): paths over 260 characters break the Remotion binary.
+
+> **License note:** this repository is MIT, but it renders with [Remotion](https://github.com/remotion-dev/remotion/blob/main/LICENSE.md), which is free for individuals, non-profits and for-profit companies with up to 3 employees. Larger for-profit companies need a Remotion company license.
+
 ### 1. Clone & Install
 
 ```bash
 git clone https://github.com/Gabrielrtads/vibe-design-studio.git
 cd vibe-design-studio
 pnpm install
+pip install -r requirements.txt
 pnpm setup:pastas   # creates the local folders (audio, input, out/...) - see docs/PASTAS.md
+pnpm vibe doctor    # checks everything above; `pnpm vibe ajuda` lists all commands
 ```
-
-> Keep the project in a short path (e.g. `C:ds`): on Windows, paths over 260 characters break the Remotion binary.
 
 ### 2. Generate Narration with 1-Click (Free Neural Voice)
 

@@ -1,7 +1,7 @@
 // Transcreve a narração e gera o tempo de CADA PALAVRA (base da legenda e de todo o timing do vídeo).
 // Usa whisper.cpp local via @remotion/install-whisper-cpp (instala na primeira execução).
 //
-// Uso:  node scripts/transcrever-palavras.mjs public/narracao.mp3 src/data/words.json [pt]
+// Uso:  node scripts/transcrever-palavras.mjs public/narracao.mp3 out/temp/words.json [pt]
 // Saída: [{ "text": "Sócrates", "start": 0.06, "end": 0.56 }, ...]  (segundos)
 import {installWhisperCpp, downloadWhisperModel, transcribe, toCaptions} from '@remotion/install-whisper-cpp';
 import {execFileSync} from 'node:child_process';
@@ -9,7 +9,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 
-const [input, output = 'src/data/words.json', language = 'pt'] = process.argv.slice(2);
+const [input, output = 'out/temp/words.json', language = 'pt'] = process.argv.slice(2);
 if (!input) {
 	console.error('Uso: node scripts/transcrever-palavras.mjs <audio> [saida.json] [idioma]');
 	process.exit(1);
