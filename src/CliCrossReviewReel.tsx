@@ -104,7 +104,7 @@ export const CliCrossReviewReel: React.FC = () => {
 	return (
 		<AbsoluteFill style={{ background: '#050608', overflow: 'hidden' }}>
 			{/* Áudio Oficial da Narração Neural sincronizada */}
-			<Audio src={staticFile('narracao_cli_review.mp3')} volume={1.0} />
+			<Audio src={staticFile('audio/locucao/narracao_cli_review.mp3')} volume={1.0} />
 
 			{/* ════════════════════════════════════════════════════════════════════
 			    CENA 1: AVATAR DE GABRIEL (0 a 405 frames) com Apple Camera Rig
@@ -123,7 +123,7 @@ export const CliCrossReviewReel: React.FC = () => {
 							}}
 						>
 							<OffthreadVideo
-								src={staticFile('avatar_hook_real.mp4')}
+								src={staticFile('video/avatar_hook_real.mp4')}
 								style={{
 									width: '100%',
 									height: '100%',

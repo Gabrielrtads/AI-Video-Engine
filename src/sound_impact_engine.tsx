@@ -20,12 +20,12 @@ export interface SoundImpactTrigger {
 }
 
 const SFX_MAP: Record<ImpactSoundType, string> = {
-	slam: 'audio/sub_impact_warm.mp3',
-	whoosh: 'audio/whoosh_zoom.mp3',
-	click: 'audio/click_haptic.mp3',
-	boom: 'audio/hud_boom.mp3',
-	digital: 'audio/transicao_digital.mp3',
-	final: 'audio/impacto_final.mp3',
+	slam: 'audio/sfx/sub_impact_warm.mp3',
+	whoosh: 'audio/sfx/whoosh_zoom.mp3',
+	click: 'audio/sfx/click_haptic.mp3',
+	boom: 'audio/sfx/hud_boom.mp3',
+	digital: 'audio/sfx/transicao_digital.mp3',
+	final: 'audio/sfx/impacto_final.mp3',
 };
 
 /**

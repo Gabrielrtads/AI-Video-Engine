@@ -15,7 +15,7 @@ export {
 };
 
 export interface AutoDuckingAudioProps {
-	/** Caminho ou URL do arquivo de áudio (ex: staticFile('audio/trilha_luxo.mp3')) */
+	/** Caminho ou URL do arquivo de áudio (ex: staticFile('audio/musica/trilha_luxo.mp3')) */
 	src: string;
 	/** Intervalos explícitos de fala em frames */
 	speechIntervals?: SpeechInterval[];

@@ -18,10 +18,13 @@ caracteres quebram o binário do Remotion.
 | Pasta | Vem no clone? | O que vai aqui |
 | --- | --- | --- |
 | `public/audio/` | sim (vazia) | Efeitos sonoros, trilhas e locuções que as composições chamam por `staticFile("audio/...")`. |
+| `public/audio/sfx/` | não, local | Efeitos sonoros curtos (cliques, whoosh, impactos). |
+| `public/audio/musica/` | não, local | Trilhas musicais. Costumam ter direitos autorais: nunca versione. |
+| `public/audio/locucao/` | não, local | Narrações geradas ou gravadas usadas pelas composições. |
 | `public/assets/` | não, local | Vídeos curtos de efeito (brilho, check) usados pelas composições. |
 | `public/input/` | sim (vazia) | Material bruto do vídeo atual (áudio do celular, takes), com nome ASCII, antes de processar. |
 | `public/marcas/` | não, local | Logos e fotos por marca ou cliente, uma subpasta por marca: `public/marcas/<marca>/`. |
-| `public/video/` | não, local | Takes e B-rolls de vídeo que as composições vão usar. |
+| `public/video/` | não, local | Takes, B-rolls e sequências de quadros que as composições vão usar. |
 | `out/videos/` | não, local | Vídeos finais renderizados e masterizados (-14 LUFS). Use `--saida out/videos/<nome>.mp4`. |
 | `out/stills/` | não, local | Quadros avulsos e folhas de contato para conferir o resultado. |
 | `out/carrosseis/` | não, local | Slides de carrossel exportados em imagem (4:5). |
@@ -33,6 +36,15 @@ caracteres quebram o binário do Remotion.
 
 "Vem no clone" significa que a pasta já existe depois do `git clone`. As outras são criadas por
 `pnpm setup:pastas` na primeira vez.
+
+## Nada solto na raiz de `public/`
+
+O código só chama mídia por essas pastas. A única exceção é `public/narracao.mp3`, a narração da rodada
+atual, que o pipeline 1-click sobrescreve a cada execução. Para conferir se tudo que o código chama existe:
+
+```bash
+pnpm assets:check        # lista o que falta (use --warn para só avisar)
+```
 
 ## Fora do projeto (opcional)
 

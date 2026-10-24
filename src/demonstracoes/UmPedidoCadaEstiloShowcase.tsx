@@ -60,7 +60,7 @@ export const UmPedidoCadaEstiloShowcase: React.FC = () => {
 					lines={['EU GRAVEI', 'ESSE VÍDEO', 'UMA VEZ SÓ']}
 					errorWords={['ERREI', 'GAGUEJEI']}
 					switchFrame={45}
-					videoSrc="gabriel_rotoscopiado.webm"
+					videoSrc="video/gabriel_rotoscopiado.webm"
 				/>
 				<CommandHudBadge
 					tag="ESTILO 01 · GANCHO"
@@ -75,8 +75,8 @@ export const UmPedidoCadaEstiloShowcase: React.FC = () => {
 					captionPrefix="e coloca eles "
 					captionHighlight="em volta"
 					captionSuffix=" de mim"
-					topVideoSrc="gabriel_rotoscopiado.webm"
-					bottomVideoSrc="gabriel_rotoscopiado.webm"
+					topVideoSrc="video/gabriel_rotoscopiado.webm"
+					bottomVideoSrc="video/gabriel_rotoscopiado.webm"
 				/>
 				<CommandHudBadge
 					tag="ESTILO 02 · ÓRBITA SPLIT"
@@ -93,7 +93,7 @@ export const UmPedidoCadaEstiloShowcase: React.FC = () => {
 					issueLine="Nº 01  ·  OUTUBRO 2026  ·  EDITADO PELO CLAUDE"
 					pillCaption="vira capa de revista."
 					solidGreenBackdrop={true}
-					videoSrc="gabriel_rotoscopiado.webm"
+					videoSrc="video/gabriel_rotoscopiado.webm"
 				/>
 			</Sequence>
 

@@ -35,7 +35,8 @@
     "test:e2e": "node --test \"tests/e2e/*.test.mjs\" \"tests/adversarial/*.test.mjs\"",
     "test:py": "node scripts/run_py_tests.mjs",
     "test": "pnpm run check && pnpm run test:unit && pnpm run test:e2e && pnpm run test:py",
-    "setup:pastas": "node scripts/preparar_pastas.mjs"
+    "setup:pastas": "node scripts/preparar_pastas.mjs",
+    "assets:check": "node scripts/check_assets.mjs"
   },
   "dependencies": {
     "@react-three/fiber": "8.17.10",

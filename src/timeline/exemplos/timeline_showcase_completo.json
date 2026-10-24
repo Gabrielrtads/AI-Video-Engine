@@ -49,7 +49,7 @@
       "trackId": "T_AUDIO",
       "kind": "audio",
       "name": "Trilha Sonora de Luxo",
-      "src": "audio/trilha_luxo.mp3",
+      "src": "audio/musica/trilha_luxo.mp3",
       "startFrame": 0,
       "durationInFrames": 450,
       "volume": 0.4

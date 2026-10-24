@@ -153,7 +153,7 @@ export interface FlowMotionMasterProps {
 }
 
 export const FlowMotionMaster: React.FC<FlowMotionMasterProps> = ({
-	audioNarracao = 'narracao_thalita.mp3',
+	audioNarracao = 'audio/locucao/narracao_thalita.mp3',
 	enableSfx = true,
 }) => {
 	const frame = useCurrentFrame();
@@ -948,47 +948,47 @@ export const FlowMotionMaster: React.FC<FlowMotionMasterProps> = ({
 				)}
 
 				{/* Trilha Lo-Fi Minimalista Tech (Batida Seca e Suave) */}
-				<Audio src={staticFile('audio/trilha_lofi.mp3')} volume={0.14} />
+				<Audio src={staticFile('audio/musica/trilha_lofi.mp3')} volume={0.14} />
 
 				{/* Efeitos Sonoros nas Transições de Demonstração (Persistência via Sequence) */}
 				{/* Beat 1 Whoosh Zoom */}
 				<Sequence from={2}>
-					<Audio src={staticFile('audio/whoosh_zoom.mp3')} volume={0.4} />
+					<Audio src={staticFile('audio/sfx/whoosh_zoom.mp3')} volume={0.4} />
 				</Sequence>
 
 				{/* Beat 2 Slam Stamp do Rejeitado por Slop */}
 				<Sequence from={90}>
-					<Audio src={staticFile('audio/hud_boom.mp3')} volume={0.55} />
+					<Audio src={staticFile('audio/sfx/hud_boom.mp3')} volume={0.55} />
 				</Sequence>
 
 				{/* Beat 3 Início do Terminal Mac */}
 				<Sequence from={165}>
-					<Audio src={staticFile('audio/futurista_click.mp3')} volume={0.35} />
+					<Audio src={staticFile('audio/sfx/futurista_click.mp3')} volume={0.35} />
 				</Sequence>
 
 				{/* Beat 4 Execução do Comando npX */}
 				<Sequence from={266}>
-					<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.4} />
+					<Audio src={staticFile('audio/sfx/click_haptic.mp3')} volume={0.4} />
 				</Sequence>
 
 				{/* Beat 5 Mola Apple Quicando */}
 				<Sequence from={335}>
-					<Audio src={staticFile('audio/sub_impact_warm.mp3')} volume={0.45} />
+					<Audio src={staticFile('audio/sfx/sub_impact_warm.mp3')} volume={0.45} />
 				</Sequence>
 
 				{/* Beat 6 Audio Console VU Meter */}
 				<Sequence from={480}>
-					<Audio src={staticFile('audio/whoosh_zoom.mp3')} volume={0.4} />
+					<Audio src={staticFile('audio/sfx/whoosh_zoom.mp3')} volume={0.4} />
 				</Sequence>
 
 				{/* Beat 7 Abertura do Leque 3D */}
 				<Sequence from={625}>
-					<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.4} />
+					<Audio src={staticFile('audio/sfx/click_haptic.mp3')} volume={0.4} />
 				</Sequence>
 
 				{/* Beat 8 Clique na Estrela do GitHub & Clímax */}
 				<Sequence from={754}>
-					<Audio src={staticFile('audio/impacto_final.mp3')} volume={0.65} />
+					<Audio src={staticFile('audio/sfx/impacto_final.mp3')} volume={0.65} />
 				</Sequence>
 			</>
 		);
