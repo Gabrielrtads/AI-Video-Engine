@@ -5,6 +5,8 @@
  */
 
 import type { WordItem } from './hormoziMath.ts';
+import { planScenes, resolveScenePlan } from './scenePlan.ts';
+import type { ScenePlanItem } from './scenePlan.ts';
 import type { TimelineState, TrackItem, ClipItem } from './types.ts';
 
 export type AspectRatio =
@@ -46,6 +48,8 @@ export interface Pipeline1ClickOptions {
   width?: number;
   height?: number;
   showEmojis?: boolean;
+  /** Plano do agente: escolhe o visual de cenas específicas (ver scenePlan.ts). */
+  planoDeCenas?: ScenePlanItem[];
 }
 
 /**
@@ -330,21 +334,6 @@ export function build1ClickTimelinePayload(options: Pipeline1ClickOptions): Time
     });
 
     // 3. Mockup 3D Central com dimensões proporcionais
-    clips.push({
-      id: 'clip_mockup_3d',
-      trackId: 'T_HERO',
-      kind: 'graphics',
-      componentName: 'Smartphone3DMockup',
-      startFrame: 0,
-      durationInFrames: totalFrames,
-      props: {
-        width: metrics.mockupWidth,
-        height: metrics.mockupHeight,
-        theme: 'titanium',
-        tiltIntensity: 0.5,
-      },
-    });
-
     // 4. Barra de Retenção Contínua no Topo
     clips.push({
       id: 'clip_retention_bar',
@@ -384,22 +373,6 @@ export function build1ClickTimelinePayload(options: Pipeline1ClickOptions): Time
   } else if (preset === 'editorial' || preset === 'keynote') {
     // Estilo Editorial / Keynote Luxo
     clips.push({
-      id: 'clip_apple_card',
-      trackId: 'T_HERO',
-      kind: 'graphics',
-      componentName: 'AppleKineticCard3D',
-      startFrame: 0,
-      durationInFrames: totalFrames,
-      props: {
-        title: preset === 'keynote' ? 'Keynote Widescreen' : 'Editorial Showcase',
-        badge: metrics.standardRatio === '16:9' ? '4K CINEMATIC' : 'APPLE KINETIC',
-        width: metrics.cardWidth,
-        height: metrics.cardHeight,
-        variant: 'dark-glass',
-      },
-    });
-
-    clips.push({
       id: 'clip_retention_bar',
       trackId: 'T_RETENTION',
       kind: 'graphics',
@@ -436,19 +409,6 @@ export function build1ClickTimelinePayload(options: Pipeline1ClickOptions): Time
   } else {
     // Preset Tech / Terminal
     clips.push({
-      id: 'clip_tech_curve',
-      trackId: 'T_HERO',
-      kind: 'graphics',
-      componentName: 'AnimatedBezierCurve',
-      startFrame: 0,
-      durationInFrames: totalFrames,
-      props: {
-        strokeColor: '#38BDF8',
-        fillGradient: true,
-      },
-    });
-
-    clips.push({
       id: 'clip_retention_bar',
       trackId: 'T_RETENTION',
       kind: 'graphics',
@@ -481,6 +441,23 @@ export function build1ClickTimelinePayload(options: Pipeline1ClickOptions): Time
         fontSize: metrics.captionFontSize,
         bottom: metrics.captionBottom,
       },
+    });
+  }
+
+  // Visual de cada frase do roteiro (nenhum texto de demonstração): padrão do preset ou o plano do agente
+  const cenas = planScenes(words, fps, totalFrames);
+  for (const spec of resolveScenePlan(cenas, options.planoDeCenas, preset)) {
+    const geometria: Record<string, unknown> = {};
+    if (spec.padrao && spec.componentName === 'Smartphone3DMockup') Object.assign(geometria, { width: metrics.mockupWidth, height: metrics.mockupHeight, theme: 'titanium', tiltIntensity: 0.5 });
+    if (spec.padrao && spec.componentName === 'AppleKineticCard3D') Object.assign(geometria, { width: metrics.cardWidth, height: metrics.cardHeight });
+    clips.push({
+      id: `clip_hero_${spec.indice}`,
+      trackId: 'T_HERO',
+      kind: 'graphics',
+      componentName: spec.componentName,
+      startFrame: spec.startFrame,
+      durationInFrames: spec.durationInFrames,
+      props: { ...geometria, ...spec.props },
     });
   }
 

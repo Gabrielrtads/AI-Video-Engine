@@ -152,7 +152,7 @@ export const AppleKineticCard3D: React.FC<AppleKineticCard3DProps> = ({
               fontWeight: 700,
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
-              display: 'flex',
+              display: badge === '' ? 'none' : 'flex',
               alignItems: 'center',
               gap: 8,
               border: '1px solid rgba(255, 255, 255, 0.1)',
