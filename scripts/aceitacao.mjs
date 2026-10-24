@@ -7,6 +7,10 @@
  *   node scripts/aceitacao.mjs --modelo gemini-3.8-flash-high --cenario motion [--repo <url|pasta>] [--tempo 25m]
  *   node scripts/aceitacao.mjs --placar [pasta-de-resultados]
  *
+ * `--pular-permissoes`: o agy em modo não interativo nega todo comando de shell; esta flag liga o
+ * --dangerously-skip-permissions dele. Use só aqui, no clone descartável em C:dsacc, e sabendo que o agente
+ * pode executar qualquer comando na máquina. Por isso exige ACEITACAO_ISOLADA=1 no ambiente e o repositório oficial.
+ *
  * Cenários: carrossel, motion, roteiro. O agente roda pela CLI `agy` (veja `agy models`). Cada execução fica em
  * <base>/<data>-<modelo>-<cenario>/ (clone, resposta, resultado.json e cópia dos arquivos gerados). A base é
  * C:\vdsacc no Windows (caminho curto: o Remotion quebra acima de 260 caracteres) ou <tmp>/vdsacc.
@@ -18,7 +22,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
-import { AVALIADORES, CENARIOS, detectarCota, lerBrief, montarArgsAgy, montarPrompt, placar } from './aceitacao_lib.mjs';
+import { AVALIADORES, CENARIOS, detectarCota, exigirIsolamento, lerBrief, montarArgsAgy, montarPrompt, placar } from './aceitacao_lib.mjs';
 
 const REPO_PADRAO = 'https://github.com/Gabrielrtads/vibe-design-studio.git';
 export const BASE = process.platform === 'win32' ? 'C:\\vdsacc' : path.join(os.tmpdir(), 'vdsacc');
@@ -43,7 +47,8 @@ function copiarArtefatos(clone, destino) {
 	return copiados;
 }
 
-export function executar({ modelo, cenario, repo = REPO_PADRAO, tempo = '25m' }) {
+export function executar({ modelo, cenario, repo = REPO_PADRAO, tempo = '25m', pularPermissoes = false }) {
+	exigirIsolamento({ pularPermissoes, repo });
 	if (!CENARIOS[cenario]) throw new Error(`Cenário desconhecido: ${cenario}. Use: ${Object.keys(CENARIOS).join(', ')}`);
 	const carimbo = new Date().toISOString().replace(/[-:T]/g, '').slice(0, 12);
 	const pasta = path.join(BASE, `${carimbo}-${modelo}-${cenario}`);
@@ -57,13 +62,18 @@ export function executar({ modelo, cenario, repo = REPO_PADRAO, tempo = '25m' })
 
 	const prompt = montarPrompt(lerBrief(cenario));
 	const inicio = Date.now();
-	const agente = spawnSync('agy', montarArgsAgy({ modelo, prompt, tempoLimite: tempo }), { cwd: clone, encoding: 'utf8', timeout: 35 * 60 * 1000, maxBuffer: 64 * 1024 * 1024 });
+	const agente = spawnSync('agy', montarArgsAgy({ modelo, prompt, tempoLimite: tempo, pularPermissoes }), { cwd: clone, encoding: 'utf8', timeout: 35 * 60 * 1000, maxBuffer: 64 * 1024 * 1024 });
 	const segundos = Math.round((Date.now() - inicio) / 1000);
 	const saida = `${agente.stdout ?? ''}\n${agente.stderr ?? ''}`;
 	fs.writeFileSync(path.join(pasta, 'resposta_agente.txt'), saida);
 
 	let resposta = '';
-	try { resposta = JSON.parse(agente.stdout).response ?? ''; } catch { resposta = saida.slice(-1500); }
+	let negadas = [];
+	try {
+		const j = JSON.parse(agente.stdout);
+		resposta = j.response ?? '';
+		negadas = j.denied_actions ?? [];
+	} catch { resposta = saida.slice(-1500); }
 
 	const cota = detectarCota(saida);
 	const status = spawnSync('git', ['status', '--porcelain'], { cwd: clone, encoding: 'utf8' }).stdout.split('\n').filter(Boolean);
@@ -71,7 +81,7 @@ export function executar({ modelo, cenario, repo = REPO_PADRAO, tempo = '25m' })
 	const julgamento = cota.bloqueado ? { ok: false, checagens: [{ id: 'cota', ok: false, mensagem: `agente bloqueado por limite de uso: ${cota.trecho}` }] } : AVALIADORES[cenario](clone, CENARIOS[cenario].esperado);
 
 	const copiados = copiarArtefatos(clone, pasta);
-	const resultado = { modelo, cenario, repo, segundos, bloqueadoPorCota: cota.bloqueado, ok: julgamento.ok, checagens: julgamento.checagens, usouVibe: /pnpm vibe/.test(saida), mexeuNoCodigo, respostaFinal: resposta, artefatos: copiados, pasta };
+	const resultado = { modelo, cenario, repo, segundos, bloqueadoPorCota: cota.bloqueado, ok: julgamento.ok, checagens: julgamento.checagens, usouVibe: /pnpm vibe/.test(saida), acoesNegadas: negadas, mexeuNoCodigo, respostaFinal: resposta, artefatos: copiados, pasta };
 	fs.writeFileSync(path.join(pasta, 'resultado.json'), JSON.stringify(resultado, null, 2));
 	return resultado;
 }
@@ -89,6 +99,8 @@ function main() {
 		console.log(JSON.stringify(placar(lerResultados(base)), null, 2));
 		return;
 	}
+	const pularPermissoes = args.includes('--pular-permissoes');
+	if (pularPermissoes) args.splice(args.indexOf('--pular-permissoes'), 1);
 	const modelo = opt('--modelo', null);
 	const cenario = opt('--cenario', null);
 	if (!modelo || !cenario) {
@@ -97,9 +109,10 @@ function main() {
 		return;
 	}
 	try {
-		const r = executar({ modelo, cenario, repo: opt('--repo', REPO_PADRAO), tempo: opt('--tempo', '25m') });
+		const r = executar({ modelo, cenario, repo: opt('--repo', REPO_PADRAO), tempo: opt('--tempo', '25m'), pularPermissoes });
 		console.log(`\n${r.ok ? '✅ PASSOU' : '❌ FALHOU'}: ${modelo} / ${cenario} em ${r.segundos}s${r.bloqueadoPorCota ? ' (BLOQUEADO POR COTA)' : ''}`);
 		for (const c of r.checagens) console.log(`  ${c.ok ? '✓' : '✗'} ${c.id}: ${c.mensagem}`);
+		if (r.acoesNegadas.length) console.log(`  ⚠ ${r.acoesNegadas.length} ação(ões) negada(s) por permissão (regra faltando em permissions.allow?)`);
 		console.log(`  usou pnpm vibe: ${r.usouVibe ? 'sim' : 'NÃO'}; mexeu no código do estúdio: ${r.mexeuNoCodigo.length ? r.mexeuNoCodigo.join(', ') : 'não'}`);
 		console.log(`  resposta final do agente (não vale como prova): ${r.respostaFinal.slice(0, 300).replace(/\s+/g, ' ')}`);
 		console.log(`  tudo em: ${r.pasta}`);

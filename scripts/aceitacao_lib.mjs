@@ -29,8 +29,24 @@ export function montarPrompt(brief) {
 	return `Você está no repositório vibe-design-studio. Atenda ao pedido do usuário abaixo e, ao terminar, diga onde ficaram os arquivos.\n\nPedido do usuário:\n${brief}`;
 }
 
-export function montarArgsAgy({ modelo, prompt, tempoLimite = '25m' }) {
-	return ['--print', prompt, '--model', modelo, '--mode', 'accept-edits', '--output-format', 'json', '--print-timeout', tempoLimite];
+/** Em modo não interativo o agy nega todo comando de shell. `pularPermissoes` liga a flag dele que aprova tudo: só para o clone descartável da aceitação. */
+export function montarArgsAgy({ modelo, prompt, tempoLimite = '25m', pularPermissoes = false }) {
+	const args = ['--print', prompt, '--model', modelo, '--mode', 'accept-edits', '--output-format', 'json', '--print-timeout', tempoLimite];
+	if (pularPermissoes) args.push('--dangerously-skip-permissions');
+	return args;
+}
+
+export const REPO_CONFIAVEL = 'https://github.com/Gabrielrtads/vibe-design-studio.git';
+
+/**
+ * Pular permissões deixa o agente rodar qualquer comando na máquina. Só com confirmação explícita de quem roda
+ * (ACEITACAO_ISOLADA=1, "sei que o agente não está isolado e aceito") e só com o repositório confiável, para um
+ * clone de terceiros não virar execução de código arbitrário.
+ */
+export function exigirIsolamento({ pularPermissoes, repo, env = process.env }) {
+	if (!pularPermissoes) return;
+	if (env.ACEITACAO_ISOLADA !== '1') throw new Error('--pular-permissoes exige ACEITACAO_ISOLADA=1 no ambiente: o agente poderá rodar qualquer comando nesta máquina. Confirme conscientemente.');
+	if (repo !== REPO_CONFIAVEL) throw new Error(`--pular-permissoes só vale com o repositório confiável (${REPO_CONFIAVEL}), não com ${repo}.`);
 }
 
 export function detectarCota(saida) {

@@ -32,12 +32,19 @@ Também fica registrado, sem entrar na nota: se o agente usou `pnpm vibe` e se m
 - O que o agente diz ("pronto", "ficou lindo") não vale. Só os portões e a folha de contato, que uma pessoa precisa olhar.
 - Gosto é subjetivo: os portões são o piso medido; a nota final vem de uma pessoa olhando as imagens.
 
+## Permissões do agy em modo headless (verificado na doc oficial em 24/10/2026)
+
+O `agy -p` nega todo comando de shell sem aviso (resposta vazia, `denied_actions` no JSON). A regra vai em
+`~/.gemini/antigravity-cli/settings.json`, lista `permissions.allow`, no formato `command(prefixo)` (palavra por palavra) ou
+`command(regex:padrão)` (necessário para comandos compostos no PowerShell). Regras dentro do projeto não são lidas e
+`--mode auto` não existe em todas as contas. Regras mínimas que bastaram: `command(regex:pnpm vibe.*)`,
+`command(regex:node scripts/.*)`, `command(regex:ls.*)`, `command(regex:cat .*)`. Remova-as depois do benchmark.
+`--pular-permissoes` (--dangerously-skip-permissions) existe, mas só roda com `ACEITACAO_ISOLADA=1` e o repositório oficial.
+
 ## Estado conhecido (24/10/2026)
 
 - A parte pura (portões, argumentos, placar) tem testes: `tests/unit/aceitacao_lib.test.mjs`.
-- **Ainda não rodou de ponta a ponta.** A primeira execução com o `agy` mostrou que, em modo não interativo, ele recusa
-  qualquer comando de shell ("a tool required the command permission that headless mode cannot prompt for") e a resposta
-  vem vazia. Falta descobrir onde o `agy` lê a regra `permissions.allow` (o `settings.json` do usuário só tem `mcpServers`);
-  `--dangerously-skip-permissions` existe, mas libera tudo na máquina e não deve ser usado sem decisão do dono da máquina.
+- Primeira execução real (Gemini 3.8 Flash alto, motion): o agente leu o SKILL.md, rodou `pnpm vibe doctor` e foi barrado ao
+  tentar `pnpm setup:pastas`, que o próprio doctor sugeria. Achado real, corrigido: doctor, preparar_pastas e AGENTS.md
+  agora mandam para `pnpm vibe pastas`, o caminho único.
 - Cenário `reel-gravacao` (reel com a gravação do usuário) ainda não existe aqui: precisa de um vídeo de teste.
-- O `agy` bateu no limite de uso logo depois da primeira tentativa; as próximas execuções esperam a cota voltar.

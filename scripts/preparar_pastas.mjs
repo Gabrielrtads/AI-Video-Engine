@@ -74,7 +74,7 @@ function main() {
       console.log('Todas as pastas do estúdio existem.');
       return;
     }
-    console.log('Faltam estas pastas (rode `pnpm setup:pastas`):');
+    console.log('Faltam estas pastas (rode `pnpm vibe pastas`):');
     for (const c of faltando) console.log(`  - ${c}/`);
     process.exit(1);
   }
