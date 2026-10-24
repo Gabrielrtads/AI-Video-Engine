@@ -44,3 +44,9 @@ test('espelhamento de saída é opt-in (sem pasta fixa do dono)', () => {
   assert.match(src, /VIBE_SYNC_DIR/, 'pasta de espelhamento deve vir de VIBE_SYNC_DIR ou --sync-dir');
   assert.match(src, /syncDir\s*=\s*(?:options\.)?(?:null|undefined|process\.env)/, 'sync desligado por padrão');
 });
+
+test('pipeline 1-click grava arquivos gerados em out/temp, nunca em src/data (que tem dados versionados)', () => {
+  const src = fs.readFileSync(path.join(root, 'scripts', 'pipeline_script_to_video.mjs'), 'utf8');
+  assert.ok(!/src\/data\/(words|timeline_1click)\.json/.test(src), 'não grave words.json/timeline_1click.json em src/data');
+  assert.match(src, /out\/temp/);
+});

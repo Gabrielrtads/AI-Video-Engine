@@ -34,6 +34,7 @@ import {
   build1ClickTimelinePayload,
   resolveAspectRatioMetrics,
 } from '../src/timeline/pipeline1ClickMath.ts';
+import { alignScriptToTimestamps } from '../src/timeline/scriptAlignment.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -91,7 +92,11 @@ export async function runScriptToVideoPipeline(text, options = {}) {
 
   // 3. TRANSCRIÇÃO DE PALAVRAS (WHISPER CPP OU ESTIMADOR FONÉTICO)
   console.log(`[Passo 3/6] Sincronizando timestamps palavra por palavra...`);
-  const wordsJsonPath = path.resolve(PROJECT_ROOT, 'src/data/words.json');
+  // Arquivos gerados ficam em out/temp. Gravar nos dados versionados de src/ sobrescrevia as palavras que
+  // CliCrossReviewReel, GenHqReel e AppleCameraRig importam.
+  const tempDir = path.resolve(PROJECT_ROOT, 'out/temp');
+  fs.mkdirSync(tempDir, { recursive: true });
+  const wordsJsonPath = path.join(tempDir, 'words_1click.json');
   let words = [];
 
   // Tenta rodar Whisper local
@@ -107,6 +112,13 @@ export async function runScriptToVideoPipeline(text, options = {}) {
       if (trResult.status === 0 && fs.existsSync(wordsJsonPath)) {
         words = JSON.parse(fs.readFileSync(wordsJsonPath, 'utf8'));
         console.log(`✨ Whisper concluído: ${words.length} palavras com timestamps exatos.`);
+        // A legenda mostra o texto do roteiro (o Whisper só empresta o tempo de cada palavra).
+        const alinhadas = alignScriptToTimestamps(text, words);
+        if (alinhadas.length > 0) {
+          const trocadas = alinhadas.filter((a, i) => a.text.replace(/[^p{L}p{N}]/gu, '').toLowerCase() !== String(words[i]?.text ?? '').replace(/[^p{L}p{N}]/gu, '').toLowerCase()).length;
+          words = alinhadas;
+          console.log(`🔤 Legenda alinhada ao roteiro: ${words.length} palavras (${trocadas} diferentes do que o Whisper ouviu).`);
+        }
       }
     }
   } catch (wErr) {
@@ -135,9 +147,9 @@ export async function runScriptToVideoPipeline(text, options = {}) {
     showEmojis: true,
   });
 
-  const timelineJsonPath = path.resolve(PROJECT_ROOT, 'src/data/timeline_1click.json');
+  const timelineJsonPath = path.join(tempDir, 'timeline_1click.json');
   fs.writeFileSync(timelineJsonPath, JSON.stringify({ timeline: timelinePayload }, null, 2));
-  console.log(`📄 Timeline gravada: src/data/timeline_1click.json (${timelinePayload.durationInFrames} frames)`);
+  console.log(`📄 Timeline gravada: out/temp/timeline_1click.json (${timelinePayload.durationInFrames} frames)`);
 
   // 5. RENDERIZAÇÃO HEADLESS REMOTION
   console.log(`[Passo 5/6] Renderizando vídeo headless em Remotion (${metrics.width}x${metrics.height})...`);
