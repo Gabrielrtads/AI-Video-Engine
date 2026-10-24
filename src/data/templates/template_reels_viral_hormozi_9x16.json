@@ -1,0 +1,183 @@
+{
+  "timeline": {
+    "fps": 30,
+    "width": 1080,
+    "height": 1920,
+    "durationInFrames": 165,
+    "currentFrame": 0,
+    "tracks": [
+      {
+        "id": "T_AUDIO",
+        "kind": "audio",
+        "name": "Voiceover Audio",
+        "volume": 1,
+        "zIndex": 0
+      },
+      {
+        "id": "T_BG",
+        "kind": "graphics",
+        "name": "Background FX",
+        "zIndex": 10
+      },
+      {
+        "id": "T_HERO",
+        "kind": "graphics",
+        "name": "Hero Motion Element",
+        "zIndex": 20
+      },
+      {
+        "id": "T_RETENTION",
+        "kind": "graphics",
+        "name": "Retention Progress",
+        "zIndex": 80
+      },
+      {
+        "id": "T_CAPTIONS",
+        "kind": "graphics",
+        "name": "Kinetic Captions",
+        "zIndex": 90
+      }
+    ],
+    "clips": [
+      {
+        "id": "clip_voiceover",
+        "trackId": "T_AUDIO",
+        "kind": "audio",
+        "src": "public/narracao.mp3",
+        "startFrame": 0,
+        "durationInFrames": 165,
+        "volume": 1
+      },
+      {
+        "id": "clip_bg_hud",
+        "trackId": "T_BG",
+        "kind": "graphics",
+        "componentName": "VectorHUDOverlay",
+        "startFrame": 0,
+        "durationInFrames": 165,
+        "props": {
+          "preset": "cyber",
+          "accentColor": "#38BDF8",
+          "showGrid": true
+        }
+      },
+      {
+        "id": "clip_mockup_3d",
+        "trackId": "T_HERO",
+        "kind": "graphics",
+        "componentName": "Smartphone3DMockup",
+        "startFrame": 0,
+        "durationInFrames": 165,
+        "props": {
+          "width": 380,
+          "height": 740,
+          "theme": "titanium",
+          "tiltIntensity": 0.5
+        }
+      },
+      {
+        "id": "clip_retention_bar",
+        "trackId": "T_RETENTION",
+        "kind": "graphics",
+        "componentName": "RetentionProgressBar",
+        "startFrame": 0,
+        "durationInFrames": 165,
+        "props": {
+          "position": "top",
+          "height": 10,
+          "gradient": [
+            "#FFE500",
+            "#FF003C"
+          ],
+          "showGlow": true
+        }
+      },
+      {
+        "id": "clip_hormozi_captions",
+        "trackId": "T_CAPTIONS",
+        "kind": "graphics",
+        "componentName": "HormoziKineticCaption",
+        "startFrame": 0,
+        "durationInFrames": 165,
+        "props": {
+          "words": [
+            {
+              "text": "Se",
+              "start": 0.2,
+              "end": 0.34
+            },
+            {
+              "text": "você",
+              "start": 0.34,
+              "end": 0.62
+            },
+            {
+              "text": "quer",
+              "start": 0.62,
+              "end": 0.91
+            },
+            {
+              "text": "faturar",
+              "start": 0.91,
+              "end": 1.4
+            },
+            {
+              "text": "alto,",
+              "start": 1.4,
+              "end": 1.93
+            },
+            {
+              "text": "pare",
+              "start": 1.93,
+              "end": 2.22
+            },
+            {
+              "text": "de",
+              "start": 2.22,
+              "end": 2.36
+            },
+            {
+              "text": "cometer",
+              "start": 2.36,
+              "end": 2.85
+            },
+            {
+              "text": "esses",
+              "start": 2.85,
+              "end": 3.21
+            },
+            {
+              "text": "erros",
+              "start": 3.21,
+              "end": 3.56
+            },
+            {
+              "text": "bobos",
+              "start": 3.56,
+              "end": 3.92
+            },
+            {
+              "text": "hoje",
+              "start": 3.92,
+              "end": 4.2
+            },
+            {
+              "text": "mesmo.",
+              "start": 4.2,
+              "end": 4.8
+            }
+          ],
+          "variant": "classic-yellow",
+          "highlightStyle": "box",
+          "motionIntensity": "standard",
+          "windowSize": 1,
+          "showEmojis": true,
+          "textTransform": "uppercase",
+          "fontSize": 70,
+          "bottom": 420
+        }
+      }
+    ],
+    "selectedClipIds": []
+  }
+}

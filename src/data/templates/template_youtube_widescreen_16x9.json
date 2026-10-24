@@ -1,0 +1,171 @@
+{
+  "timeline": {
+    "fps": 30,
+    "width": 1920,
+    "height": 1080,
+    "durationInFrames": 195,
+    "currentFrame": 0,
+    "tracks": [
+      {
+        "id": "T_AUDIO",
+        "kind": "audio",
+        "name": "Voiceover Audio",
+        "volume": 1,
+        "zIndex": 0
+      },
+      {
+        "id": "T_BG",
+        "kind": "graphics",
+        "name": "Background FX",
+        "zIndex": 10
+      },
+      {
+        "id": "T_HERO",
+        "kind": "graphics",
+        "name": "Hero Motion Element",
+        "zIndex": 20
+      },
+      {
+        "id": "T_RETENTION",
+        "kind": "graphics",
+        "name": "Retention Progress",
+        "zIndex": 80
+      },
+      {
+        "id": "T_CAPTIONS",
+        "kind": "graphics",
+        "name": "Kinetic Captions",
+        "zIndex": 90
+      }
+    ],
+    "clips": [
+      {
+        "id": "clip_voiceover",
+        "trackId": "T_AUDIO",
+        "kind": "audio",
+        "src": "public/narracao.mp3",
+        "startFrame": 0,
+        "durationInFrames": 195,
+        "volume": 1
+      },
+      {
+        "id": "clip_apple_card",
+        "trackId": "T_HERO",
+        "kind": "graphics",
+        "componentName": "AppleKineticCard3D",
+        "startFrame": 0,
+        "durationInFrames": 195,
+        "props": {
+          "title": "Keynote Widescreen",
+          "badge": "4K CINEMATIC",
+          "width": 640,
+          "height": 380,
+          "variant": "dark-glass"
+        }
+      },
+      {
+        "id": "clip_retention_bar",
+        "trackId": "T_RETENTION",
+        "kind": "graphics",
+        "componentName": "RetentionProgressBar",
+        "startFrame": 0,
+        "durationInFrames": 195,
+        "props": {
+          "position": "top",
+          "height": 6,
+          "gradient": [
+            "#38BDF8",
+            "#818CF8"
+          ],
+          "showGlow": true
+        }
+      },
+      {
+        "id": "clip_editorial_captions",
+        "trackId": "T_CAPTIONS",
+        "kind": "graphics",
+        "componentName": "HormoziKineticCaption",
+        "startFrame": 0,
+        "durationInFrames": 195,
+        "props": {
+          "words": [
+            {
+              "text": "O",
+              "start": 0.2,
+              "end": 0.28
+            },
+            {
+              "text": "futuro",
+              "start": 0.28,
+              "end": 0.78
+            },
+            {
+              "text": "do",
+              "start": 0.78,
+              "end": 0.94
+            },
+            {
+              "text": "design",
+              "start": 0.94,
+              "end": 1.44
+            },
+            {
+              "text": "não",
+              "start": 1.44,
+              "end": 1.68
+            },
+            {
+              "text": "é",
+              "start": 1.68,
+              "end": 1.76
+            },
+            {
+              "text": "estático.",
+              "start": 1.76,
+              "end": 2.71
+            },
+            {
+              "text": "É",
+              "start": 2.71,
+              "end": 2.79
+            },
+            {
+              "text": "código",
+              "start": 2.79,
+              "end": 3.29
+            },
+            {
+              "text": "vivo",
+              "start": 3.29,
+              "end": 3.62
+            },
+            {
+              "text": "e",
+              "start": 3.62,
+              "end": 3.7
+            },
+            {
+              "text": "inteligência",
+              "start": 3.7,
+              "end": 4.69
+            },
+            {
+              "text": "artificial.",
+              "start": 4.69,
+              "end": 5.8
+            }
+          ],
+          "variant": "dark-glass",
+          "highlightStyle": "pill",
+          "motionIntensity": "subtle",
+          "windowSize": 2,
+          "showEmojis": false,
+          "textTransform": "none",
+          "fontSize": 46,
+          "bottom": 110
+        }
+      }
+    ],
+    "selectedClipIds": []
+  }
+}

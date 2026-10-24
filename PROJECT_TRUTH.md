@@ -32,7 +32,7 @@ projects/vibe-design-studio/
 │   ├── index.tsx                 # Root do Remotion (registerRoot)
 │   ├── CarrosselEditorial.tsx    # Componente 4:5 com SVG iridescente
 │   ├── habilidades/
-│   │   └── catalogo_habilidades.json # Catálogo das 7 habilidades
+│   │   └── catalogo_habilidades.json # Catálogo das 8 habilidades
 │   └── templates/
 │       └── catalogo_templates.json   # Biblioteca de templates validados
 └── tests/

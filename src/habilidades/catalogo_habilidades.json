@@ -40,5 +40,11 @@
     "nome": "Sound Design e Foley de Baixa Intrusão",
     "descricao": "Efeitos sonoros sincronizados com batidas e transições, mantidos abaixo de 0.45 para não sobrepor a voz humana.",
     "arquivo": "src/sound_impact_engine.tsx"
+  },
+  {
+    "id": "vox_documentary_motion",
+    "nome": "Jornalismo Visual & Cartografia 2.5D Estilo VOX",
+    "descricao": "Mesa editorial em papel texturizado, recortes de jornal com borda rasgada procedural, marca-texto animado, marcas de caneta vermelha e atlas cartográfico vetorial.",
+    "arquivo": "src/components/vox/VoxKit.tsx"
   }
 ]

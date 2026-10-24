@@ -9,18 +9,29 @@
  * - Child process timeouts, memory bounds, and zero unhandled rejections
  */
 
-import { test, describe } from 'node:test';
+import { test, describe, after } from 'node:test';
 import assert from 'node:assert';
 import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { execSync } from 'node:child_process';
+import { makeFixtureImage } from '../e2e/helpers.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const ENGINE_ROOT = path.resolve(__dirname, '..', '..');
 const PIPELINE_SCRIPT_PATH = path.join(ENGINE_ROOT, 'scripts', 'pipeline_referencia.mjs');
+const fixtureDirs = [];
+after(() => {
+  for (const dir of fixtureDirs) fs.rmSync(dir, { recursive: true, force: true });
+});
+
+function createFixture(ext, dimensions) {
+  const fixture = makeFixtureImage(ext, dimensions);
+  fixtureDirs.push(fixture.dir);
+  return fixture;
+}
 
 // Dynamically import module under test using pathToFileURL for Windows compatibility
 const pipelineModule = await import(pathToFileURL(PIPELINE_SCRIPT_PATH).href);
@@ -339,8 +350,7 @@ describe('🥊 M2 Adversarial Challenge 2: Path Injection & Security Attacks', (
 describe('🥊 M2 Adversarial Challenge 3: Real Extraction Against Valid Images', () => {
 
   test('3.1 Extraction on out/contact-sheet.jpg meets complete interface contract', async () => {
-    const contactSheetPath = path.join(ENGINE_ROOT, 'out', 'contact-sheet.jpg');
-    assert.ok(fs.existsSync(contactSheetPath), 'out/contact-sheet.jpg must exist for empirical test');
+    const { file: contactSheetPath } = createFixture('jpg');
 
     const result = await extractReferencePalette(contactSheetPath);
 
@@ -383,8 +393,7 @@ describe('🥊 M2 Adversarial Challenge 3: Real Extraction Against Valid Images'
   });
 
   test('3.2 Extraction on out/stills/frame_0117.png meets complete interface contract', async () => {
-    const framePath = path.join(ENGINE_ROOT, 'out', 'stills', 'frame_0117.png');
-    assert.ok(fs.existsSync(framePath), 'out/stills/frame_0117.png must exist for empirical test');
+    const { file: framePath } = createFixture('png');
 
     const result = await extractReferencePalette(framePath);
 
@@ -399,8 +408,8 @@ describe('🥊 M2 Adversarial Challenge 3: Real Extraction Against Valid Images'
   });
 
   test('3.3 Extraction using relative path vs absolute path produces identical chromatic analysis', async () => {
-    const relativePath = 'out/contact-sheet.jpg';
-    const absolutePath = path.resolve(ENGINE_ROOT, relativePath);
+    const { file: absolutePath } = createFixture('jpg');
+    const relativePath = path.relative(process.cwd(), absolutePath);
 
     const resRelative = await extractReferencePalette(relativePath);
     const resAbsolute = await extractReferencePalette(absolutePath);
@@ -484,12 +493,14 @@ describe('🥊 M2 Adversarial Challenge 4: Timeouts, Memory Bounds, and Zero Unh
 
     const tempEmpty = path.join(os.tmpdir(), `burst_empty_${Date.now()}.png`);
     const tempCorrupt = path.join(os.tmpdir(), `burst_corrupt_${Date.now()}.png`);
+    const burstJpg = createFixture('jpg');
+    const burstPng = createFixture('png');
     fs.writeFileSync(tempEmpty, Buffer.alloc(0));
     fs.writeFileSync(tempCorrupt, Buffer.from('NON_IMAGE_CORRUPT_BYTES'));
 
     const mixedPayloads = [
-      'out/contact-sheet.jpg',
-      'out/stills/frame_0117.png',
+      burstJpg.file,
+      burstPng.file,
       'non_existent_file.png',
       tempEmpty,
       tempCorrupt,
@@ -527,7 +538,7 @@ describe('🥊 M2 Adversarial Challenge 4: Timeouts, Memory Bounds, and Zero Unh
   });
 
   test('4.2 Memory heap stability under sequential palette extractions', async () => {
-    const contactSheetPath = path.join(ENGINE_ROOT, 'out', 'contact-sheet.jpg');
+    const { file: contactSheetPath } = createFixture('jpg', { width: 1920, height: 1080 });
     
     // Force GC if available or record baseline
     if (global.gc) global.gc();

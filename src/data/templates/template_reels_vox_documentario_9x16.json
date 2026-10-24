@@ -1,0 +1,114 @@
+{
+  "timeline": {
+    "fps": 30,
+    "width": 1080,
+    "height": 1920,
+    "durationInFrames": 180,
+    "currentFrame": 0,
+    "tracks": [
+      {
+        "id": "T_AUDIO",
+        "kind": "audio",
+        "name": "Voiceover Documental",
+        "volume": 1,
+        "zIndex": 0
+      },
+      {
+        "id": "T_BG",
+        "kind": "graphics",
+        "name": "Mesa Editorial de Papel",
+        "zIndex": 10
+      },
+      {
+        "id": "T_HERO",
+        "kind": "graphics",
+        "name": "Recorte de Jornal Histórico",
+        "zIndex": 20
+      },
+      {
+        "id": "T_MAP",
+        "kind": "graphics",
+        "name": "Atlas Cartográfico 2.5D",
+        "zIndex": 30
+      },
+      {
+        "id": "T_MARKS",
+        "kind": "graphics",
+        "name": "Marcas Manuais de Caneta Vermelha",
+        "zIndex": 40
+      },
+      {
+        "id": "T_CAPTIONS",
+        "kind": "graphics",
+        "name": "Legenda Editorial",
+        "zIndex": 90
+      }
+    ],
+    "clips": [
+      {
+        "id": "clip_vox_bg",
+        "trackId": "T_BG",
+        "kind": "graphics",
+        "componentName": "VoxPaperStage",
+        "startFrame": 0,
+        "durationInFrames": 180,
+        "props": {
+          "theme": "light-newsprint",
+          "showGrid": true,
+          "camDrift": true
+        }
+      },
+      {
+        "id": "clip_vox_newspaper",
+        "trackId": "T_HERO",
+        "kind": "graphics",
+        "componentName": "NewspaperCutout",
+        "startFrame": 5,
+        "durationInFrames": 85,
+        "props": {
+          "headline": "ARQUIVOS DESCLASSIFICADOS CONFIRMAM FATO",
+          "date": "SETEMBRO, 1994",
+          "source": "ARQUIVO NACIONAL // BRASÍLIA",
+          "snippet": "Registros oficiais demonstram que as decisões tomadas naquele ano mudaram completamente o rumo de toda a indústria.",
+          "highlightedPhrase": "mudaram completamente o rumo",
+          "w": 920,
+          "h": 460,
+          "angle": -1.5,
+          "delay": 5
+        }
+      },
+      {
+        "id": "clip_vox_map",
+        "trackId": "T_MAP",
+        "kind": "graphics",
+        "componentName": "VoxAnimatedMap",
+        "startFrame": 85,
+        "durationInFrames": 95,
+        "props": {
+          "title": "ROTA DA INFORMAÇÃO // ARQUIVO",
+          "subtitle": "BRASÍLIA ➔ SÃO PAULO",
+          "width": 940,
+          "height": 520,
+          "startPoint": [180, 340],
+          "endPoint": [740, 160],
+          "delay": 5
+        }
+      },
+      {
+        "id": "clip_vox_mark_circle",
+        "trackId": "T_MARKS",
+        "kind": "graphics",
+        "componentName": "HandDrawnMark",
+        "startFrame": 35,
+        "durationInFrames": 55,
+        "props": {
+          "type": "circle",
+          "color": "#D9381E",
+          "width": 320,
+          "height": 160,
+          "delay": 5
+        }
+      }
+    ]
+  }
+}

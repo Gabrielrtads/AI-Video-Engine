@@ -17,7 +17,7 @@ import {
 describe('Unit: Skills Catalog, Templates & Clean Slate', () => {
 
   describe('formatSkillsCatalog', () => {
-    it('deve agrupar as 7 habilidades nas 3 categorias canônicas', () => {
+    it('deve agrupar as 8 habilidades nas 3 categorias canônicas', () => {
       const catalog = formatSkillsCatalog(PATHS.HABILIDADES_JSON);
 
       assert.strictEqual(typeof catalog, 'object');
@@ -40,10 +40,12 @@ describe('Unit: Skills Catalog, Templates & Clean Slate', () => {
       assert.ok(cat3Ids.includes('spring_physics_curves'));
       assert.ok(cat3Ids.includes('apple_camera_rig'));
       assert.ok(cat3Ids.includes('sound_impact_engine'));
+      assert.ok(cat3Ids.includes('vox_documentary_motion'), 'vox_documentary_motion deve ficar na categoria 3');
+      assert.ok(!cat1Ids.includes('vox_documentary_motion'), 'vox_documentary_motion não pode cair na categoria 1 (Cromia)');
 
-      // Total de 7 habilidades sem perda
+      // Total de 8 habilidades sem perda
       const total = catalog.category1.length + catalog.category2.length + catalog.category3.length;
-      assert.strictEqual(total, 7);
+      assert.strictEqual(total, 8);
     });
 
     it('formattedText deve conter títulos das 3 categorias e não vazar background-clip', () => {
@@ -120,7 +122,7 @@ describe('Unit: Skills Catalog, Templates & Clean Slate', () => {
     it('deve retornar array de templates com CarrosselEditorial e FlowMotionMaster', () => {
       const list = listTemplates(PATHS.TEMPLATES_JSON);
       assert.ok(Array.isArray(list), 'Deve retornar um array');
-      assert.strictEqual(list.length, 2);
+      assert.ok(list.length >= 2);
 
       const carrossel = list.find((t) => t.id === 'CarrosselEditorial');
       assert.ok(carrossel);

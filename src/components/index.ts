@@ -20,3 +20,23 @@ export type { InteractiveMacCursorProps, MacCursorWaypoint } from './Interactive
 
 export { AudioVisualizerBars } from './AudioVisualizerBars';
 export type { AudioVisualizerBarsProps } from './AudioVisualizerBars';
+
+// Elementos Planetários e Espaciais 3D
+export { OrbitalPlanet3D } from './OrbitalPlanet3D';
+export type { OrbitalPlanet3DProps } from './OrbitalPlanet3D';
+
+// Técnicas de Retenção e Tipografia Hormozi
+export { HormoziKineticCaption } from './HormoziKineticCaption';
+export type { HormoziKineticCaptionProps } from './HormoziKineticCaption';
+
+export { RetentionProgressBar } from './RetentionProgressBar';
+export type { RetentionProgressBarProps } from './RetentionProgressBar';
+
+export { HormoziPunchZoom } from './HormoziPunchZoom';
+export type { HormoziPunchZoomProps } from './HormoziPunchZoom';
+
+// Estilo VOX (Mixed Media Editorial & Cartografia 2.5D)
+export * from './vox';
+
+// Estilos Edit.IA Absorvidos (Gancho Grande, Órbita Split, Capa de Revista, Onda de Áudio)
+export * from './editia';

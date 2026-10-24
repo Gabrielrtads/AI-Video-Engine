@@ -31,5 +31,23 @@
       "Palco PBR com sombras suaves e profundidade"
     ],
     "arquivo": "src/FlowMotionMaster.tsx"
+  },
+  {
+    "id": "VoxDocumentario",
+    "nome": "Jornalismo Visual Documental VOX (Reels 9:16)",
+    "proporcao": "9:16",
+    "dimensoes": { "largura": 1080, "altura": 1920 },
+    "duracaoFrames": 180,
+    "fps": 30,
+    "estilo": "Documentário / Vox / Colagem 2.5D",
+    "caracteristicas": [
+      "Mesa editorial de papel texturizado com grade milimetrada e drift 30fps",
+      "Recortes de jornal histórico com borda rasgada procedural e greeking",
+      "Marca-texto amarelo fluido e marcas manuais em caneta vermelha",
+      "Atlas cartográfico vetorial com rotas animadas em Bézier",
+      "Tipografia clássica Instrument Serif com mono kickers",
+      "Zero neon e paleta analógica quente"
+    ],
+    "arquivo": "src/data/templates/template_reels_vox_documentario_9x16.json"
   }
 ]

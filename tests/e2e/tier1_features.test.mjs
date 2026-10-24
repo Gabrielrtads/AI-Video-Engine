@@ -109,12 +109,26 @@ describe('Tier 1: Feature Coverage (Features 1 to 11)', () => {
 	// Feature 2: Dynamic Skills Catalog in 3 Categories (R1.1, Criteria)
 	// =========================================================================
 	describe('Feature 2: Dynamic Skills Catalog in 3 Categories', () => {
-		it('2.1: should read directly from catalogo_habilidades.json with 7 canonical skills', () => {
+		it('2.1: should read directly from catalogo_habilidades.json with the 8 canonical skills', () => {
 			assert.ok(fs.existsSync(PATHS.catalogoHabilidades), 'catalogo_habilidades.json must exist');
 			const raw = fs.readFileSync(PATHS.catalogoHabilidades, 'utf8');
 			const skills = JSON.parse(raw);
 			assert.ok(Array.isArray(skills), 'Skills must be an array');
-			assert.strictEqual(skills.length, 7, 'Expected exactly 7 skills in the catalog');
+			const canonicalIds = [
+				'amostragem_paleta_kmeans',
+				'svg_iridescent_gradient',
+				'kinetic_word_caption',
+				'typewriter_subtitles',
+				'spring_physics_curves',
+				'apple_camera_rig',
+				'sound_impact_engine',
+				'vox_documentary_motion',
+			];
+			assert.deepStrictEqual(
+				skills.map(s => s.id).sort(),
+				[...canonicalIds].sort(),
+				'Catalog ids must match the canonical list of 8 skills',
+			);
 		});
 
 		it('2.2: category 1 should group Cromia, Gradientes & Decomposição Visual', async () => {
@@ -159,12 +173,13 @@ describe('Tier 1: Feature Coverage (Features 1 to 11)', () => {
 			assert.ok(!catalog.formattedText.includes('background-clip'), 'Internal CSS jargon should not leak in summary');
 		});
 
-		it('2.6: total skills mapped across 3 categories must equal total skills in JSON (7)', async () => {
+		it('2.6: total skills mapped across 3 categories must equal total skills in JSON', async () => {
 			const studio = await loadStudioEngine();
 			assert.ok(studio, 'scripts/studio_engine.mjs must be implemented');
 			const catalog = studio.formatSkillsCatalog(PATHS.catalogoHabilidades);
 			const total = catalog.category1.length + catalog.category2.length + catalog.category3.length;
-			assert.strictEqual(total, 7, 'Total mapped skills must be 7 with zero drops');
+			const jsonTotal = JSON.parse(fs.readFileSync(PATHS.catalogoHabilidades, 'utf8')).length;
+			assert.strictEqual(total, jsonTotal, `Total mapped skills must be ${jsonTotal} with zero drops`);
 		});
 	});
 
