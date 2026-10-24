@@ -3,11 +3,12 @@
  * Portão de qualidade: mede um vídeo pronto e diz se ele está dentro do padrão do estúdio.
  *
  * Uso:
- *   node scripts/verificar_video.mjs <video> [--formato 9:16|4:5|16:9|1:1] [--json] [--folha pasta]
+ *   node scripts/verificar_video.mjs <video> [--formato 9:16|4:5|16:9|1:1] [--json] [--folha pasta] [--sem-audio]
  *
  * Checagens: formato (resolução), fps, áudio presente, loudness (-14 LUFS ±1), pico (≤ -1 dBFS) e
  * quadros congelados (nenhum trecho parado por mais de 1,5 s). Sai com código 1 se algo reprovar.
  * `--folha <pasta>` também grava uma folha de contato (6 quadros) para você olhar.
+ * `--sem-audio` dispensa as checagens de áudio e loudness (motion graphics sem narração).
  * `--timeline <arquivo.json>` (a timeline do render) liga a checagem de variedade entre as cenas.
  */
 import { spawnSync } from 'node:child_process';
@@ -56,7 +57,7 @@ export function chavesDeVariedade(clips) {
 }
 
 /** Aplica as regras às medidas. `medidas` vem de medirVideo(). `chavesVisuais` (opcional) liga a checagem de variedade. */
-export function avaliar(medidas, { formato = '9:16', chavesVisuais = null } = {}) {
+export function avaliar(medidas, { formato = '9:16', chavesVisuais = null, semAudio = false } = {}) {
 	const esperado = FORMATOS[formato];
 	if (!esperado) throw new Error(`Formato desconhecido: ${formato} (use ${Object.keys(FORMATOS).join(', ')})`);
 	const checagens = [];
@@ -68,9 +69,10 @@ export function avaliar(medidas, { formato = '9:16', chavesVisuais = null } = {}
 	const fpsOk = Math.abs(medidas.fps - LIMITES.fpsEsperado) < 0.5;
 	add('fps', fpsOk, medidas.fps, LIMITES.fpsEsperado, fpsOk ? `${medidas.fps} fps, como no estúdio.` : `${medidas.fps} fps; o estúdio renderiza a ${LIMITES.fpsEsperado} fps.`);
 
-	add('audio', medidas.temAudio, medidas.temAudio, true, medidas.temAudio ? 'Tem trilha de áudio.' : 'O vídeo não tem áudio.');
+	if (semAudio) add('audio', true, medidas.temAudio, 'dispensado', 'Sem áudio, como pedido (motion sem narração).');
+	else add('audio', medidas.temAudio, medidas.temAudio, true, medidas.temAudio ? 'Tem trilha de áudio.' : 'O vídeo não tem áudio.');
 
-	if (medidas.temAudio) {
+	if (medidas.temAudio && !semAudio) {
 		const dentro = Math.abs(medidas.lufs - LIMITES.lufsAlvo) <= LIMITES.lufsTolerancia;
 		add('loudness', dentro, medidas.lufs, `${LIMITES.lufsAlvo} ±${LIMITES.lufsTolerancia} LUFS`, dentro ? `Loudness ${medidas.lufs} LUFS dentro do alvo.` : `Loudness ${medidas.lufs} LUFS fora de ${LIMITES.lufsAlvo} ±${LIMITES.lufsTolerancia} (rode a masterização).`);
 		const picoOk = medidas.picoDb <= LIMITES.picoMaxDb;
@@ -156,6 +158,8 @@ function main() {
 	};
 	const json = args.includes('--json');
 	if (json) args.splice(args.indexOf('--json'), 1);
+	const semAudio = args.includes('--sem-audio');
+	if (semAudio) args.splice(args.indexOf('--sem-audio'), 1);
 	const formato = opt('--formato', '9:16');
 	const pastaFolha = opt('--folha', null);
 	const timeline = opt('--timeline', null);
@@ -165,7 +169,7 @@ function main() {
 		process.exit(2);
 	}
 	try {
-		const r = verificarVideo(video, { formato, timeline });
+		const r = verificarVideo(video, { formato, timeline, semAudio });
 		if (pastaFolha) r.folha = gerarFolha(video, pastaFolha, r.medidas.duracao);
 		if (json) console.log(JSON.stringify(r, null, 2));
 		else {

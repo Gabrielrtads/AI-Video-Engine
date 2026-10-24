@@ -13,6 +13,8 @@ export interface AppleKineticCard3DProps {
   tiltIntensity?: number;
   delayFrames?: number;
   showSheen?: boolean;
+  /** Multiplica o cartão inteiro (textos, margens, sombra). 1 = tamanho base de 540x340. */
+  escala?: number;
   children?: React.ReactNode;
 }
 
@@ -28,6 +30,7 @@ export const AppleKineticCard3D: React.FC<AppleKineticCard3DProps> = ({
   tiltIntensity = 1,
   delayFrames = 0,
   showSheen = true,
+  escala = 1,
   children,
 }) => {
   const frame = useCurrentFrame();
@@ -124,7 +127,7 @@ export const AppleKineticCard3D: React.FC<AppleKineticCard3DProps> = ({
           flexDirection: 'column',
           justifyContent: 'space-between',
           transform: `
-            scale(${entranceProgress})
+            scale(${entranceProgress * escala})
             translateY(${floatY}px)
             rotateX(${tiltX}deg)
             rotateY(${tiltY}deg)

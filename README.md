@@ -255,6 +255,8 @@ echo '[{"cena": 2, "componente": "OrbitalPlanet3D"}]' > plano.json
 node scripts/pipeline_script_to_video.mjs "..." --cenas plano.json
 
 pnpm vibe carrossel spec.json --estilo-visual editorial-creme   # static 4:5 carousel: spec JSON -> slide-01.png... + folha.png (see scripts/carrossel.mjs for the spec)
+pnpm vibe motion modelos                  # motion graphics WITHOUT narration: pick a closed model (titulo-cinetico, cartao-de-marca, dataviz)
+pnpm vibe motion exemplo dataviz > spec.json && pnpm vibe motion spec.json   # copy the example, edit only texts and numbers, render + verify
 pnpm vibe reel-gravacao minha_gravacao.mp4 --roteiro "o que eu falei"   # YOUR recording: cuts silence, Hormozi captions, -14 LUFS, verified
 pnpm cortar:silencio in.mp4 out.mp4 --simular   # cut dead air from a recording (drop --simular to write the file)
 pnpm verificar:video out/videos/meu_video.mp4 --formato 9:16 --folha out/stills   # quality gate: format, fps, -14 LUFS, peak, frozen frames

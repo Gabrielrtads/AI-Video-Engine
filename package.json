@@ -40,6 +40,7 @@
     "setup:pastas": "node scripts/preparar_pastas.mjs",
     "assets:check": "node scripts/check_assets.mjs",
     "carrossel": "node scripts/carrossel.mjs",
+    "motion": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/motion.mjs",
     "cortar:silencio": "node scripts/cortar_silencio.mjs",
     "verificar:video": "node scripts/verificar_video.mjs",
     "reel:gravacao": "node scripts/reel_gravacao.mjs"

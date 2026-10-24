@@ -25,7 +25,7 @@ test('rotear sem comando ou com comando desconhecido devolve erro com a lista', 
 });
 
 test('COMANDOS tem descrição de cada comando', () => {
-  for (const nome of ['doctor', 'componentes', 'verificar', 'roteiro', 'carrossel', 'reel-gravacao', 'cortar-silencio', 'pastas']) {
+  for (const nome of ['doctor', 'componentes', 'verificar', 'roteiro', 'carrossel', 'motion', 'reel-gravacao', 'cortar-silencio', 'pastas']) {
     assert.ok(COMANDOS[nome] && COMANDOS[nome].descricao.length > 10, nome);
   }
 });
