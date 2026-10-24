@@ -22,6 +22,8 @@ import { AppleSpringDemo } from './demonstracoes/AppleSpringDemo';
 import { AudioConsoleDemo } from './demonstracoes/AudioConsoleDemo';
 import { GitHubStarHero } from './demonstracoes/GitHubStarHero';
 import { AnimatedCursor } from './demonstracoes/AnimatedCursor';
+import { AutoDuckingAudio } from './AutoDuckingAudio';
+import SPEECH_SHOWCASE_VIBE from './data/speech_showcase_vibe.json';
 import { CarrosselEditorial } from './CarrosselEditorial';
 import { Slide02Diagnostico } from './Slide02Diagnostico';
 import { Slide04Engenharia } from './Slide04Engenharia';
@@ -104,11 +106,18 @@ export const RourkeLuxuryShowcase: React.FC<RourkeLuxuryShowcaseProps> = ({ mode
 			{/* ════════════════════════════════════════════════════════════════════
 			    TRILHA SONORA, LOCUÇÃO & SOUND DESIGN FOLEY
 			    ════════════════════════════════════════════════════════════════════ */}
-			{/* Trilha de Luxo (com ducking automático se houver voz) */}
-			<Audio
-				src={staticFile('audio/musica/trilha_luxo.mp3')}
-				volume={mode === 'pure-visual' ? 0.65 : 0.18}
-			/>
+			{/* Trilha de Luxo: fixa no modo visual puro; com locução, o AutoDuckingAudio baixa a trilha durante a fala */}
+			{mode === 'pure-visual' ? (
+				<Audio src={staticFile('audio/musica/trilha_luxo.mp3')} volume={0.65} />
+			) : (
+				<AutoDuckingAudio
+					src={staticFile('audio/musica/trilha_luxo.mp3')}
+					speechIntervals={SPEECH_SHOWCASE_VIBE}
+					baseVolume={0.4}
+					duckedVolume={0.18}
+					loop={false}
+				/>
+			)}
 
 			{/* Narração Neural (somente no modo voiceover) */}
 			{mode === 'editorial-voiceover' && (
