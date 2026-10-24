@@ -239,6 +239,15 @@ registerRoot(() => (
 			height={1350}
 		/>
 
+		{/* Slide de carrossel dirigido por props: o comando `vibe carrossel` renderiza um still por slide com inputProps */}
+		<Composition
+			id="CarrosselSlide"
+			component={CarrosselEditorial}
+			durationInFrames={120}
+			fps={30}
+			width={1080}
+			height={1350}
+		/>
 		{/* Dynamic Template Compositions */}
 		{dynamicTemplateRegistry.map((tpl) => (
 			<Composition
