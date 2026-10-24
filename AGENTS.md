@@ -24,7 +24,7 @@ Todo agente tem à disposição neste repositório:
    - `node scripts/narrar.mjs "texto da narração" [--voz antonio|francisca|thalita] [--transcrever]`
    - Gera narração neural gratuita em pt-BR e dispara o Whisper para `src/data/words.json`.
 3. **Sound Design Físico & Auto-Ducking:**
-   - Efeitos sonoros embutidos em `public/audio/` (`click_haptic.mp3`, `sub_impact_warm.mp3`, etc.).
+   - Mídia fica só nas pastas de `docs/PASTAS.md` (`public/audio/sfx|musica|locucao`, `public/video`, `public/marcas`). Efeitos sonoros: `public/audio/sfx/` (ex.: `click_haptic.mp3`). Esses arquivos não são versionados: rode `pnpm setup:pastas` e `pnpm assets:check` antes de renderizar e nunca invente um nome de arquivo que o `assets:check` não confirme.
    - Componente `AutoDuckingAudio.tsx` para modular a trilha sonora automaticamente sob a voz.
 4. **Masterização -14 LUFS:**
    - `npm run render:mastered` — Renderiza o Remotion e aplica normalização EBU R128 (-14 LUFS / -1 dBTP) ideal para Instagram e TikTok.

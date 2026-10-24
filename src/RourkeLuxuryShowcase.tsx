@@ -106,65 +106,65 @@ export const RourkeLuxuryShowcase: React.FC<RourkeLuxuryShowcaseProps> = ({ mode
 			    ════════════════════════════════════════════════════════════════════ */}
 			{/* Trilha de Luxo (com ducking automático se houver voz) */}
 			<Audio
-				src={staticFile('audio/trilha_luxo.mp3')}
+				src={staticFile('audio/musica/trilha_luxo.mp3')}
 				volume={mode === 'pure-visual' ? 0.65 : 0.18}
 			/>
 
 			{/* Narração Neural (somente no modo voiceover) */}
 			{mode === 'editorial-voiceover' && (
-				<Audio src={staticFile('audio/narracao_showcase_vibe.mp3')} volume={1.0} />
+				<Audio src={staticFile('audio/locucao/narracao_showcase_vibe.mp3')} volume={1.0} />
 			)}
 
 			{/* Foley de Impacto Beat 1: Colisão de Cartão 3D */}
 			<Sequence from={32} durationInFrames={40}>
-				<Audio src={staticFile('audio/sub_impact_warm.mp3')} volume={0.8} />
-				<Audio src={staticFile('audio/transicao_digital.mp3')} volume={0.6} />
+				<Audio src={staticFile('audio/sfx/sub_impact_warm.mp3')} volume={0.8} />
+				<Audio src={staticFile('audio/sfx/transicao_digital.mp3')} volume={0.6} />
 			</Sequence>
 
 			{/* Foley Beat 2: Whoosh Shimmer de Hardware 3D */}
 			<Sequence from={90} durationInFrames={45}>
-				<Audio src={staticFile('audio/whoosh_zoom.mp3')} volume={0.65} />
-				<Audio src={staticFile('audio/hud_rise.mp3')} volume={0.6} />
+				<Audio src={staticFile('audio/sfx/whoosh_zoom.mp3')} volume={0.65} />
+				<Audio src={staticFile('audio/sfx/hud_rise.mp3')} volume={0.6} />
 			</Sequence>
 
 			{/* Foley Beat 3: Leque de Carrossel Editorial */}
 			<Sequence from={180} durationInFrames={50}>
-				<Audio src={staticFile('audio/whoosh_zoom.mp3')} volume={0.6} />
-				<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.8} />
+				<Audio src={staticFile('audio/sfx/whoosh_zoom.mp3')} volume={0.6} />
+				<Audio src={staticFile('audio/sfx/click_haptic.mp3')} volume={0.8} />
 			</Sequence>
 			<Sequence from={194} durationInFrames={30}>
-				<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.7} />
+				<Audio src={staticFile('audio/sfx/click_haptic.mp3')} volume={0.7} />
 			</Sequence>
 
 			{/* Foley Beat 4: Compressão de Mola Apple & Click Ripple */}
 			<Sequence from={310} durationInFrames={40}>
-				<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.9} />
-				<Audio src={staticFile('audio/futurista_click.mp3')} volume={0.75} />
+				<Audio src={staticFile('audio/sfx/click_haptic.mp3')} volume={0.9} />
+				<Audio src={staticFile('audio/sfx/futurista_click.mp3')} volume={0.75} />
 			</Sequence>
 
 			{/* Foley Beat 5: Tipografia Cinética */}
 			<Sequence from={360} durationInFrames={40}>
-				<Audio src={staticFile('audio/whoosh_zoom.mp3')} volume={0.6} />
+				<Audio src={staticFile('audio/sfx/whoosh_zoom.mp3')} volume={0.6} />
 			</Sequence>
 
 			{/* Foley Beat 6: DataViz & Odômetro */}
 			<Sequence from={450} durationInFrames={50}>
-				<Audio src={staticFile('audio/hud_rise.mp3')} volume={0.65} />
+				<Audio src={staticFile('audio/sfx/hud_rise.mp3')} volume={0.65} />
 			</Sequence>
 
 			{/* Foley Beat 7: VU Meters de Som Broadcast */}
 			<Sequence from={540} durationInFrames={50}>
-				<Audio src={staticFile('audio/sub_impact_warm.mp3')} volume={0.8} />
-				<Audio src={staticFile('audio/futurista_click.mp3')} volume={0.7} />
+				<Audio src={staticFile('audio/sfx/sub_impact_warm.mp3')} volume={0.8} />
+				<Audio src={staticFile('audio/sfx/futurista_click.mp3')} volume={0.7} />
 			</Sequence>
 
 			{/* Foley Beat 8: Star Click Burst no GitHub */}
 			<Sequence from={630} durationInFrames={60}>
-				<Audio src={staticFile('audio/impacto_final.mp3')} volume={0.85} />
+				<Audio src={staticFile('audio/sfx/impacto_final.mp3')} volume={0.85} />
 			</Sequence>
 			<Sequence from={670} durationInFrames={40}>
-				<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.95} />
-				<Audio src={staticFile('audio/hud_rise.mp3')} volume={0.8} />
+				<Audio src={staticFile('audio/sfx/click_haptic.mp3')} volume={0.95} />
+				<Audio src={staticFile('audio/sfx/hud_rise.mp3')} volume={0.8} />
 			</Sequence>
 
 			{/* ════════════════════════════════════════════════════════════════════

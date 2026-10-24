@@ -45,7 +45,7 @@ export interface FullBleedShowcaseProps {
 }
 
 export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
-	audioNarracao = 'narracao_thalita.mp3',
+	audioNarracao = 'audio/locucao/narracao_thalita.mp3',
 	enableSfx = true,
 }) => {
 	const frame = useCurrentFrame();
@@ -1232,20 +1232,20 @@ export const FullBleedShowcase: React.FC<FullBleedShowcaseProps> = ({
 				)}
 
 				{/* Trilha Sonora Moderna Estilo Rede Social (New Benz beat moderno) */}
-				<Audio src={staticFile('audio/trilha_social_moderna.mp3')} volume={0.18} />
+				<Audio src={staticFile('audio/musica/trilha_social_moderna.mp3')} volume={0.18} />
 
 				{/* Micro-feedback háptico apenas na digitação do terminal e clique do Star */}
 				<Sequence from={185} durationInFrames={8}>
-					<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.14} />
+					<Audio src={staticFile('audio/sfx/click_haptic.mp3')} volume={0.14} />
 				</Sequence>
 				<Sequence from={210} durationInFrames={8}>
-					<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.14} />
+					<Audio src={staticFile('audio/sfx/click_haptic.mp3')} volume={0.14} />
 				</Sequence>
 				<Sequence from={240} durationInFrames={8}>
-					<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.14} />
+					<Audio src={staticFile('audio/sfx/click_haptic.mp3')} volume={0.14} />
 				</Sequence>
 				<Sequence from={770} durationInFrames={8}>
-					<Audio src={staticFile('audio/click_haptic.mp3')} volume={0.18} />
+					<Audio src={staticFile('audio/sfx/click_haptic.mp3')} volume={0.18} />
 				</Sequence>
 			</>
 		);

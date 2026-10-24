@@ -26,13 +26,13 @@ const VibeStudioVoiceoverRoot: React.FC = () => (
 
 const FlowMotionRoot: React.FC = () => (
 	<AbsoluteFill style={{background: '#060709'}}>
-		<FlowMotionMaster audioNarracao="narracao_thalita.mp3" enableSfx={true} />
+		<FlowMotionMaster audioNarracao="audio/locucao/narracao_thalita.mp3" enableSfx={true} />
 	</AbsoluteFill>
 );
 
 const FullBleedRoot: React.FC = () => (
 	<AbsoluteFill style={{background: '#050608'}}>
-		<FullBleedShowcase audioNarracao="narracao_thalita_fast.mp3" enableSfx={true} />
+		<FullBleedShowcase audioNarracao="audio/locucao/narracao_thalita_fast.mp3" enableSfx={true} />
 	</AbsoluteFill>
 );
 

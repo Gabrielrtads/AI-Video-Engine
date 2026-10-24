@@ -20,10 +20,13 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
  */
 export const PASTAS = [
   { caminho: 'public/audio', versionada: true, uso: 'Efeitos sonoros, trilhas e locuções usados pelas composições (staticFile("audio/...")).' },
+  { caminho: 'public/audio/sfx', versionada: false, uso: 'Efeitos sonoros curtos (cliques, whoosh, impactos).' },
+  { caminho: 'public/audio/musica', versionada: false, uso: 'Trilhas musicais. Costumam ter direitos autorais: nunca versione.' },
+  { caminho: 'public/audio/locucao', versionada: false, uso: 'Narrações geradas ou gravadas usadas pelas composições.' },
   { caminho: 'public/assets', versionada: false, uso: 'Vídeos curtos de efeito (ex.: brilho, check) usados pelas composições.' },
   { caminho: 'public/input', versionada: true, uso: 'Material bruto do vídeo atual (áudio do celular, takes), copiado com nome ASCII antes de processar.' },
   { caminho: 'public/marcas', versionada: false, uso: 'Logos e fotos por marca ou cliente, uma subpasta por marca (public/marcas/<marca>/).' },
-  { caminho: 'public/video', versionada: false, uso: 'Takes e B-rolls de vídeo que as composições vão usar.' },
+  { caminho: 'public/video', versionada: false, uso: 'Takes, B-rolls e sequências de quadros que as composições vão usar.' },
   { caminho: 'out/videos', versionada: false, uso: 'Vídeos finais renderizados e masterizados (-14 LUFS).' },
   { caminho: 'out/stills', versionada: false, uso: 'Quadros avulsos e folhas de contato para conferir o resultado.' },
   { caminho: 'out/carrosseis', versionada: false, uso: 'Slides de carrossel exportados em imagem (4:5).' },
@@ -33,6 +36,12 @@ export const PASTAS = [
   { caminho: 'references/rejected', versionada: true, uso: 'Referências recusadas, com o motivo.' },
   { caminho: 'references/evidence', versionada: true, uso: 'Quadros e folhas de contato que documentam as referências.' },
 ];
+
+/**
+ * Arquivos de trabalho fixos fora das pastas acima: a narração da rodada atual, que o pipeline 1-click
+ * sobrescreve a cada execução. Qualquer outro nome solto na raiz de public/ é bagunça.
+ */
+export const ARQUIVOS_DE_TRABALHO = ['narracao.mp3'];
 
 const RAIZ_DO_PROJETO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
